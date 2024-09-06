@@ -63,3 +63,16 @@ exports.getUser = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+// authController.js
+exports.getUserDetails = async (req, res) => {
+  try {
+      const userId = req.user.id; // Assuming user ID is stored in the JWT token
+      const user = await User.findById(userId).select('-password'); // Exclude password
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+      res.json(user);
+  } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+  }
+};

@@ -18,6 +18,42 @@ const userSchema = new mongoose.Schema({
   roles: {
     type: [String],
     default: ['user']
+  },
+  fullName: {
+    type: String,
+    required: true
+  },
+  phoneNumber: {
+    type: String,
+    required: true
+  },
+  dob: {
+    type: Date,
+    required: true
+  },
+  address: {
+    type: String,
+    required: true
+  },
+  securityQuestion: {
+    type: String,
+    required: true
+  },
+  securityAnswer: {
+    type: String,
+    required: true
+  },
+  occupation: {
+    type: String,
+    required: true
+  },
+  gender: {
+    type: String,
+    required: true
+  },
+  maritalStatus: {
+    type: String,
+    required: true
   }
 });
 

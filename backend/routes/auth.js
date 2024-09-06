@@ -8,7 +8,16 @@ const router = express.Router();
 // Register Route
 router.post('/register', [
   body('email').isEmail(),
-  body('password').isLength({ min: 6 })
+  body('password').isLength({ min: 8 }),
+  body('fullName').isString().notEmpty(),
+  body('phoneNumber').matches(/^(07|01)\d{8}$/),
+  body('dob').isDate(),
+  body('address').isString().notEmpty(),
+  body('securityQuestion').isString().notEmpty(),
+  body('securityAnswer').isString().notEmpty(),
+  body('occupation').isString().notEmpty(),
+  body('gender').isIn(['male', 'female', 'other']),
+  body('maritalStatus').isIn(['single', 'married', 'divorced', 'widowed'])
 ], authController.registerUser);
 
 // Login Route
