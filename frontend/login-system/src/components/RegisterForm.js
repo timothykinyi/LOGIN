@@ -97,10 +97,9 @@ const RegisterForm = () => {
       setLoading(false);
 
       if (response.ok) {
-        localStorage.setItem('token', data.token);
-        navigate('/dashboard');
+        navigate('/login');
       } else {
-        setErrorMessage(data.message || 'An error occurred. Please try again.');
+        setErrorMessage(data.error || 'An error occurred. Please try again.');
       }
     } catch (error) {
       console.error('Error:', error);

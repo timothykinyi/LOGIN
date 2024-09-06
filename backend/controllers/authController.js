@@ -9,7 +9,7 @@ exports.registerUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-  const { username, email, password } = req.body;
+  const { username, email, password, fullName, phoneNumber, dob, address, securityQuestion, securityAnswer, occupation, gender, maritalStatus } = req.body;
 
   try {
     // Check if user exists
@@ -21,7 +21,7 @@ exports.registerUser = async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt);
 
     // Save new user
-    const user = new User({ username, email, passwordHash });
+    const user = new User({ username, email, passwordHash, fullName, phoneNumber, dob, address, securityQuestion, securityAnswer, occupation, gender, maritalStatus });
     await user.save();
 
     res.status(201).json({ msg: 'User registered successfully' });
@@ -54,25 +54,12 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// Get Logged-in User Info (Optional)
+// Get Logged-in User Info
 exports.getUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-passwordHash');
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
-  }
-};
-// authController.js
-exports.getUserDetails = async (req, res) => {
-  try {
-      const userId = req.user.id; // Assuming user ID is stored in the JWT token
-      const user = await User.findById(userId).select('-password'); // Exclude password
-      if (!user) {
-          return res.status(404).json({ message: 'User not found' });
-      }
-      res.json(user);
-  } catch (error) {
-      res.status(500).json({ message: 'Server error' });
   }
 };
