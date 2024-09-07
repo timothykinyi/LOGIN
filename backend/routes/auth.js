@@ -1,32 +1,21 @@
 const express = require('express');
-const { body } = require('express-validator');
-const authController = require('../controllers/authController');
+const { registerUser, login, verifyUser, updateEmail, resendVerificationCode, newrecoverPassword, resetPassword, changeusername, changepassword, changephonenumber, changeemail, logout, getUser} = require('../controllers/authController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-// Register Route
-router.post('/register', [
-  body('email').isEmail(),
-  body('password').isLength({ min: 8 }),
-  body('fullName').isString().notEmpty(),
-  body('phoneNumber').matches(/^(07|01)\d{8}$/),
-  body('dob').isDate(),
-  body('address').isString().notEmpty(),
-  body('securityQuestion').isString().notEmpty(),
-  body('securityAnswer').isString().notEmpty(),
-  body('occupation').isString().notEmpty(),
-  body('gender').isIn(['male', 'female', 'other']),
-  body('maritalStatus').isIn(['single', 'married', 'divorced', 'widowed'])
-], authController.registerUser);
-
-// Login Route
-router.post('/login', [
-  body('email').isEmail(),
-  body('password').exists()
-], authController.loginUser);
-
-// Get User (Protected Route)
-router.get('/me', authMiddleware, authController.getUser);
+router.post('/register', registerUser);
+router.post('/login', login);
+router.post('/verify', verifyUser)
+router.post('/update-email', updateEmail);
+router.post('/resendemail', resendVerificationCode);
+router.post('/recoverpassword', newrecoverPassword);
+router.post('/reset-password', resetPassword);
+router.post('/changeusername', changeusername);
+router.post('/changepassword', changepassword);
+router.post('/changephonenumber', changephonenumber);
+router.post('/changeemail', changeemail);
+router.post('/logout', logout);
+router.get('/me', authMiddleware, getUser);
 
 module.exports = router;
