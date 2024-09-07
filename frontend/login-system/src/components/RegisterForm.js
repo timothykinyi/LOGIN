@@ -29,7 +29,7 @@ const Register = () => {
     setMessage('');
 
     try {
-      const response = await axios.post('https://elosystemv1.onrender.com/api/auth/register', formData);
+      const response = await axios.post('https://login-9ebe.onrender.com/api/auth/register', formData);
       setMessage(response.data.message);
       sessionStorage.setItem('email', formData.email);
       navigate('/verification');
