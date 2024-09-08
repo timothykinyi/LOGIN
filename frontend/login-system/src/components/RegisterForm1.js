@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProgressIndicator from './ProgressIndicator'; // Import the Progress Indicator component
-import './RegisterForm.css';
+import './styles/RegisterForm.css';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({

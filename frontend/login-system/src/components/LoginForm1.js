@@ -1,7 +1,7 @@
 // LoginForm.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './AuthForm.css';
+import './styles/AuthForm.css';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');

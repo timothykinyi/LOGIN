@@ -1,5 +1,5 @@
 import React from 'react';
-import './ProgressIndicator.css';
+import './styles/ProgressIndicator.css';
 
 const ProgressIndicator = ({ currentStep }) => {
   return (
