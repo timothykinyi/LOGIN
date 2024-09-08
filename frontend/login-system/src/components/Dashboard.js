@@ -9,7 +9,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('userToken');
         if (!token) {
           navigate('/');
           return;
@@ -25,6 +25,8 @@ const Dashboard = () => {
         const data = await response.json();
         if (response.ok) {
           setUser(data);
+          alert('The user is received');
+          console.log(data);
         } else {
           alert('Failed to fetch user details.');
           navigate('/');
@@ -43,8 +45,12 @@ const Dashboard = () => {
       <h2>User Dashboard</h2>
       {user ? (
         <div>
-          <p>Username: {user.username}</p>
-          <p>Email: {user.email}</p>
+          <p>email: {user.email}</p>
+          <p>phoneNumber: {user.phoneNumber}</p>
+          <p>fullName: {user.fullName}</p>
+          <p>username: {user.username}</p>
+          <p>gender: {user.gender}</p>
+          <p>dateOfBirth: {user.dateOfBirth}</p>
           <button
             onClick={() => {
               localStorage.removeItem('token');

@@ -10,17 +10,20 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [recoverpassword, setRecoverPassword] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
 
     try {
+      setLoading(true);
       const response = await axios.post('https://login-9ebe.onrender.com/api/auth/login', { username, password });
       setMessage(response.data.message);
       sessionStorage.setItem('userToken', response.data.token);
-      navigate('/dashboard');      
+      navigate('/dashboard');
     } catch (error) {
+      setLoading(false);
       if (error.response && error.response.data) {
         setMessage(error.response.data.message);
       } else {
@@ -28,6 +31,7 @@ const Login = () => {
       }
     }
   };
+  
 
   const handleRecoverPassword = () => {
     setRecoverPassword(!recoverpassword);
@@ -76,7 +80,7 @@ const Login = () => {
                 {showPassword ? '🙈' : '👁️'}
               </button>
             </div>
-            <button type="submit">Login</button>
+            <button type="submit"disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
             <button type="button" onClick={handleRecoverPassword}>Forgot Password</button>
             <p>Verify your account <Link to="/verification">Verify Account</Link></p>
             <p>If you don't have an account <Link to="/register">Register</Link></p>
