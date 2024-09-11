@@ -50,10 +50,11 @@ const EducationForm = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await axios.post('/api/education', educationEntries);
+        const response = await axios.post('https://login-9ebe.onrender.com/api/education/add', educationEntries);
         setSuccessMessage(response.data.message);
         setApiError('');
       } catch (error) {
+        console.log(error);
         setApiError('An error occurred while submitting the form');
         setSuccessMessage('');
       }

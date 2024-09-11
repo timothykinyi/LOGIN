@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const educationSchema = new Schema({
+const educationSchema = new mongoose.Schema({
   educationLevel: { type: String, required: true },
   institutionName: { type: String, required: true },
   degreeType: { type: String },
@@ -10,7 +9,9 @@ const educationSchema = new Schema({
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
   country: { type: String, required: true },
-  transferDetails: { type: String }
+  transferDetails: { type: String },
 });
 
-module.exports = mongoose.model('Education', educationSchema);
+const Education = mongoose.model('Education', educationSchema);
+
+module.exports = Education;
