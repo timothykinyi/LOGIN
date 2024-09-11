@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import './styles/EmploymentForm.css';
 
@@ -6,6 +7,7 @@ const EmploymentForm = () => {
     { id: Date.now(), jobTitle: '', employer: '', jobCategory: '', startDate: '', endDate: '', skills: '' }
   ]);
   const [errors, setErrors] = useState({});
+  const [responseMessage, setResponseMessage] = useState(''); // For displaying response
 
   const handleChange = (id, e) => {
     const { name, value } = e.target;
@@ -36,14 +38,21 @@ const EmploymentForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       const updatedEntries = jobEntries.map(entry => ({
         ...entry,
         endDate: entry.endDate || 'Continuing' // Marking end date as "Continuing" if empty
       }));
-      console.log('Employment data submitted:', updatedEntries);
+      
+      try {
+        // Replace the URL with your backend endpoint
+        const response = await axios.post('http://your-backend-api.com/employment', updatedEntries);
+        setResponseMessage(`Success: ${response.data.message}`);
+      } catch (error) {
+        setResponseMessage(`Error: ${error.response ? error.response.data.message : 'Something went wrong'}`);
+      }
     }
   };
 
@@ -146,6 +155,8 @@ const EmploymentForm = () => {
       </button>
 
       <button type="submit">Submit</button>
+
+      {responseMessage && <div className="response-message">{responseMessage}</div>}
     </form>
   );
 };
