@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth');
 const personalInfoRoutes = require('./routes/personalInfoRoutes');
 const educationRoutes = require('./routes/educationRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const healthRoutes = require('./routes/healthRoutes');
 
 // Initialize the app
 const app = express();
@@ -21,6 +22,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/personal-info', personalInfoRoutes);
 app.use('/api/education', educationRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/health', healthRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

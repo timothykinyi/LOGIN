@@ -1,3 +1,4 @@
+import axios from 'axios'; // Import axios for API requests
 import React, { useState } from 'react';
 import './styles/HealthForm.css';
 
@@ -14,7 +15,9 @@ const HealthForm = () => {
     additionalInfo: ''
   });
   const [errors, setErrors] = useState({});
-  
+  const [successMessage, setSuccessMessage] = useState('');
+  const [apiError, setApiError] = useState('');
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setHealthData(prevData => ({
@@ -57,10 +60,24 @@ const HealthForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Health data submitted:', healthData);
+      try {
+        const response = await axios.post('https://login-9ebe.onrender.com/api/health', healthData);
+        
+        if (response.status === 200) {
+          setSuccessMessage('Health data successfully submitted');
+          setApiError('');
+        } else {
+          setApiError('An error occurred while submitting the form');
+          setSuccessMessage('');
+        }
+      } catch (error) {
+        setApiError('An error occurred while submitting the form');
+        setSuccessMessage('');
+        console.error('Error occurred:', error);
+      }
     }
   };
 
@@ -199,6 +216,8 @@ const HealthForm = () => {
       </div>
 
       <button type="submit">Submit</button>
+      {successMessage && <p className="success-message">{successMessage}</p>}
+      {apiError && <p className="error-message">{apiError}</p>}
     </form>
   );
 };

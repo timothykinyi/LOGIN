@@ -1,3 +1,4 @@
+import axios from 'axios'; // Import axios for API requests
 import React, { useState } from 'react';
 import './styles/ContactForm.css';
 
@@ -88,16 +89,10 @@ const ContactForm = () => {
     };
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(contactData),
-      });
-
-      if (response.ok) {
-        setSuccessMessage(response.data.message);
+      const response = await axios.post('https://login-9ebe.onrender.com/api/contact', contactData);
+      
+      if (response.status === 200) {
+        setSuccessMessage('Data successfully sent to the backend');
         setApiError('');
         console.log('Data successfully sent to the backend');
       } else {
@@ -106,6 +101,8 @@ const ContactForm = () => {
         console.error('Error sending data');
       }
     } catch (error) {
+      setApiError('An error occurred while submitting the form');
+      setSuccessMessage('');
       console.error('Error occurred:', error);
     }
   };
