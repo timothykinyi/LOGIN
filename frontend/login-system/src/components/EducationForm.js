@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import './styles/EducationForm.css';
 
@@ -6,6 +7,8 @@ const EducationForm = () => {
     { id: 1, educationLevel: '', institutionName: '', degreeType: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', country: '', transferDetails: '' }
   ]);
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
+  const [apiError, setApiError] = useState('');
 
   const handleChange = (id, e) => {
     const { name, value } = e.target;
@@ -43,10 +46,17 @@ const EducationForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Education data submitted:', educationEntries);
+      try {
+        const response = await axios.post('/api/education', educationEntries);
+        setSuccessMessage(response.data.message);
+        setApiError('');
+      } catch (error) {
+        setApiError('An error occurred while submitting the form');
+        setSuccessMessage('');
+      }
     }
   };
 
@@ -58,6 +68,7 @@ const EducationForm = () => {
         <div key={entry.id} className="education-entry">
           <h3>Education Entry {educationEntries.indexOf(entry) + 1}</h3>
 
+          
           <div className="form-group">
             <label>Education Level:</label>
             <select
@@ -198,6 +209,10 @@ const EducationForm = () => {
       </button>
 
       <button type="submit">Submit</button>
+
+      {/* Display success or error messages */}
+      {successMessage && <p className="success-message">{successMessage}</p>}
+      {apiError && <p className="error-message">{apiError}</p>}
     </form>
   );
 };
