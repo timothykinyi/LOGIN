@@ -29,7 +29,7 @@ app.use('/api/personal-info', personalInfoRoutes);
 app.use('/api/education', educationRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/health', healthRoutes);
-app.use('/employment', employmentRoutes);
+app.use('/api/employment', employmentRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
