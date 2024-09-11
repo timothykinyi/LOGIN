@@ -1,3 +1,4 @@
+import axios from 'axios'; // Import axios for sending data
 import React, { useState } from 'react';
 import './styles/FinancialForm.css';
 
@@ -6,6 +7,7 @@ const FinancialForm = () => {
     { id: Date.now(), bankAccountNumber: '', bankName: '', income: '', creditScore: '', taxId: '', mobileNumber: '' }
   ]);
   const [errors, setErrors] = useState({});
+  const [responseMessage, setResponseMessage] = useState(''); // For displaying response
 
   const handleChange = (id, e) => {
     const { name, value } = e.target;
@@ -38,10 +40,20 @@ const FinancialForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Financial data submitted:', financialEntries);
+      const updatedEntries = financialEntries.map(entry => ({
+        ...entry,
+      }));
+
+      try {
+        // Replace the URL with your backend endpoint
+        const response = await axios.post('http://your-backend-api.com/financial', updatedEntries);
+        setResponseMessage(`Success: ${response.data.message}`);
+      } catch (error) {
+        setResponseMessage(`Error: ${error.response ? error.response.data.message : 'Something went wrong'}`);
+      }
     }
   };
 
@@ -143,6 +155,8 @@ const FinancialForm = () => {
       </button>
 
       <button type="submit">Submit</button>
+
+      {responseMessage && <div className="response-message">{responseMessage}</div>}
     </form>
   );
 };

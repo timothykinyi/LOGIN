@@ -10,6 +10,7 @@ const educationRoutes = require('./routes/educationRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const healthRoutes = require('./routes/healthRoutes');
 const employmentRoutes = require('./routes/employment');
+const financialRoutes = require('./routes/financialRoutes');
 
 // Initialize the app
 const app = express();
@@ -30,6 +31,7 @@ app.use('/api/education', educationRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/health', healthRoutes);
 app.use('/api/employment', employmentRoutes);
+app.use('/api/financial', financialRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
