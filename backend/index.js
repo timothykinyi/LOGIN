@@ -7,6 +7,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const personalInfoRoutes = require('./routes/personalInfoRoutes');
 const educationRoutes = require('./routes/educationRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 // Initialize the app
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/personal-info', personalInfoRoutes);
 app.use('/api/education', educationRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

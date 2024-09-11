@@ -6,6 +6,8 @@ const ContactForm = () => {
   const [emails, setEmails] = useState([{ id: Date.now(), email: '' }]);
   const [emergencyContacts, setEmergencyContacts] = useState([{ id: Date.now(), name: '', phone: '', address: '' }]);
   const [socialMedia, setSocialMedia] = useState([{ id: Date.now(), platform: '', username: '' }]);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [apiError, setApiError] = useState('');
 
   const handlePhoneChange = (id, e) => {
     const { value } = e.target;
@@ -75,14 +77,37 @@ const ContactForm = () => {
     setSocialMedia(socialMedia.filter(social => social.id !== id));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Contact data submitted:', {
+
+    const contactData = {
       phoneNumbers,
       emails,
       emergencyContacts,
       socialMedia,
-    });
+    };
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactData),
+      });
+
+      if (response.ok) {
+        setSuccessMessage(response.data.message);
+        setApiError('');
+        console.log('Data successfully sent to the backend');
+      } else {
+        setApiError('An error occurred while submitting the form');
+        setSuccessMessage('');
+        console.error('Error sending data');
+      }
+    } catch (error) {
+      console.error('Error occurred:', error);
+    }
   };
 
   return (
@@ -250,6 +275,8 @@ const ContactForm = () => {
       </div>
 
       <button type="submit">Submit</button>
+      {successMessage && <p className="success-message">{successMessage}</p>}
+      {apiError && <p className="error-message">{apiError}</p>}
     </form>
   );
 };
