@@ -78,7 +78,7 @@ const PersonalInfoForm = () => {
     if (validateForm()) {
       try {
         // Post the form data to the backend
-        const response = await axios.post('http://localhost:5000/submit-personal-info', formData);
+        const response = await axios.post('https://login-9ebe.onrender.com/api/submit-personal-info', formData);
 
         // Handle successful form submission
         setSubmitMessage('Form submitted successfully!');
