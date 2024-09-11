@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import './styles/SocialAndFamilyForm.css';
 
@@ -13,6 +14,7 @@ const SocialAndFamilyForm = () => {
     { id: Date.now(), organization: '', role: '' }
   ]);
   const [errors, setErrors] = useState({});
+  const [responseMessage, setResponseMessage] = useState('');
 
   const handleMaritalStatusChange = (e) => {
     setMaritalStatus(e.target.value);
@@ -87,7 +89,7 @@ const SocialAndFamilyForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       const formData = {
@@ -96,7 +98,13 @@ const SocialAndFamilyForm = () => {
         dependents,
         socialAffiliations,
       };
-      console.log('Social and Family data submitted:', formData);
+
+      try {
+        const response = await axios.post('http://localhost:5000/api/social-family', formData); // Replace with your backend URL
+        setResponseMessage(response.data.message);
+      } catch (error) {
+        setResponseMessage('Error submitting the form');
+      }
     }
   };
 
@@ -251,7 +259,9 @@ const SocialAndFamilyForm = () => {
         </button>
       </div>
 
-      <button type="submit">Submit</button>
+      <button type="submit" className="submit-button">Submit</button>
+      
+      {responseMessage && <p className="response-message">{responseMessage}</p>}
     </form>
   );
 };

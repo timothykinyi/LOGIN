@@ -11,16 +11,12 @@ const contactRoutes = require('./routes/contactRoutes');
 const healthRoutes = require('./routes/healthRoutes');
 const employmentRoutes = require('./routes/employment');
 const financialRoutes = require('./routes/financialRoutes');
+const socialFamilyRoutes = require('./routes/socialFamily');
 
 // Initialize the app
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from your React app
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
 app.use(cors());
 app.use(express.json());
 
@@ -32,6 +28,7 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/health', healthRoutes);
 app.use('/api/employment', employmentRoutes);
 app.use('/api/financial', financialRoutes);
+app.use('/api/social-family', socialFamilyRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
