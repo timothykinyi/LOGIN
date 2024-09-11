@@ -1,8 +1,8 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import './styles/LegalInfoForm.css'; // Ensure to import the CSS file
 
 const LegalInfoForm = () => {
-  // State management
   const [criminalRecord, setCriminalRecord] = useState('');
   const [contracts, setContracts] = useState('');
   const [agreements, setAgreements] = useState('');
@@ -11,24 +11,42 @@ const LegalInfoForm = () => {
   const [uploadContracts, setUploadContracts] = useState(null);
   const [uploadAgreements, setUploadAgreements] = useState(null);
   const [uploadDisputes, setUploadDisputes] = useState(null);
-  
-  // File input handler
+  const [responseMessage, setResponseMessage] = useState(''); // State to store the server response
+  const [errorMessage, setErrorMessage] = useState(''); // State to store any errors
+
   const handleFileChange = (e, setFile) => {
     setFile(e.target.files[0]);
   };
 
-  // Form submit handler
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Implement form submission logic here
-    console.log('Criminal Record:', criminalRecord);
-    console.log('Contracts and Agreements:', contracts);
-    console.log('Additional Agreements:', agreements);
-    console.log('Legal Disputes:', legalDisputes);
-    console.log('Uploaded Criminal Record:', uploadRecords);
-    console.log('Uploaded Contracts:', uploadContracts);
-    console.log('Uploaded Additional Agreements:', uploadAgreements);
-    console.log('Uploaded Legal Disputes:', uploadDisputes);
+    
+    // Create a FormData object to include the file uploads
+    const formData = new FormData();
+    formData.append('criminalRecord', criminalRecord);
+    formData.append('contracts', contracts);
+    formData.append('agreements', agreements);
+    formData.append('legalDisputes', legalDisputes);
+    if (uploadRecords) formData.append('uploadRecords', uploadRecords);
+    if (uploadContracts) formData.append('uploadContracts', uploadContracts);
+    if (uploadAgreements) formData.append('uploadAgreements', uploadAgreements);
+    if (uploadDisputes) formData.append('uploadDisputes', uploadDisputes);
+
+    try {
+      // Make a POST request to the backend
+      const response = await axios.post('YOUR_BACKEND_ENDPOINT', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      // Handle successful response
+      setResponseMessage('Form submitted successfully!');
+      console.log(response.data);
+    } catch (error) {
+      // Handle error response
+      setErrorMessage('An error occurred while submitting the form.');
+      console.error(error);
+    }
   };
 
   return (
@@ -115,18 +133,11 @@ const LegalInfoForm = () => {
         />
       </div>
 
-      {/* Additional Information */}
-      <div className="form-group">
-        <label htmlFor="additionalInfo">Additional Legal Information:</label>
-        <textarea
-          id="additionalInfo"
-          name="additionalInfo"
-          rows="4"
-          placeholder="Provide any other relevant legal information..."
-        ></textarea>
-      </div>
-
       <button type="submit">Submit</button>
+
+      {/* Display response message or error message */}
+      {responseMessage && <p className="success-message">{responseMessage}</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
     </form>
   );
 };
