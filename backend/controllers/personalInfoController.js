@@ -1,13 +1,36 @@
-// controllers/personalInfoController.js
-const PersonalInfo = require('../models/PersonalInfoModel');
+const PersonalInfo = require('../models/PersonalInfo');
 
-exports.submitPersonalInfo = async (req, res) => {
+// @desc    Submit personal info
+// @route   POST /api/personal-info
+// @access  Public
+const submitPersonalInfo = async (req, res) => {
+  const {
+    firstName, lastName, dateOfBirth, gender, maritalStatus,
+    nationality, streetAddress1, streetAddress2, city, state, postalCode, country
+  } = req.body;
+
   try {
-    const formData = new PersonalInfo(req.body);
-    await formData.save();
-    res.status(201).send({ message: 'Form data saved successfully!' });
+    // Create a new PersonalInfo document
+    const personalInfo = new PersonalInfo({
+      firstName,
+      lastName,
+      dateOfBirth,
+      gender,
+      maritalStatus,
+      nationality,
+      streetAddress1,
+      streetAddress2,
+      city,
+      state,
+      postalCode,
+      country
+    });
+
+    await personalInfo.save();
+    res.status(201).json({ message: 'Personal info submitted successfully', data: personalInfo });
   } catch (error) {
-    console.error('Error saving form data:', error);
-    res.status(500).send({ message: 'Error saving form data, please try again.' });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
+module.exports = { submitPersonalInfo };

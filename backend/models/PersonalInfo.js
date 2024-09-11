@@ -1,11 +1,9 @@
-// models/PersonalInfoModel.js
 const mongoose = require('mongoose');
 
-const PersonalInfoSchema = new mongoose.Schema({
-  fullName: { type: String, required: true },
-  dob: { type: Date, required: true },
-  idNumber: { type: String, required: true },
-  idType: { type: String, required: true },
+const personalInfoSchema = mongoose.Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  dateOfBirth: { type: Date, required: true },
   gender: { type: String, required: true },
   maritalStatus: { type: String, required: true },
   nationality: { type: String, required: true },
@@ -15,6 +13,8 @@ const PersonalInfoSchema = new mongoose.Schema({
   state: { type: String, required: true },
   postalCode: { type: String, required: true },
   country: { type: String, required: true },
+}, {
+  timestamps: true
 });
 
-module.exports = mongoose.model('PersonalInfo', PersonalInfoSchema);
+module.exports = mongoose.model('PersonalInfo', personalInfoSchema);

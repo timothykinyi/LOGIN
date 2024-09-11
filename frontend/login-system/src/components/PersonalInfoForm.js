@@ -268,7 +268,9 @@ const PersonalInfoForm = () => {
       </div>
 
       <button type="submit">Submit</button>
+      {submitMessage && <p className="submit-message">{submitMessage}</p>}
     </form>
+
   );
 };
 
