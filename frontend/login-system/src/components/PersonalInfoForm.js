@@ -1,6 +1,6 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import './styles/PersonalInfoForm.css';
-
 const countries = [
   'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina',
   'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados',
@@ -45,6 +45,7 @@ const PersonalInfoForm = () => {
     country: '',
   });
 
+  const [submitMessage, setSubmitMessage] = useState('');
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
@@ -72,11 +73,20 @@ const PersonalInfoForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log(formData);
-      // Proceed to next step or save data
+      try {
+        // Post the form data to the backend
+        const response = await axios.post('http://localhost:5000/submit-personal-info', formData);
+
+        // Handle successful form submission
+        setSubmitMessage('Form submitted successfully!');
+        console.log(response.data.message);
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        setSubmitMessage('Error submitting the form, please try again.');
+      }
     }
   };
 

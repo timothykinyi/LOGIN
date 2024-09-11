@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/personal-info', personalInfoRoutes); // Add personal info routes
+app.use('/api', personalInfoRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

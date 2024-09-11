@@ -1,9 +1,8 @@
-const express = require("express");
-const { submitPersonalInfo } = require("../controllers/personalInfoController");
-
+// routes/personalInfoRoutes.js
+const express = require('express');
 const router = express.Router();
+const personalInfoController = require('../controllers/personalInfoController');
 
-// POST route for submitting personal info
-router.post("/", submitPersonalInfo);
+router.post('/submit-personal-info', personalInfoController.submitPersonalInfo);
 
 module.exports = router;
