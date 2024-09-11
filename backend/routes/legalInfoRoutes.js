@@ -5,19 +5,31 @@ const LegalInfo = require('../models/LegalInfo');
 
 const router = express.Router();
 
-// Multer setup for file uploads
+// Set up multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /pdf|doc|docx/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = fileTypes.test(file.mimetype);
+    if (extname && mimetype) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Only PDF and Word documents are allowed.'));
+    }
+  },
+});
 
-// Route for submitting legal information
+// POST route to handle form submission
 router.post('/', upload.fields([
   { name: 'uploadRecords', maxCount: 1 },
   { name: 'uploadContracts', maxCount: 1 },
@@ -25,22 +37,24 @@ router.post('/', upload.fields([
   { name: 'uploadDisputes', maxCount: 1 },
 ]), async (req, res) => {
   try {
-    const newLegalInfo = new LegalInfo({
-      criminalRecord: req.body.criminalRecord,
-      contracts: req.body.contracts,
-      agreements: req.body.agreements,
-      legalDisputes: req.body.legalDisputes,
+    const { criminalRecord, contracts, agreements, legalDisputes } = req.body;
+
+    const legalInfo = new LegalInfo({
+      criminalRecord,
+      contracts,
+      agreements,
+      legalDisputes,
       uploadRecords: req.files.uploadRecords ? req.files.uploadRecords[0].filename : null,
       uploadContracts: req.files.uploadContracts ? req.files.uploadContracts[0].filename : null,
       uploadAgreements: req.files.uploadAgreements ? req.files.uploadAgreements[0].filename : null,
       uploadDisputes: req.files.uploadDisputes ? req.files.uploadDisputes[0].filename : null,
     });
 
-    await newLegalInfo.save();
-    res.status(201).json({ message: 'Form submitted successfully!', data: newLegalInfo });
+    await legalInfo.save();
+    res.status(201).json({ message: 'Form submitted successfully!', legalInfo });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error. Could not submit form.' });
+    res.status(500).json({ message: 'Error submitting form', error: error.message });
   }
 });
 

@@ -34,7 +34,7 @@ const LegalInfoForm = () => {
 
     try {
       // Make a POST request to the backend
-      const response = await axios.post('YOUR_BACKEND_ENDPOINT', formData, {
+      const response = await axios.post('https://login-9ebe.onrender.com/api/legalinfo', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -68,7 +68,7 @@ const LegalInfoForm = () => {
           type="file"
           id="uploadRecords"
           name="uploadRecords"
-          accept=".pdf,.doc,.docx,.jpg,.png"
+          accept=".pdf,.doc,.docx"
           onChange={(e) => handleFileChange(e, setUploadRecords)}
         />
       </div>
@@ -88,7 +88,7 @@ const LegalInfoForm = () => {
           type="file"
           id="uploadContracts"
           name="uploadContracts"
-          accept=".pdf,.doc,.docx,.jpg,.png"
+          accept=".pdf,.doc,.docx"
           onChange={(e) => handleFileChange(e, setUploadContracts)}
         />
       </div>
@@ -108,7 +108,7 @@ const LegalInfoForm = () => {
           type="file"
           id="uploadAgreements"
           name="uploadAgreements"
-          accept=".pdf,.doc,.docx,.jpg,.png"
+          accept=".pdf,.doc,.docx"
           onChange={(e) => handleFileChange(e, setUploadAgreements)}
         />
       </div>
@@ -128,7 +128,7 @@ const LegalInfoForm = () => {
           type="file"
           id="uploadDisputes"
           name="uploadDisputes"
-          accept=".pdf,.doc,.docx,.jpg,.png"
+          accept=".pdf,.doc,.docx"
           onChange={(e) => handleFileChange(e, setUploadDisputes)}
         />
       </div>
