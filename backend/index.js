@@ -12,6 +12,7 @@ const healthRoutes = require('./routes/healthRoutes');
 const employmentRoutes = require('./routes/employment');
 const financialRoutes = require('./routes/financialRoutes');
 const socialFamilyRoutes = require('./routes/socialFamily');
+const preferencesRoutes = require('./routes/preferencesRoutes');
 
 // Initialize the app
 const app = express();
@@ -29,6 +30,7 @@ app.use('/api/health', healthRoutes);
 app.use('/api/employment', employmentRoutes);
 app.use('/api/financial', financialRoutes);
 app.use('/api/social-family', socialFamilyRoutes);
+app.use('/api/preferences', preferencesRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

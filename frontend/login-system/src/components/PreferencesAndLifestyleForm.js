@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import './styles/PreferencesAndLifestyleForm.css';
 
@@ -12,13 +13,16 @@ const PreferencesAndLifestyleForm = () => {
   const [sleepPreference, setSleepPreference] = useState('');
   const [petPreference, setPetPreference] = useState('');
   const [environmentalPractices, setEnvironmentalPractices] = useState('');
+  const [responseMessage, setResponseMessage] = useState(''); // State to track backend response
+  const [isLoading, setIsLoading] = useState(false); // State to track loading
 
   const handleSelectChange = (setState, value) => {
     setState(Array.from(value));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const formData = {
       hobbies,
       dietaryPreference,
@@ -31,7 +35,15 @@ const PreferencesAndLifestyleForm = () => {
       petPreference,
       environmentalPractices,
     };
-    console.log('Preferences and Lifestyle data submitted:', formData);
+
+    try {
+      const response = await axios.post('https://login-9ebe.onrender.com/api/preferences', formData);
+      setResponseMessage(`Success: ${response.data.message}`); // Display success message
+    } catch (error) {
+      setResponseMessage(`Error: ${error.response?.data?.message || 'Something went wrong!'}`); // Handle error message
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -470,7 +482,12 @@ const PreferencesAndLifestyleForm = () => {
         </select>
       </div>
 
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? 'Submitting...' : 'Submit'}
+      </button>
+
+      {/* Response Message */}
+      {responseMessage && <p className="response-message">{responseMessage}</p>}
     </form>
   );
 };
