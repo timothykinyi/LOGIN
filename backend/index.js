@@ -15,6 +15,11 @@ const employmentRoutes = require('./routes/employment');
 const app = express();
 
 // Middleware
+app.use(cors({
+  origin: 'http://localhost:3000', // Allow requests from your React app
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(cors());
 app.use(express.json());
 
