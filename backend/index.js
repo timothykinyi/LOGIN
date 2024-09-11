@@ -15,8 +15,6 @@ const employmentRoutes = require('./routes/employment');
 const financialRoutes = require('./routes/financialRoutes');
 const socialFamilyRoutes = require('./routes/socialFamily');
 const preferencesRoutes = require('./routes/preferencesRoutes');
-const legalInfoRoutes = require('./routes/legalInfoRoutes');
-const path = require('path');
 
 // Initialize the app
 const app = express();
@@ -24,9 +22,6 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Static folder for file uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // To serve the uploaded files
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -38,7 +33,6 @@ app.use('/api/employment', employmentRoutes);
 app.use('/api/financial', financialRoutes);
 app.use('/api/social-family', socialFamilyRoutes);
 app.use('/api/preferences', preferencesRoutes);
-app.use('/api/legalinfo', legalInfoRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

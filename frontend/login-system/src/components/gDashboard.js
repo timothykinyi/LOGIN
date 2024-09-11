@@ -3,15 +3,14 @@ import React, { useState } from 'react';
 import './styles/gDashboard.css'; // Ensure to import the CSS file for dashboard styling
 
 // Import individual form components
-import PersonalInfoForm from './PersonalInfoForm';
-import EducationForm from './EducationForm';
 import ContactForm from './ContactForm';
-import HealthForm from './HealthForm';
+import EducationForm from './EducationForm';
 import EmploymentForm from './EmploymentForm';
 import FinancialForm from './FinancialForm';
-import SocialAndFamilyForm from './SocialAndFamilyForm';
+import HealthForm from './HealthForm';
+import PersonalInfoForm from './PersonalInfoForm';
 import PreferencesAndLifestyleForm from './PreferencesAndLifestyleForm';
-import LegalInfoForm from './LegalInfoForm';
+import SocialAndFamilyForm from './SocialAndFamilyForm';
 
 const Dashboard = () => {
   const [activeForm, setActiveForm] = useState(''); // State to track the active form
@@ -34,8 +33,6 @@ const Dashboard = () => {
         return <SocialAndFamilyForm />;
       case 'preferencesAndLifestyleForm':
         return <PreferencesAndLifestyleForm />;
-      case 'legalInfoForm':
-        return <LegalInfoForm />;
       default:
         return <div>Please select a form to view.</div>;
     }

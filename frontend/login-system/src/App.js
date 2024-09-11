@@ -7,7 +7,6 @@ import EducationForm from './components/EducationForm';
 import EmploymentForm from './components/EmploymentForm';
 import FinancialForm from './components/FinancialForm';
 import HealthForm from './components/HealthForm';
-import LegalInfoForm from './components/LegalInfoForm';
 import LoginForm from './components/Login';
 import PersonalInfoForm from './components/PersonalInfoForm';
 import PreferencesAndLifestyleForm from './components/PreferencesAndLifestyleForm';
@@ -37,7 +36,6 @@ function App() {
         <Route path="/gDashboard/financialForm" element={<FinancialForm />} />
         <Route path="/gDashboard/socialAndFamilyForm" element={<SocialAndFamilyForm />} />
         <Route path="/gDashboard/preferencesAndLifestyleForm" element={<PreferencesAndLifestyleForm />} />
-        <Route path="/gDashboard/legalInfoForm" element={<LegalInfoForm />} />
         <Route path="/gDashboard" element={<GDashboard />} />
         
         {/* Add more routes as needed */}
