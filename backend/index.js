@@ -5,6 +5,7 @@ require('dotenv').config();
 
 // Import routes
 const authRoutes = require('./routes/auth');
+const personalInfoRoutes = require('./routes/personalInfoRoutes');
 
 // Initialize the app
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/personal-info', personalInfoRoutes); // Add personal info routes
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

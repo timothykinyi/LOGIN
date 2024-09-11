@@ -1,0 +1,54 @@
+.preferences-lifestyle-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .preferences-lifestyle-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="radio"],
+  .form-group input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .form-group .radio-group,
+  .form-group .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .form-group .radio-group label,
+  .form-group .checkbox-group label {
+    margin-right: 20px;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  

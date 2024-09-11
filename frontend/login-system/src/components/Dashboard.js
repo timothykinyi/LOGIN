@@ -24,9 +24,7 @@ const Dashboard = () => {
 
         const data = await response.json();
         if (response.ok) {
-          setUser(data);
-          alert('The user is received');
-          console.log(data);
+          setUser(data.user); // Ensure correct path if response wraps the user object
         } else {
           alert('Failed to fetch user details.');
           navigate('/');
@@ -40,23 +38,26 @@ const Dashboard = () => {
     fetchUserDetails();
   }, [navigate]);
 
+  useEffect(() => {
+    if (user) {
+
+    }
+  }, [user]);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('userToken');
+    navigate('/');
+  };
+
   return (
     <div className="dashboard-container">
       <h2>User Dashboard</h2>
       {user ? (
         <div>
-          <p>email: {user.email}</p>
-          <p>phoneNumber: {user.phoneNumber}</p>
-          <p>fullName: {user.fullName}</p>
-          <p>username: {user.username}</p>
-          <p>gender: {user.gender}</p>
-          <p>dateOfBirth: {user.dateOfBirth}</p>
-          <button
-            onClick={() => {
-              localStorage.removeItem('token');
-              navigate('/');
-            }}
-          >
+          <p>Email: {user.email}</p>
+          <p>Category: {user.category}</p>
+          <p>Username: {user.username}</p>
+          <button onClick={handleLogout}>
             Logout
           </button>
         </div>

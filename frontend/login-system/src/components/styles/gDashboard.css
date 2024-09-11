@@ -1,0 +1,181 @@
+/* Global Font */
+* {
+  font-family: 'Poppins', sans-serif; /* Sleek, modern font */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Overall Dashboard Layout */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4f8 0%, #dfe9f3 100%);
+  font-size: 16px;
+  overflow: hidden;
+}
+
+/* Navigation (Sidebar) Styles */
+.dashboard-nav {
+  width: 280px;
+  background-color: #1f2937; /* Deep dark background for sidebar */
+  padding: 30px 15px;
+  color: white;
+  transition: width 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.dashboard-nav:hover {
+  width: 300px;
+}
+
+.dashboard-nav ul {
+  list-style: none;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.dashboard-nav ul li {
+  margin-bottom: 25px;
+}
+
+.dashboard-nav ul li button,
+.dashboard-nav ul li a {
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 18px;
+  color: #9ca3af;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.dashboard-nav ul li button:hover,
+.dashboard-nav ul li a:hover {
+  background-color: #374151; /* Hover color for nav items */
+  color: #fbbf24; /* Bright highlight on hover */
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-nav ul li button.active,
+.dashboard-nav ul li a.active {
+  color: #ffffff;
+  background-color: #2563eb; /* Active link highlight */
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); /* Modern shadow effect */
+}
+
+/* Main Content Area */
+.dashboard-content {
+  flex: 1;
+  padding: 40px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Soft shadow around content */
+  margin: 20px;
+  overflow-y: auto;
+  animation: fadeIn 0.5s ease-in-out;
+  transition: all 0.3s ease;
+}
+
+/* Content Area Hover Effect */
+.dashboard-content:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15); /* More lift on hover */
+  transform: scale(1.01); /* Slight zoom effect */
+}
+
+/* Smooth Fade-In Animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+form input,
+form select,
+form textarea {
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #111827;
+  background-color: #f9fafb;
+  transition: border 0.2s ease;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+  border-color: #2563eb; /* Light blue border on focus */
+  outline: none;
+  background-color: #ffffff;
+}
+
+form button {
+  padding: 14px 20px;
+  background-color: #10b981; /* Bright green button */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #059669; /* Darker green on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .dashboard-nav {
+    width: 200px;
+  }
+
+  .dashboard-content {
+    padding: 20px;
+    margin: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .dashboard-nav {
+    width: 100%;
+    display: block;
+    position: relative;
+  }
+
+  .dashboard-content {
+    margin: 0;
+    border-radius: 0;
+  }
+}

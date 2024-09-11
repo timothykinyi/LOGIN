@@ -44,6 +44,7 @@ const Login = () => {
     try {
       const response = await axios.post('https://login-9ebe.onrender.com/api/auth/recoverpassword', { username });
       setMessage(response.data.message);
+      navigate('/reset-password');
     } catch (error) {
       if (error.response && error.response.data) {
         setMessage(error.response.data.message);
