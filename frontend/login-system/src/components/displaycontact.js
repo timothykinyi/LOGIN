@@ -5,12 +5,12 @@ const ContactInfoList = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const eID = sessionStorage.getItem('eID');
   useEffect(() => {
     // Fetch the contact data from the backend when the component mounts
     const fetchContactData = async () => {
       try {
-        const response = await axios.get('https://login-9ebe.onrender.com/api/contact');
+        const response = await axios.get('https://login-9ebe.onrender.com/api/contact' , eID);
         setContacts(response.data); // Set the data to state
         setLoading(false);
       } catch (error) {
