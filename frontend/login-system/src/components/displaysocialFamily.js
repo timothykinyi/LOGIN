@@ -8,7 +8,7 @@ const DisplaySocialFamilyData = () => {
   useEffect(() => {
     const fetchSocialFamilyData = async () => {
       try {
-        const response = await axios.get('https://login-9ebe.onrender.com/api/socialFamily/all');
+        const response = await axios.get('https://login-9ebe.onrender.com/api/social-family/all');
         setSocialFamilyData(response.data.data);
       } catch (error) {
         setError('Error fetching social family data');

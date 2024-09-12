@@ -10,7 +10,6 @@ const submitPersonalInfo = async (req, res) => {
   } = req.body;
 
   try {
-    // Create a new PersonalInfo document
     const personalInfo = new PersonalInfo({
       firstName,
       lastName,
@@ -33,4 +32,16 @@ const submitPersonalInfo = async (req, res) => {
   }
 };
 
-module.exports = { submitPersonalInfo };
+// @desc    Get all personal info
+// @route   GET /api/personal-info
+// @access  Public
+const getAllPersonalInfo = async (req, res) => {
+  try {
+    const personalInfoList = await PersonalInfo.find(); // Fetch all entries
+    res.status(200).json({ message: 'Data fetched successfully', data: personalInfoList });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = { submitPersonalInfo, getAllPersonalInfo };

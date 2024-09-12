@@ -20,6 +20,7 @@ import Displayeducation from './components/displayeducation';
 import Displayemployment from './components/displayemployment';
 import Displayfinaces from './components/displayfinaces';
 import Displayhealth from './components/displayhealth';
+import Displaypersonaldata from './components/displaypersonaldata';
 import Displaypreference from './components/displaypreference';
 import DisplaysocialFamily from './components/displaysocialFamily';
 import GDashboard from './components/gDashboard';
@@ -52,6 +53,7 @@ function App() {
         <Route path="/displayhealth" element={<Displayhealth />} />
         <Route path="/displaypreference" element={<Displaypreference />} />
         <Route path="/displaysocialFamily" element={<DisplaysocialFamily />} />
+        <Route path="/displaypersonaldata" element={<Displaypersonaldata />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>
