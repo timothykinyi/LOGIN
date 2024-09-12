@@ -16,6 +16,7 @@ import SocialAndFamilyForm from './components/SocialAndFamilyForm';
 import Success from './components/Success';
 import Verification from './components/Verification';
 import Displaycontact from './components/displaycontact';
+import Displayeducation from './components/displayeducation';
 import GDashboard from './components/gDashboard';
 import Passwordrecovery from './components/passwordreset';
 
@@ -40,7 +41,7 @@ function App() {
         <Route path="/gDashboard/preferencesAndLifestyleForm" element={<PreferencesAndLifestyleForm />} />
         <Route path="/gDashboard" element={<GDashboard />} />
         <Route path="/showcontact" element={<Displaycontact />} />
-        
+        <Route path="/displayeducation" element={<Displayeducation />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>
