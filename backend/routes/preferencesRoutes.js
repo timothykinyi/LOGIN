@@ -13,11 +13,11 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET route to fetch all preferences (optional, for viewing data)
-router.get('/', async (req, res) => {
+// GET route to fetch all preferences
+router.get('/all', async (req, res) => {
   try {
     const preferences = await Preference.find();
-    res.status(200).json(preferences);
+    res.status(200).json({ message: 'Preferences fetched successfully', data: preferences });
   } catch (error) {
     res.status(500).json({ message: 'Failed to retrieve preferences.', error });
   }

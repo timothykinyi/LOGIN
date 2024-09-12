@@ -20,6 +20,7 @@ import Displayeducation from './components/displayeducation';
 import Displayemployment from './components/displayemployment';
 import Displayfinaces from './components/displayfinaces';
 import Displayhealth from './components/displayhealth';
+import Displaypreference from './components/displaypreference';
 import GDashboard from './components/gDashboard';
 import Passwordrecovery from './components/passwordreset';
 
@@ -48,6 +49,7 @@ function App() {
         <Route path="/displayemployment" element={<Displayemployment />} />
         <Route path="/displayfinaces" element={<Displayfinaces />} />
         <Route path="/displayhealth" element={<Displayhealth />} />
+        <Route path="/displaypreference" element={<Displaypreference />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>
