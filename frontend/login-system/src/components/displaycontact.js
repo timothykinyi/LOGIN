@@ -55,7 +55,13 @@ const ContactInfoList = () => {
                   </li>
                 ))}
               </ul>
-              <p><strong>Address:</strong> {contact.address.streetAddress}, {contact.address.city}, {contact.address.state}, {contact.address.postalCode}, {contact.address.country}</p>
+              {contact.address ? (
+                <p>
+                  <strong>Address:</strong> {contact.address.streetAddress}, {contact.address.city}, {contact.address.state}, {contact.address.postalCode}, {contact.address.country}
+                </p>
+              ) : (
+                <p><strong>Address:</strong> Not provided</p>
+              )}
             </li>
           ))}
         </ul>
