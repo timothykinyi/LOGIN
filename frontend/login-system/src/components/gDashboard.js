@@ -50,7 +50,6 @@ const Dashboard = () => {
           <li><button onClick={() => setActiveForm('financialForm')}>Financial</button></li>
           <li><button onClick={() => setActiveForm('socialAndFamilyForm')}>Social and Family</button></li>
           <li><button onClick={() => setActiveForm('preferencesAndLifestyleForm')}>Preferences and Lifestyle</button></li>
-          <li><button onClick={() => setActiveForm('legalInfoForm')}>Legal Info</button></li>
           {/* Add more buttons as necessary */}
         </ul>
       </nav>

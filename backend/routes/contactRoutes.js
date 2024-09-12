@@ -16,4 +16,15 @@ router.post('/', async (req, res) => {
   }
 });
 
+// GET route to retrieve all contact information
+router.get('/', async (req, res) => {
+  try {
+    const contacts = await Contact.find(); // Fetch all contact information from the database
+    res.json(contacts); // Send the data to the frontend
+  } catch (error) {
+    console.error('Error retrieving contact data:', error);
+    res.status(500).json({ message: 'Failed to retrieve contact information' });
+  }
+});
+
 module.exports = router;
