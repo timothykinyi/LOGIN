@@ -8,7 +8,7 @@ const DisplayPersonalInfo = () => {
   useEffect(() => {
     const fetchPersonalInfo = async () => {
       try {
-        const response = await axios.get('https://your-backend-url.com/api/personal-info');
+        const response = await axios.get('https://login-9ebe.onrender.com/api/personal-info');
         setPersonalInfoList(response.data.data);
       } catch (error) {
         setError('Error fetching personal information');
