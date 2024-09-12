@@ -21,6 +21,7 @@ import Displayemployment from './components/displayemployment';
 import Displayfinaces from './components/displayfinaces';
 import Displayhealth from './components/displayhealth';
 import Displaypreference from './components/displaypreference';
+import DisplaysocialFamily from './components/displaysocialFamily';
 import GDashboard from './components/gDashboard';
 import Passwordrecovery from './components/passwordreset';
 
@@ -50,6 +51,7 @@ function App() {
         <Route path="/displayfinaces" element={<Displayfinaces />} />
         <Route path="/displayhealth" element={<Displayhealth />} />
         <Route path="/displaypreference" element={<Displaypreference />} />
+        <Route path="/displaysocialFamily" element={<DisplaysocialFamily />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>
