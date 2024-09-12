@@ -64,6 +64,7 @@ const Dashboard = () => {
           <p>Email: {user.email}</p>
           <p>Category: {user.category}</p>
           <p>Username: {user.username}</p>
+          <p>Username: {user.eID}</p>
           <button onClick={handleLogout}>
             Logout
           </button>
