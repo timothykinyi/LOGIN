@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
 
 // GET route to retrieve all contact information
 router.get('/', async (req, res) => {
-  const eID = req.body;
+  const eID = req.eID;
   try {
     const contacts = await Contact.findOne({ eID }); // Fetch all contact information from the database
     res.json(contacts); // Send the data to the frontend
