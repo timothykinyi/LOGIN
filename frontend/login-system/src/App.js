@@ -19,6 +19,7 @@ import Displaycontact from './components/displaycontact';
 import Displayeducation from './components/displayeducation';
 import Displayemployment from './components/displayemployment';
 import Displayfinaces from './components/displayfinaces';
+import Displayhealth from './components/displayhealth';
 import GDashboard from './components/gDashboard';
 import Passwordrecovery from './components/passwordreset';
 
@@ -46,6 +47,7 @@ function App() {
         <Route path="/displayeducation" element={<Displayeducation />} />
         <Route path="/displayemployment" element={<Displayemployment />} />
         <Route path="/displayfinaces" element={<Displayfinaces />} />
+        <Route path="/displayhealth" element={<Displayhealth />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>
