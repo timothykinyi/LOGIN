@@ -21,7 +21,7 @@ const Login = () => {
       const response = await axios.post('https://login-9ebe.onrender.com/api/auth/login', { username, password });
       setMessage(response.data.message);
       sessionStorage.setItem('userToken', response.data.token);
-      sessionStorage.setItem('userToken', response.data.token);
+      sessionStorage.setItem('eID', response.data.eID);
       navigate('/dashboard');
     } catch (error) {
       setLoading(false);

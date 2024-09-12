@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import './styles/EducationForm.css';
 
 const EducationForm = () => {
+  const eID = sessionStorage.getItem('eID');
   const [educationEntries, setEducationEntries] = useState([
-    { id: 1, educationLevel: '', institutionName: '', degreeType: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', country: '', transferDetails: '' }
+    { eID: eID, id: 1, educationLevel: '', institutionName: '', degreeType: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', country: '', transferDetails: '' }
   ]);
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');

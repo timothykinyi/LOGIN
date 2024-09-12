@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 
 const healthDataSchema = new mongoose.Schema({
+  eID: { type: Number, required: true},
   bloodType: { type: String, required: true },
   allergies: String,
   medicalHistory: [{

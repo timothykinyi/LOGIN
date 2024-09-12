@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import './styles/FinancialForm.css';
 
 const FinancialForm = () => {
+  const eID = sessionStorage.getItem('eID');
   const [financialEntries, setFinancialEntries] = useState([
-    { id: Date.now(), bankAccountNumber: '', bankName: '', income: '', creditScore: '', taxId: '', mobileNumber: '' }
+    { eID: eID, id: Date.now(), bankAccountNumber: '', bankName: '', income: '', creditScore: '', taxId: '', mobileNumber: '' }
   ]);
   const [errors, setErrors] = useState({});
   const [responseMessage, setResponseMessage] = useState(''); // For displaying response

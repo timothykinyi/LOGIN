@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 
 const contactSchema = new mongoose.Schema({
+  eID: { type: Number, required: true},
   phoneNumbers: [{ number: String }],
   emails: [{ email: String }],
   emergencyContacts: [

@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import './styles/EmploymentForm.css';
 
 const EmploymentForm = () => {
+  const eID = sessionStorage.getItem('eID');
   const [jobEntries, setJobEntries] = useState([
-    { id: Date.now(), jobTitle: '', employer: '', jobCategory: '', startDate: '', endDate: '', skills: '' }
+    { eID: eID,id: Date.now(), jobTitle: '', employer: '', jobCategory: '', startDate: '', endDate: '', skills: '' }
   ]);
   const [errors, setErrors] = useState({});
   const [responseMessage, setResponseMessage] = useState(''); // For displaying response

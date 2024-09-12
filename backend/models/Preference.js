@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const PreferenceSchema = new mongoose.Schema({
+  eID: { type: Number, required: true},
   hobbies: [String],
   dietaryPreference: String,
   religiousAffiliation: String,

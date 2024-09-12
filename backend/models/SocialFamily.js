@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 
 const socialFamilySchema = new mongoose.Schema({
+  eID: { type: Number, required: true},
   maritalStatus: { type: String, required: true },
   familyMembers: [
     {

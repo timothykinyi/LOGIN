@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './styles/SocialAndFamilyForm.css';
 
 const SocialAndFamilyForm = () => {
+  const eID = sessionStorage.getItem('eID');
   const [maritalStatus, setMaritalStatus] = useState('');
   const [familyMembers, setFamilyMembers] = useState([
     { id: Date.now(), name: '', relationship: '' }
@@ -93,6 +94,7 @@ const SocialAndFamilyForm = () => {
     e.preventDefault();
     if (validateForm()) {
       const formData = {
+        eID,
         maritalStatus,
         familyMembers,
         dependents,

@@ -15,7 +15,7 @@ const PreferencesAndLifestyleForm = () => {
   const [environmentalPractices, setEnvironmentalPractices] = useState('');
   const [responseMessage, setResponseMessage] = useState(''); // State to track backend response
   const [isLoading, setIsLoading] = useState(false); // State to track loading
-
+  const eID = sessionStorage.getItem('eID');
   const handleSelectChange = (setState, value) => {
     setState(Array.from(value));
   };
@@ -24,6 +24,7 @@ const PreferencesAndLifestyleForm = () => {
     e.preventDefault();
     setIsLoading(true);
     const formData = {
+      eID,
       hobbies,
       dietaryPreference,
       religiousAffiliation,

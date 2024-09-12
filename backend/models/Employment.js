@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 
 const employmentSchema = new mongoose.Schema({
+  eID: { type: Number, required: true},
   jobTitle: {
     type: String,
     required: true

@@ -5,12 +5,13 @@ const PersonalInfo = require('../models/PersonalInfo');
 // @access  Public
 const submitPersonalInfo = async (req, res) => {
   const {
-    firstName, lastName, dateOfBirth, gender, maritalStatus,
+    eID, firstName, lastName, dateOfBirth, gender, maritalStatus,
     nationality, streetAddress1, streetAddress2, city, state, postalCode, country
   } = req.body;
 
   try {
     const personalInfo = new PersonalInfo({
+      eID,
       firstName,
       lastName,
       dateOfBirth,

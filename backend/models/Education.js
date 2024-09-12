@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const educationSchema = new mongoose.Schema({
+  eID: { type: Number, required: true},
   educationLevel: { type: String, required: true },
   institutionName: { type: String, required: true },
   degreeType: { type: String },

@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import './styles/HealthForm.css';
 
 const HealthForm = () => {
+  const eID = sessionStorage.getItem('eID');
   const [healthData, setHealthData] = useState({
+    eID: eID,
     bloodType: '',
     allergies: '',
     medicalHistory: [{ id: Date.now(), date: '', description: '' }],

@@ -30,7 +30,9 @@ const countries = [
 ];
 
 const PersonalInfoForm = () => {
+  const eID = sessionStorage.getItem('eID');
   const [formData, setFormData] = useState({
+    eID: eID,
     firstName: '',
     lastName: '',
     dateOfBirth: '',
