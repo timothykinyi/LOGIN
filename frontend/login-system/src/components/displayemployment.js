@@ -6,7 +6,7 @@ const EmploymentList = () => {
 
   useEffect(() => {
     // Fetch employment data when the component mounts
-    axios.get('https://login-9ebe.onrender.com/api/employment/all')  // Replace with your actual backend endpoint
+    axios.get('https://login-9ebe.onrender.com/api/employment')  // Replace with your actual backend endpoint
       .then(response => {
         setEmploymentData(response.data.data); // Set the fetched data to state
       })
