@@ -163,7 +163,7 @@ const login = async (req, res) => {
     }
     user.active = true;
     await user.save();
-    const token = jwt.sign({ id: user._id, username: user.username, email: user.email, category: user.category }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id, eID: user.eID, username: user.username, email: user.email, category: user.category }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 
