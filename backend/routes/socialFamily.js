@@ -14,6 +14,7 @@ router.post('/', async (req, res) => {
     }
 
     const newSocialFamily = new SocialFamily({
+      eID,
       maritalStatus,
       familyMembers,
       dependents,

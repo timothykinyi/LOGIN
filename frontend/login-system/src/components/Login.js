@@ -22,7 +22,7 @@ const Login = () => {
       setMessage(response.data.message);
       sessionStorage.setItem('userToken', response.data.token);
       sessionStorage.setItem('eID', response.data.eID);
-      navigate('/dashboard');
+      navigate('/gDashboard');
     } catch (error) {
       setLoading(false);
       if (error.response && error.response.data) {
