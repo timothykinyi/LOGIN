@@ -85,6 +85,13 @@ Grandelo`;
       return res.status(500).json({ message: 'Error sending verification email' });
     }
 
+    // Generate E ID (minimum 6-digit number)
+    const generateEID = () => {
+      return Math.floor(100000 + Math.random() * 900000); // Generates a random 6-digit number
+    };
+
+    const eID = generateEID();
+
     // Format the date of birth using moment
     const formattedDateOfBirth = moment(dateOfBirth).format('YYYY-MM-DD');
 
@@ -98,6 +105,7 @@ Grandelo`;
       dateOfBirth: formattedDateOfBirth,
       gender,
       category,
+      eID,
       verificationCode: alphanumericCode,
       isVerified: false,
       active: false,
@@ -112,6 +120,7 @@ Grandelo`;
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 const login = async (req, res) => {
 

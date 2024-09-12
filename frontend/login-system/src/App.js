@@ -15,6 +15,7 @@ import RegisterForm from './components/RegisterForm';
 import SocialAndFamilyForm from './components/SocialAndFamilyForm';
 import Success from './components/Success';
 import Verification from './components/Verification';
+import DDashboard from './components/dDashboard';
 import Displaycontact from './components/displaycontact';
 import Displayeducation from './components/displayeducation';
 import Displayemployment from './components/displayemployment';
@@ -46,14 +47,15 @@ function App() {
         <Route path="/gDashboard/socialAndFamilyForm" element={<SocialAndFamilyForm />} />
         <Route path="/gDashboard/preferencesAndLifestyleForm" element={<PreferencesAndLifestyleForm />} />
         <Route path="/gDashboard" element={<GDashboard />} />
+        <Route path="/dDashboard" element={<DDashboard />} />
         <Route path="/showcontact" element={<Displaycontact />} />
-        <Route path="/displayeducation" element={<Displayeducation />} />
-        <Route path="/displayemployment" element={<Displayemployment />} />
-        <Route path="/displayfinaces" element={<Displayfinaces />} />
-        <Route path="/displayhealth" element={<Displayhealth />} />
-        <Route path="/displaypreference" element={<Displaypreference />} />
-        <Route path="/displaysocialFamily" element={<DisplaysocialFamily />} />
-        <Route path="/displaypersonaldata" element={<Displaypersonaldata />} />
+        <Route path="/dDashboard/displayeducation" element={<Displayeducation />} />
+        <Route path="/dDashboard/displayemployment" element={<Displayemployment />} />
+        <Route path="/dDashboard/displayfinaces" element={<Displayfinaces />} />
+        <Route path="/dDashboard/displayhealth" element={<Displayhealth />} />
+        <Route path="/dDashboard/displaypreference" element={<Displaypreference />} />
+        <Route path="/dDashboard/displaysocialFamily" element={<DisplaysocialFamily />} />
+        <Route path="/dDashboard/displaypersonaldata" element={<Displaypersonaldata />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>
