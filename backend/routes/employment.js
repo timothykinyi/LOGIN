@@ -19,4 +19,14 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const employmentData = await Employment.find(); // Retrieve all entries from the database
+    res.status(200).json({ message: 'Employment data fetched successfully', data: employmentData });
+  } catch (error) {
+    console.error('Error fetching employment data:', error);
+    res.status(500).json({ message: 'An error occurred while fetching employment data', error });
+  }
+});
+
 module.exports = router;

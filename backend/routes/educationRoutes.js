@@ -1,35 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const Employment = require('../models/Employment'); // Use Employment model
+const Education = require('../models/Education');
 
-// Route to handle employment form submission
+// Route to handle education form submission
 router.post('/add', async (req, res) => {
   try {
-    const employmentEntries = req.body; // Array of employment entries
+    const educationEntries = req.body; // Array of education entries entries
     
     // Loop through entries and save each one to the database
     const savedEntries = [];
-    for (let entry of employmentEntries) {
-      const newEmployment = new Employment(entry);
-      const savedEntry = await newEmployment.save();
+    for (let entry of educationEntries) {
+      const newEducation = new Education(entry);
+      const savedEntry = await newEducation.save();
       savedEntries.push(savedEntry);
     }
 
-    res.status(201).json({ message: 'Employment entries saved successfully', data: savedEntries });
+    res.status(201).json({ message: 'Education entries saved successfully', data: savedEntries });
   } catch (error) {
-    console.error('Error saving employment data:', error);
-    res.status(500).json({ message: 'An error occurred while saving employment entries', error });
+    console.error('Error saving education data:', error);
+    res.status(500).json({ message: 'An error occurred while saving education entries', error });
   }
 });
 
-// New Route to retrieve all stored employment data
+// New Route to retrieve all stored education data
 router.get('/all', async (req, res) => {
   try {
-    const employmentData = await Employment.find(); // Retrieve all entries from the database
-    res.status(200).json({ message: 'Employment data fetched successfully', data: employmentData });
+    const educationData = await Education.find(); // Retrieve all entries from the database
+    res.status(200).json({ message: 'Education data fetched successfully', data: educationData });
   } catch (error) {
-    console.error('Error fetching employment data:', error);
-    res.status(500).json({ message: 'An error occurred while fetching employment data', error });
+    console.error('Error fetching education data:', error);
+    res.status(500).json({ message: 'An error occurred while fetching education data', error });
   }
 });
 
