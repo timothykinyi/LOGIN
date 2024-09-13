@@ -1,5 +1,6 @@
 // Dashboard.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles/gDashboard.css'; // Ensure to import the CSS file for dashboard styling
 
 // Import individual form components
@@ -13,8 +14,17 @@ import PreferencesAndLifestyleForm from './displaypreference';
 import SocialAndFamilyForm from './displaysocialFamily';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [activeForm, setActiveForm] = useState(''); // State to track the active form
-
+  useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+  if (!eID || !token)
+    {
+      navigate('/');
+      return;
+    }
+  },[navigate]);
   const renderForm = () => {
     switch (activeForm) {
       case 'displaypersonaldata':

@@ -15,6 +15,7 @@ import RegisterForm from './components/RegisterForm';
 import SocialAndFamilyForm from './components/SocialAndFamilyForm';
 import Success from './components/Success';
 import Verification from './components/Verification';
+import Biometrics from './components/biometrics';
 import DDashboard from './components/dDashboard';
 import Displaycontact from './components/displaycontact';
 import Displayeducation from './components/displayeducation';
@@ -26,7 +27,6 @@ import Displaypreference from './components/displaypreference';
 import DisplaysocialFamily from './components/displaysocialFamily';
 import GDashboard from './components/gDashboard';
 import Passwordrecovery from './components/passwordreset';
-
 function App() {
   return (
     <Router>
@@ -56,6 +56,8 @@ function App() {
         <Route path="/dDashboard/displaypreference" element={<Displaypreference />} />
         <Route path="/dDashboard/displaysocialFamily" element={<DisplaysocialFamily />} />
         <Route path="/dDashboard/displaypersonaldata" element={<Displaypersonaldata />} />
+        <Route path="/biometrics" element={<Biometrics />} />
+        
         {/* Add more routes as needed */}
       </Routes>
     </Router>

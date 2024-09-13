@@ -1,15 +1,26 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DisplaySocialFamilyData = () => {
   const [socialFamilyData, setSocialFamilyData] = useState([]);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
+  const eID = sessionStorage.getItem('eID');
   useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+  
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
     const fetchSocialFamilyData = async () => {
       try {
         const response = await axios.get('https://login-9ebe.onrender.com/api/social-family/all');
-        setSocialFamilyData(response.data.data);
+        const newfam = response.data.data.filter(preference => preference.eID === parseInt(eID));
+        setSocialFamilyData(newfam);
       } catch (error) {
         setError('Error fetching social family data');
         console.error('Error fetching social family data:', error);
@@ -17,7 +28,7 @@ const DisplaySocialFamilyData = () => {
     };
 
     fetchSocialFamilyData();
-  }, []);
+  },[navigate]);
 
   if (error) {
     return <div>{error}</div>;

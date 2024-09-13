@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import Link from react-router-dom
 import { addData, getData, openDB } from '../indexedDB'; // Import the IndexedDB helper
 import './styles/Dashboard.css';
 
@@ -61,13 +61,17 @@ const Dashboard = () => {
       <h2>User Dashboard</h2>
       {user ? (
         <div>
-          <p>Email: {user.email}</p>
-          <p>Category: {user.category}</p>
-          <p>Username: {user.username}</p>
-          <p>Username: {user.eID}</p>
-          <button onClick={handleLogout}>
-            Logout
-          </button>
+          <p>Welcome, {user.name}</p>
+
+          {/* Add navigation links to gdashboard and bdashboard */}
+          <nav>
+            <ul>
+              <li><Link to="/gDashboard">Go to G Dashboard</Link></li>
+              <li><Link to="/dDashboard">Go to D Dashboard</Link></li>
+            </ul>
+          </nav>
+
+          <button onClick={handleLogout}>Logout</button>
         </div>
       ) : (
         <p className="loading">Loading user details...</p>

@@ -1,19 +1,29 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const EmploymentList = () => {
   const [employmentData, setEmploymentData] = useState([]);
-
+  const navigate = useNavigate();
+  const eID = sessionStorage.getItem('eID');
   useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
     // Fetch employment data when the component mounts
     axios.get('https://login-9ebe.onrender.com/api/employment')  // Replace with your actual backend endpoint
       .then(response => {
-        setEmploymentData(response.data.data); // Set the fetched data to state
+        const newemploy = response.data.data.filter(employ => employ.eID === parseInt(eID));
+        setEmploymentData(newemploy); // Set the fetched data to state
       })
       .catch(error => {
         console.error('Error fetching employment data:', error);
       });
-  }, []);
+  },[navigate]);
 
   return (
     <div>

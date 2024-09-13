@@ -17,6 +17,14 @@ const UserSchema = new mongoose.Schema({
   tokenExpiry: { type: Date, default: undefined },
   createdAt: { type: Date, default: Date.now },
   active: { type: Boolean, default: false },
+
+  // WebAuthn fields
+  credentialID: { type: String },   // ID of the WebAuthn credential
+  publicKey: { type: String },      // Public key from the biometric device
+  counter: { type: Number },        // A counter to track replays, to ensure that the same credential can't be used multiple times
+  credentialType: { type: String }, // The type of WebAuthn credential (e.g., 'public-key')
+  transports: { type: [String] },   // Types of transports used by the credential (e.g., 'usb', 'ble')
+
 }, { timestamps: true });
 
 UserSchema.pre('save', async function(next) {

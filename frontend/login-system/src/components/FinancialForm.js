@@ -1,9 +1,20 @@
 import axios from 'axios'; // Import axios for sending data
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles/FinancialForm.css';
 
 const FinancialForm = () => {
+  const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+  useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
+    },[navigate]);
   const [financialEntries, setFinancialEntries] = useState([
     { eID: eID, id: Date.now(), bankAccountNumber: '', bankName: '', income: '', creditScore: '', taxId: '', mobileNumber: '' }
   ]);

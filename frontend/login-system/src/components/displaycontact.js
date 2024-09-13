@@ -1,17 +1,28 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ContactInfoList = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
+  const eID = sessionStorage.getItem('eID');
   useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+  
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
     // Fetch the contact data from the backend when the component mounts
     const fetchContactData = async () => {
       try {
         const response = await axios.get('https://login-9ebe.onrender.com/api/contact');
-        setContacts(response.data); // Set the data to state
+        const filteredContacts = response.data.filter(contact => contact.eID === parseInt(eID)); // Filter by eID
+        setContacts(filteredContacts);// Set the data to state
         setLoading(false);
       } catch (error) {
         setError('Error fetching contact information');
@@ -20,7 +31,7 @@ const ContactInfoList = () => {
     };
 
     fetchContactData();
-  }, []);
+  },[navigate]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;

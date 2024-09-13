@@ -1,19 +1,29 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const HealthDataList = () => {
   const [healthData, setHealthData] = useState([]);
-
+  const navigate = useNavigate();
+  const eID = sessionStorage.getItem('eID');
   useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
     // Fetch health data when the component mounts
     axios.get('https://login-9ebe.onrender.com/api/health/all') // Update with your backend URL
       .then(response => {
-        setHealthData(response.data.data); // Set the fetched data to state
+        const newhealth = response.data.data.filter(health => health.eID === parseInt(eID));
+        setHealthData(newhealth); // Set the fetched data to state
       })
       .catch(error => {
         console.error('Error fetching health data:', error);
       });
-  }, []);
+  },[navigate]);
 
   return (
     <div>

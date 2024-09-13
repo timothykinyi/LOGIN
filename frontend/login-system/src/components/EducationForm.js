@@ -1,9 +1,20 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles/EducationForm.css';
 
 const EducationForm = () => {
+  const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+  useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
+    },[navigate]);
   const [educationEntries, setEducationEntries] = useState([
     { eID: eID, id: 1, educationLevel: '', institutionName: '', degreeType: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', country: '', transferDetails: '' }
   ]);

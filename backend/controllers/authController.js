@@ -4,8 +4,65 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const crypto = require('crypto');
 const { generateAlphanumericVerificationCode } = require('../services/verificationcode');
+const { generateRegistrationOptions, verifyRegistrationResponse } = require('@simplewebauthn/server');
 const sendEmail = require('../services/emailService');
 require('dotenv').config();
+
+const getWebAuthnOptions = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const registrationOptions = generateRegistrationOptions({
+      rpName: 'own-my-data.web.app',
+      userID: user._id.toString(),
+      userName: user.email,
+    });
+
+    // Store challenge on user for later validation
+    user.challenge = registrationOptions.challenge;
+    await user.save();
+
+    res.json(registrationOptions);
+  } catch (error) {
+    console.error('Error generating WebAuthn options:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const handleWebAuthnRegistration = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const verification = await verifyRegistrationResponse({
+      credential: req.body,
+      expectedChallenge: user.challenge,
+      expectedOrigin: 'https://own-my-data.web.app/',
+      expectedRPID: 'own-my-data.web.app/',
+    });
+
+    if (verification.verified) {
+      user.credentialID = verification.credentialID;
+      user.publicKey = verification.credentialPublicKey;
+      user.counter = verification.counter;
+      user.transports = req.body.response.transports || [];
+
+      await user.save();
+      res.status(201).json({ message: 'WebAuthn registration successful' });
+    } else {
+      res.status(400).json({ message: 'Verification failed' });
+    }
+  } catch (error) {
+    console.error('Error during WebAuthn registration:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 const registerUser = async (req, res) => {
   const { fullName, email, password, confirmPassword, phoneNumber, username, dateOfBirth, gender, category } = req.body;
@@ -492,4 +549,6 @@ module.exports = {
   changeemail,
   logout,
   getUser,
+  getWebAuthnOptions,
+  handleWebAuthnRegistration,
 };

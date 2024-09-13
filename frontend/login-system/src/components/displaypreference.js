@@ -1,15 +1,25 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DisplayPreferences = () => {
   const [preferences, setPreferences] = useState([]);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
+  const eID = sessionStorage.getItem('eID');
   useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
     const fetchPreferences = async () => {
       try {
         const response = await axios.get('https://login-9ebe.onrender.com/api/preferences/all');
-        setPreferences(response.data.data);
+        const newpreference = response.data.data.filter(preference => preference.eID === parseInt(eID));
+        setPreferences(newpreference);
       } catch (error) {
         setError('Error fetching preferences');
         console.error('Error fetching preferences:', error);
@@ -17,7 +27,7 @@ const DisplayPreferences = () => {
     };
 
     fetchPreferences();
-  }, []);
+  },[navigate]);
 
   if (error) {
     return <div>{error}</div>;

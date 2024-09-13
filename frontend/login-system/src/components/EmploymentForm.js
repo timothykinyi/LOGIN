@@ -1,9 +1,21 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles/EmploymentForm.css';
 
 const EmploymentForm = () => {
+  const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+  useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
+    },[navigate]);
   const [jobEntries, setJobEntries] = useState([
     { eID: eID,id: Date.now(), jobTitle: '', employer: '', jobCategory: '', startDate: '', endDate: '', skills: '' }
   ]);

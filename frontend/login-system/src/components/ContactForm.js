@@ -1,5 +1,6 @@
 import axios from 'axios'; // Import axios for API requests
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles/ContactForm.css';
 
 const ContactForm = () => {
@@ -9,7 +10,17 @@ const ContactForm = () => {
   const [socialMedia, setSocialMedia] = useState([{ id: Date.now(), platform: '', username: '' }]);
   const [successMessage, setSuccessMessage] = useState('');
   const [apiError, setApiError] = useState('');
+  const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+  useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+  if (!eID || !token)
+    {
+      navigate('/');
+      return;
+    }
+  },[navigate]);
   const handlePhoneChange = (id, e) => {
     const { value } = e.target;
     setPhoneNumbers(prevNumbers =>

@@ -1,12 +1,13 @@
 const express = require('express');
-const { registerUser, login, verifyUser, updateEmail, resendVerificationCode, newrecoverPassword, resetPassword, changeusername, changepassword, changephonenumber, changeemail, logout, getUser} = require('../controllers/authController');
+const { registerUser, login, verifyUser, updateEmail, resendVerificationCode, newrecoverPassword, resetPassword, changeusername, changepassword, changephonenumber, changeemail, logout, getUser } = require('../controllers/authController');
+const { getWebAuthnOptions, handleWebAuthnRegistration } = require('../controllers/webauthnController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
 router.post('/register', registerUser);
 router.post('/login', login);
-router.post('/verify', verifyUser)
+router.post('/verify', verifyUser);
 router.post('/update-email', updateEmail);
 router.post('/resendemail', resendVerificationCode);
 router.post('/recoverpassword', newrecoverPassword);
@@ -17,5 +18,9 @@ router.post('/changephonenumber', changephonenumber);
 router.post('/changeemail', changeemail);
 router.post('/logout', logout);
 router.get('/me', authMiddleware, getUser);
+
+// WebAuthn routes
+router.get('/webauthn/register-options', getWebAuthnOptions);
+router.post('/webauthn/register', handleWebAuthnRegistration);
 
 module.exports = router;

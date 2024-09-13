@@ -1,5 +1,6 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles/PreferencesAndLifestyleForm.css';
 
 const PreferencesAndLifestyleForm = () => {
@@ -15,7 +16,17 @@ const PreferencesAndLifestyleForm = () => {
   const [environmentalPractices, setEnvironmentalPractices] = useState('');
   const [responseMessage, setResponseMessage] = useState(''); // State to track backend response
   const [isLoading, setIsLoading] = useState(false); // State to track loading
+  const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+  useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
+    },[navigate]);
   const handleSelectChange = (setState, value) => {
     setState(Array.from(value));
   };

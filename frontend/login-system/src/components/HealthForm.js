@@ -1,9 +1,20 @@
 import axios from 'axios'; // Import axios for API requests
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles/HealthForm.css';
 
 const HealthForm = () => {
+  const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+  useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
+    },[navigate]);
   const [healthData, setHealthData] = useState({
     eID: eID,
     bloodType: '',

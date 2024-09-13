@@ -1,15 +1,26 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DisplayPersonalInfo = () => {
   const [personalInfoList, setPersonalInfoList] = useState([]);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
+  const eID = sessionStorage.getItem('eID');
   useEffect(() => {
+    const eID = sessionStorage.getItem('eID');
+    const token = sessionStorage.getItem('userToken');
+  
+    if (!eID || !token)
+      {
+        navigate('/');
+        return;
+      }
     const fetchPersonalInfo = async () => {
       try {
         const response = await axios.get('https://login-9ebe.onrender.com/api/personal-info');
-        setPersonalInfoList(response.data.data);
+        const newpersonal = response.data.data.filter(personal => personal.eID === parseInt(eID));
+        setPersonalInfoList(newpersonal);
       } catch (error) {
         setError('Error fetching personal information');
         console.error('Error fetching personal information:', error);
@@ -17,7 +28,7 @@ const DisplayPersonalInfo = () => {
     };
 
     fetchPersonalInfo();
-  }, []);
+  },[navigate]);
 
   if (error) {
     return <div>{error}</div>;
