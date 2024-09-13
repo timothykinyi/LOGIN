@@ -15,23 +15,28 @@ const getWebAuthnOptions = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    // Generate WebAuthn challenge
     const registrationOptions = generateRegistrationOptions({
       rpName: 'own-my-data.web.app',
       userID: user._id.toString(),
       userName: user.email,
+      attestationType: 'direct',
+      authenticatorSelection: {
+        authenticatorAttachment: 'platform',  // Use platform authenticator (e.g., fingerprint on device)
+        userVerification: 'required',         // Ensure user verification (e.g., fingerprint)
+      },
     });
 
-    // Store challenge on user for later validation
+    // Store the challenge temporarily for later verification
     user.challenge = registrationOptions.challenge;
     await user.save();
 
-    res.json(registrationOptions);
+    res.json(registrationOptions);  // Send challenge to the client
   } catch (error) {
     console.error('Error generating WebAuthn options:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 const handleWebAuthnRegistration = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -39,17 +44,21 @@ const handleWebAuthnRegistration = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    // Verify the WebAuthn response from the user (includes fingerprint data)
     const verification = await verifyRegistrationResponse({
-      credential: req.body,
-      expectedChallenge: user.challenge,
-      expectedOrigin: 'https://own-my-data.web.app/',
-      expectedRPID: 'own-my-data.web.app/',
+      credential: req.body,                // The credential object from the client
+      expectedChallenge: user.challenge,   // The stored challenge
+      expectedOrigin: 'https://own-my-data.web.app',  // Origin must match
+      expectedRPID: 'own-my-data.web.app',
+      requireUserVerification: true,
     });
 
     if (verification.verified) {
+      // Save the WebAuthn data for this user
       user.credentialID = verification.credentialID;
       user.publicKey = verification.credentialPublicKey;
       user.counter = verification.counter;
+      user.credentialType = verification.credentialType || 'public-key';
       user.transports = req.body.response.transports || [];
 
       await user.save();
@@ -62,6 +71,7 @@ const handleWebAuthnRegistration = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 
 const registerUser = async (req, res) => {
