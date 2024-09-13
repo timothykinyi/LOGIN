@@ -18,7 +18,7 @@ const getWebAuthnOptions = async (req, res) => {
     // Generate WebAuthn challenge
     const registrationOptions = generateRegistrationOptions({
       rpName: 'own-my-data.web.app',
-      userID: user._id.toString(),
+      userID: user.eID.toString(),
       userName: user.email,
       attestationType: 'direct',
       authenticatorSelection: {
