@@ -26,7 +26,9 @@ import Displaypersonaldata from './components/displaypersonaldata';
 import Displaypreference from './components/displaypreference';
 import DisplaysocialFamily from './components/displaysocialFamily';
 import GDashboard from './components/gDashboard';
+import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
+
 function App() {
   return (
     <Router>
@@ -57,7 +59,8 @@ function App() {
         <Route path="/dDashboard/displaysocialFamily" element={<DisplaysocialFamily />} />
         <Route path="/dDashboard/displaypersonaldata" element={<Displaypersonaldata />} />
         <Route path="/biometrics" element={<Biometrics />} />
-        
+        <Route path="/m" element={<Mw />} />
+
         {/* Add more routes as needed */}
       </Routes>
     </Router>
