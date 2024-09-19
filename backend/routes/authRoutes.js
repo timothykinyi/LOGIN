@@ -7,7 +7,7 @@ const User = require('../models/userModel'); // Import the User model
 router.post('/register', async (req, res) => {
   const { username, publicKey } = req.body;
   try {
-    const user = new User({ username, publicKey });
+    const user = new Fingeruser({ username, publicKey });
     await user.save();
     res.json({ success: true, message: 'User registered successfully' });
   } catch (error) {
@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { username, publicKey } = req.body;
   try {
-    const user = await User.findOne({ username });
+    const user = await Fingeruser.findOne({ username });
 
     if (user && user.publicKey === publicKey) {
       res.json({ success: true, message: 'Login successful' });

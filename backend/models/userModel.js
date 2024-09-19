@@ -6,4 +6,4 @@ const userSchema = new Schema({
   publicKey: { type: String, required: true }, // Public key credential
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Fingeruser', userSchema);
