@@ -22,8 +22,6 @@ router.post('/start-registration', async (req, res) => {
   res.json(options);
 });
 
-const { verifyRegistrationResponse } = require('@simplewebauthn/server');
-
 router.post('/register', async (req, res) => {
   const { username, publicKey } = req.body;
 
