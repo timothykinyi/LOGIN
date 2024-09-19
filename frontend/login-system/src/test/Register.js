@@ -20,7 +20,7 @@ const Register = () => {
 
     // Send the publicKey to the backend for registration
     const credential = publicKeyCredential.toJSON();
-    axios.post('http://localhost:5000/register', {
+    axios.post('https://login-9ebe.onrender.com/auth/register', {
       username,
       publicKey: JSON.stringify(credential),
     }).then((res) => {

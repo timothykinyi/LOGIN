@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import React, { useState } from 'react';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -12,7 +12,7 @@ const Login = () => {
     });
 
     const credential = publicKeyCredential.toJSON();
-    axios.post('http://localhost:5000/login', {
+    axios.post('https://login-9ebe.onrender.com/auth/login', {
       username,
       publicKey: JSON.stringify(credential),
     }).then((res) => {
