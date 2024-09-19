@@ -6,28 +6,27 @@ const { verifyRegistrationResponse } = require('@simplewebauthn/server');
 const { generateRegistrationOptions } = require('@simplewebauthn/server');
 
 router.post('/start-registration', async (req, res) => {
-  const { username } = req.body;
-
-  try {
-    // Generate challenge options for WebAuthn registration
-    const options = generateRegistrationOptions({
-      rpName: 'Fingerprint Login', // Your application name
-      userID: new Uint8Array(Buffer.from(username)), // Convert username to Uint8Array
-      userName: username, // Username for display purposes
-      attestationType: 'direct', // Optional, defines the attestation type
-    });
-
-    // Store the challenge in the session (or use Redis, etc.)
-    req.session.challenge = options.challenge;
-
-    // Return registration options to the frontend
-    res.json(options);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: 'Failed to start registration.' });
-  }
-});
-
+    const { username } = req.body;
+  
+    try {
+      // Generate challenge options for WebAuthn registration
+      const options = generateRegistrationOptions({
+        rpName: 'Fingerprint Login',
+        userID: new Uint8Array(Buffer.from(username)),
+        userName: username,
+        attestationType: 'direct',
+      });
+  
+      // Store the challenge in the session (or a database)
+      req.session.challenge = options.challenge;
+  
+      res.json(options);
+    } catch (err) {
+      console.error('Error starting registration:', err); // Log the actual error
+      res.status(500).json({ success: false, message: 'Failed to start registration.', error: err.message });
+    }
+  });
+  
 
 router.post('/register', async (req, res) => {
   const { username, publicKey } = req.body;
