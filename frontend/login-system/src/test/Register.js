@@ -3,66 +3,48 @@ import React, { useState } from 'react';
 
 const Register = () => {
   const [username, setUsername] = useState('');
-  const [message, setMessage] = useState('');  // State for success or error message
-  const [isSuccess, setIsSuccess] = useState(null);  // State to track registration success
+  const [publicKey, setPublicKey] = useState('');
+  const [error, setError] = useState(null);
 
-  const registerUser = async () => {
+  const onClick = async () => {
     try {
-      // Step 1: Get the challenge and options from the server
-      const registrationOptions = await axios.post('https://login-9ebe.onrender.com/auth/start-registration', { username });
+      // Step 1: Get registration options
+      const optionsResponse = await axios.post('https://login-9ebe.onrender.com/auth/register-options', { username });
+      const options = optionsResponse.data;
 
-      // Step 2: Trigger the WebAuthn registration process on the client side
-      const publicKeyCredential = await navigator.credentials.create({
-        publicKey: registrationOptions.data,
-      });
+      // Assuming you already have some publicKey generation logic (like WebAuthn in-browser),
+      // here's where you'd use that to generate the publicKey. This is a placeholder for the actual method.
+      const generatedPublicKey = '<generate-public-key-based-on-options>';
 
-      // Ensure the credential is not empty
-      if (!publicKeyCredential) {
-        throw new Error("Fingerprint authentication was not completed.");
-      }
-
-      // Step 3: Send the credential to the backend for registration
-      const credential = publicKeyCredential.toJSON();
-      const res = await axios.post('https://login-9ebe.onrender.com/auth/register', {
+      // Step 2: Send registration response to server
+      const registerResponse = await axios.post('https://login-9ebe.onrender.com/auth/register', {
         username,
-        publicKey: JSON.stringify(credential),
+        publicKey: JSON.stringify(generatedPublicKey),
       });
 
-      // Handle success response
-      setIsSuccess(true);
-      setMessage(res.data.message);
-      
-    } catch (err) {
-      // Handle backend error response or client-side WebAuthn error
-      if (err.name === 'NotAllowedError') {
-        setMessage('Fingerprint authentication canceled or not recognized.');
-      } else if (err.response && err.response.data && err.response.data.message) {
-        // Display backend error message
-        setMessage(err.response.data.message);
+      // Handle successful registration
+      if (registerResponse.data.success) {
+        alert('Registration successful!');
       } else {
-        setMessage('An unexpected error occurred during registration. Please try again.');
+        setError(registerResponse.data.message);
       }
-      setIsSuccess(false);
-      console.error(err);
+    } catch (err) {
+      console.error('Registration error:', err);
+      setError(err.response ? err.response.data.message : 'An error occurred');
     }
   };
 
   return (
     <div>
+      <h2>Register</h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <input
         type="text"
-        placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        placeholder="Enter your username"
       />
-      <button onClick={registerUser}>Register with Fingerprint</button>
-
-      {/* Display registration status message */}
-      {message && (
-        <div style={{ color: isSuccess ? 'green' : 'red', marginTop: '10px' }}>
-          {message}
-        </div>
-      )}
+      <button onClick={onClick}>Register</button>
     </div>
   );
 };
