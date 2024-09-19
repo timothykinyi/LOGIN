@@ -8,28 +8,12 @@ const Register = () => {
 
   const registerUser = async () => {
     try {
-      // Generate a random challenge for WebAuthn
-      const challenge = new Uint8Array(32);
-      window.crypto.getRandomValues(challenge);
+      // Step 1: Get the challenge and options from the server
+      const registrationOptions = await axios.post('https://login-9ebe.onrender.com/auth/start-registration', { username });
 
-      // Create the publicKey credential request for fingerprint
+      // Step 2: Trigger the WebAuthn registration process on the client side
       const publicKeyCredential = await navigator.credentials.create({
-        publicKey: {
-          challenge: challenge,
-          rp: { name: "Fingerprint Login" },
-          user: {
-            id: new Uint8Array(16), // User ID as a Uint8Array
-            name: username,
-            displayName: username,
-          },
-          pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-          authenticatorSelection: {
-            authenticatorAttachment: "platform", // Ensure it's a platform authenticator (fingerprint)
-            userVerification: "required", // Ensure that user verification is required (biometric/fingerprint)
-          },
-          timeout: 60000, // Timeout of 60 seconds
-          attestation: "direct", // Attestation to confirm the credential
-        },
+        publicKey: registrationOptions.data,
       });
 
       // Ensure the credential is not empty
@@ -37,7 +21,7 @@ const Register = () => {
         throw new Error("Fingerprint authentication was not completed.");
       }
 
-      // Send the credential to the backend for registration
+      // Step 3: Send the credential to the backend for registration
       const credential = publicKeyCredential.toJSON();
       const res = await axios.post('https://login-9ebe.onrender.com/auth/register', {
         username,
