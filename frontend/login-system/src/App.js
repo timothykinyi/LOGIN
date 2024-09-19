@@ -28,7 +28,8 @@ import DisplaysocialFamily from './components/displaysocialFamily';
 import GDashboard from './components/gDashboard';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
-
+import Testlogin from './test/Login';
+import Testreg from './test/Register';
 function App() {
   return (
     <Router>
@@ -60,7 +61,8 @@ function App() {
         <Route path="/dDashboard/displaypersonaldata" element={<Displaypersonaldata />} />
         <Route path="/biometrics" element={<Biometrics />} />
         <Route path="/m" element={<Mw />} />
-
+        <Route path="/testlogin" element={<Testlogin />} />
+        <Route path="/testreg" element={<Testreg />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>

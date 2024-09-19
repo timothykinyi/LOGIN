@@ -15,6 +15,7 @@ const employmentRoutes = require('./routes/employment');
 const financialRoutes = require('./routes/financialRoutes');
 const socialFamilyRoutes = require('./routes/socialFamily');
 const preferencesRoutes = require('./routes/preferencesRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Initialize the app
 const app = express();
@@ -33,6 +34,7 @@ app.use('/api/employment', employmentRoutes);
 app.use('/api/financial', financialRoutes);
 app.use('/api/social-family', socialFamilyRoutes);
 app.use('/api/preferences', preferencesRoutes);
+app.use('/auth', authRoutes); 
 
 // Error handling middleware
 app.use((err, req, res, next) => {
