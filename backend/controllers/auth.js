@@ -14,7 +14,7 @@ exports.getRegistrationOptions = async (req, res) => {
 
   const userId = crypto.randomBytes(32).toString('hex');
   const options = generateRegistrationOptions({
-    rpName: "Your App Name",
+    rpName: "login",
     userName: username,
     userID: userId,
     attestationType: 'indirect',
@@ -31,8 +31,8 @@ exports.registerUser = async (req, res) => {
   const verification = verifyRegistrationResponse({
     credential: JSON.parse(publicKey),
     expectedChallenge: '<expected-challenge>',
-    expectedOrigin: 'https://your-app-domain.com',
-    expectedRPID: 'your-app-domain.com',
+    expectedOrigin: 'https://own-my-data.web.app/testreg',
+    expectedRPID: 'own-my-data.web.app/testreg',
   });
 
   if (verification.verified) {
