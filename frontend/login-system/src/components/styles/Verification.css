@@ -1,0 +1,12 @@
+body {
+    font-family: 'Nunito Sans', sans-serif;
+    background: linear-gradient(135deg, #f0f0f0 0%, #d7d7d7 100%); /* Yellow to orange gradient */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  

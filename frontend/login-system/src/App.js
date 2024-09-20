@@ -25,6 +25,7 @@ import Displayhealth from './components/displayhealth';
 import Displaypersonaldata from './components/displaypersonaldata';
 import Displaypreference from './components/displaypreference';
 import DisplaysocialFamily from './components/displaysocialFamily';
+import DD from './components/door/DoorDash';
 import GDashboard from './components/gDashboard';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
@@ -58,6 +59,7 @@ function App() {
         <Route path="/dDashboard/displaysocialFamily" element={<DisplaysocialFamily />} />
         <Route path="/dDashboard/displaypersonaldata" element={<Displaypersonaldata />} />
         <Route path="/biometrics" element={<Biometrics />} />
+        <Route path="/doordash" element={<DD />} />
         <Route path="/m" element={<Mw />} />
         {/* Add more routes as needed */}
       </Routes>

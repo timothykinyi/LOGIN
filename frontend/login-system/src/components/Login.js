@@ -78,6 +78,7 @@ const Login = () => {
                 type="button"
                 className="toggle-password"
                 onClick={() => setShowPassword(!showPassword)}
+                style={{background: "none"}}
               >
                 {showPassword ? '🙈' : '👁️'}
               </button>

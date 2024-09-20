@@ -37,6 +37,7 @@ const getWebAuthnOptions = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 const handleWebAuthnRegistration = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -71,8 +72,6 @@ const handleWebAuthnRegistration = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-
 
 const registerUser = async (req, res) => {
   const { fullName, email, password, confirmPassword, phoneNumber, username, dateOfBirth, gender, category } = req.body;
@@ -187,7 +186,6 @@ Grandelo`;
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 const login = async (req, res) => {
 
@@ -537,7 +535,7 @@ Grandelo`;
     res.status(500).json({ message: 'An error occurred while updating Email' });
   }
 };
-getUser = async (req, res) => {
+const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-passwordHash');
     res.json(user);
@@ -545,6 +543,7 @@ getUser = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
 module.exports = {
   registerUser,
   login,
