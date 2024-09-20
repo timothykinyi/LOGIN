@@ -11,6 +11,6 @@ const contactSchema = new mongoose.Schema({
     ],
 });
 
-const Contact = mongoose.model('Allowed', contactSchema);
+const Alloweds = mongoose.model('Alloweds', contactSchema);
 
-module.exports = Contact;
+module.exports = Alloweds;
