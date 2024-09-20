@@ -13,7 +13,7 @@ const DoorManagement = () => {
   // Function to fetch allowed eIDs from the server
   const fetchAllowedEIDs = async () => {
     try {
-      const response = await axios.get('/door/eID/allowed-eids');
+      const response = await axios.get('https://login-9ebe.onrender.com/door/eID/allowed-eids');
       setAllowedEIDs(response.data); // Assuming the response is an array of eIDs
     } catch (error) {
       console.error('Error fetching allowed eIDs:', error);
@@ -23,7 +23,7 @@ const DoorManagement = () => {
   // Function to handle adding eID
   const addEID = async () => {
     try {
-      await axios.post('/door/eID/allowed-eids', { eID });
+      await axios.post('https://login-9ebe.onrender.com/door/eID/allowed-eids', { eID });
       setEID(''); // Clear input field
       fetchAllowedEIDs(); // Refresh list
     } catch (error) {
@@ -34,7 +34,7 @@ const DoorManagement = () => {
   // Function to handle removing eID
   const removeEID = async (id) => {
     try {
-      await axios.delete(`/door/eID/allowed-eids/${id}`);
+      await axios.delete(`https://login-9ebe.onrender.com/door/eID/allowed-eids/${id}`);
       fetchAllowedEIDs(); // Refresh list
     } catch (error) {
       console.error('Error removing eID:', error);

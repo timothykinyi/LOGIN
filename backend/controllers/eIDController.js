@@ -27,7 +27,7 @@ exports.addEID = async (req, res) => {
     res.status(201).json({ message: 'eID added successfully' });
   } catch (error) {
     console.error('Error adding eID:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error',newEID });
   }
 };
 

@@ -1,73 +1,115 @@
-/* PersonalInfoForm.css */
+/* styles/PersonalInfoForm.css */
 
 .personal-info-form {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Reduce gaps between elements */
+  background-color: #ffffff;
+  padding: 20px; /* Reduce padding */
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 700px; /* Reduce the width for a more compact form */
+  margin: 0 auto;
+  height: 100%; /* Ensure it takes full height of its container */
+  overflow-y: auto; /* Add scroll for overflow */
+}
+
+h2 {
+  font-size: 1.6rem; /* Adjust font size */
+  color: #333;
+  margin-bottom: 15px; /* Reduce margin */
+}
+
+h3 {
+  font-size: 1.2rem; /* Adjust font size */
+  color: #555;
+  margin-bottom: 10px; /* Reduce margin */
+  margin-top: 15px; /* Reduce margin */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Reduce gap between label and input */
+  margin-bottom: 10px; /* Reduce bottom margin */
+}
+
+label {
+  font-size: 0.9rem; /* Adjust label font size */
+  color: #555;
+}
+
+input, select {
+  padding: 8px; /* Reduce padding */
+  font-size: 0.9rem; /* Adjust font size */
+  border-radius: 6px; /* Smaller rounded corners */
+  border: 1px solid #ddd;
+  transition: border 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus {
+  border-color: #ff715b;
+  outline: none;
+}
+
+button[type="submit"] {
+  background-color: #ff715b;
+  color: white;
+  border: none;
+  padding: 10px 16px; /* Reduce button padding */
+  font-size: 1rem;
+  border-radius: 6px; /* Smaller rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 160px; /* Reduce button width */
+  margin-top: 15px; /* Reduce margin-top */
+}
+
+button[type="submit"]:hover {
+  background-color: #e65a44;
+}
+
+.error {
+  border-color: #ff715b;
+}
+
+.error-message {
+  color: #ff715b;
+  font-size: 0.75rem; /* Adjust error message font size */
+}
+
+.submit-message {
+  margin-top: 10px;
+  font-size: 0.9rem; /* Adjust submit message font size */
+  color: green;
+}
+
+/* Limit the height of long dropdowns */
+select {
+  max-height: 150px; /* Add a max-height */
+  overflow-y: auto; /* Make long dropdown scrollable */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .personal-info-form {
+    padding: 15px; /* Further reduce padding on small screens */
   }
-  
-  .personal-info-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+
+  input, select, button {
+    font-size: 0.85rem; /* Adjust font size on smaller screens */
+    padding: 8px; /* Adjust padding on smaller screens */
   }
-  
-  .personal-info-form h3 {
-    margin-top: 20px;
-    color: #555;
+
+  h2 {
+    font-size: 1.4rem; /* Adjust heading size */
   }
-  
-  .form-group {
-    margin-bottom: 15px;
+
+  h3 {
+    font-size: 1.1rem; /* Adjust heading size */
   }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .form-group input[type="text"],
-  .form-group input[type="date"],
-  .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .form-group input.error,
-  .form-group select.error {
-    border-color: #e74c3c;
-  }
-  
-  .form-group .error-message {
-    color: #e74c3c;
-    font-size: 0.875em;
-  }
-  
-  button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #3498db;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #2980b9;
-  }
-  
-  button[type="submit"]:focus {
-    outline: none;
-  }
-  
+}
