@@ -13,7 +13,7 @@ exports.getAllowedEIDs = async (req, res) => {
   }
 };
 
-// Add a new eID
+// Add a new eID to the existing list
 exports.addEID = async (req, res) => {
   const { eID } = req.body;
 
@@ -22,30 +22,43 @@ exports.addEID = async (req, res) => {
   }
 
   try {
-    // Check if the eID already exists in the database
-    const existingEID = await Allowed.findOne({ eID });
-    if (existingEID) {
-      return res.status(400).json({ message: 'eID already exists' }); // Handle duplicate eID
+    // Check if the document with allowed eIDs exists, if not create one
+    let allowed = await Allowed.findOne();
+    if (!allowed) {
+      allowed = new Allowed({ eIDs: [eID] });
+    } else {
+      // Check if the eID already exists
+      if (allowed.eIDs.includes(eID)) {
+        return res.status(400).json({ message: 'eID already exists' });
+      }
+
+      // Add new eID to the array
+      allowed.eIDs.push(eID);
     }
 
-    // Add new eID if it doesn't exist
-    const newEID = new Allowed({ eID });
-    await newEID.save();
-    res.status(201).json({ message: 'eID added successfully' });
+    await allowed.save();
+    res.status(201).json({ message: 'eID added successfully', allowed });
   } catch (error) {
     console.error('Error adding eID:', error);
-    res.status(500).json({ message: 'Server error'+ eID });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-
-// Remove an eID
+// Remove an eID from the allowed list
 exports.removeEID = async (req, res) => {
-  const { id } = req.params;
+  const { eID } = req.params;
 
   try {
-    await Allowed.findByIdAndDelete(id);
-    res.json({ message: 'eID removed successfully' });
+    let allowed = await Allowed.findOne();
+    if (!allowed || !allowed.eIDs.includes(eID)) {
+      return res.status(404).json({ message: 'eID not found' });
+    }
+
+    // Remove the eID from the array
+    allowed.eIDs = allowed.eIDs.filter((id) => id !== eID);
+    await allowed.save();
+
+    res.json({ message: 'eID removed successfully', allowed });
   } catch (error) {
     console.error('Error removing eID:', error);
     res.status(500).json({ message: 'Server error' });

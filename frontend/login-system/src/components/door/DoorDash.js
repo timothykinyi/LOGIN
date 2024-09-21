@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const DoorManagement = () => {
-    const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
   const [eID, setEID] = useState(''); // For input field
   const [allowedEIDs, setAllowedEIDs] = useState([]); // List of allowed eIDs
 
@@ -15,9 +15,14 @@ const DoorManagement = () => {
   const fetchAllowedEIDs = async () => {
     try {
       const response = await axios.get('https://login-9ebe.onrender.com/door/eID/allowed-eids');
-      setAllowedEIDs(response.data); // Assuming the response is an array of eIDs
+      // Assuming response contains an array of eIDs in the first document
+      if (response.data.length > 0) {
+        setAllowedEIDs(response.data[0].eIDs); // Access the first document and its eIDs array
+      } else {
+        setAllowedEIDs([]);
+      }
     } catch (error) {
-        setError(error.message);
+      setError(error.message);
       console.error('Error fetching allowed eIDs:', error);
     }
   };
@@ -28,7 +33,7 @@ const DoorManagement = () => {
       alert('eID cannot be empty');
       return;
     }
-  
+
     try {
       await axios.post('https://login-9ebe.onrender.com/door/eID/allowed-eids', { eID });
       setEID(''); // Clear the input field
@@ -38,15 +43,14 @@ const DoorManagement = () => {
       console.error('Error adding eID:', error);
     }
   };
-  
 
   // Function to handle removing eID
-  const removeEID = async (id) => {
+  const removeEID = async (eIDToRemove) => {
     try {
-      await axios.delete(`https://login-9ebe.onrender.com/door/eID/allowed-eids/${id}`);
+      await axios.delete(`https://login-9ebe.onrender.com/door/eID/allowed-eids/${eIDToRemove}`);
       fetchAllowedEIDs(); // Refresh list
     } catch (error) {
-        setError(error.message);
+      setError(error.message);
       console.error('Error removing eID:', error);
     }
   };
@@ -78,10 +82,10 @@ const DoorManagement = () => {
           </thead>
           <tbody>
             {allowedEIDs.map((item) => (
-              <tr key={item._id}>
-                <td>{item.eID}</td>
+              <tr key={item}>
+                <td>{item}</td>
                 <td>
-                  <button onClick={() => removeEID(item._id)}>Remove</button>
+                  <button onClick={() => removeEID(item)}>Remove</button>
                 </td>
               </tr>
             ))}

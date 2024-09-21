@@ -1,12 +1,12 @@
-// models/EID.js
+// models/alleID.js
+
 const mongoose = require('mongoose');
 
-const eIDSchema = new mongoose.Schema({
-  eID: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+const allowedSchema = new mongoose.Schema({
+  eIDs: {
+    type: [String], // Array of eID strings
+    required: true
+  }
 });
 
-module.exports = mongoose.model('Allowed', eIDSchema);
+module.exports = mongoose.model('Allowed', allowedSchema);
