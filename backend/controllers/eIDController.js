@@ -46,16 +46,16 @@ exports.addEID = async (req, res) => {
 
 // Remove an eID from the allowed list
 exports.removeEID = async (req, res) => {
-  const { eID } = req.params;
+  const { eIDToRemove } = req.params;
 
   try {
     let allowed = await Allowed.findOne();
-    if (!allowed || !allowed.eIDs.includes(eID)) {
+    if (!allowed || !allowed.eIDs.includes(eIDToRemove)) {
       return res.status(404).json({ message: 'eID not found' });
     }
 
     // Remove the eID from the array
-    allowed.eIDs = allowed.eIDs.filter((id) => id !== eID);
+    allowed.eIDs = allowed.eIDs.filter((id) => id !== eIDToRemove);
     await allowed.save();
 
     res.json({ message: 'eID removed successfully', allowed });

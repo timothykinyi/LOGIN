@@ -10,6 +10,6 @@ router.get('/allowed-eids', eIDController.getAllowedEIDs);
 router.post('/allowed-eids', eIDController.addEID);
 
 // Route to delete an eID by its ID
-router.delete('/allowed-eids/:id', eIDController.removeEID);
+router.delete('/allowed-eids/:eIDToRemove', eIDController.removeEID);
 
 module.exports = router;
