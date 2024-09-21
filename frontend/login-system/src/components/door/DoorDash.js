@@ -34,11 +34,12 @@ const DoorManagement = () => {
       setEID(''); // Clear the input field
       fetchAllowedEIDs(); // Refresh the list of allowed eIDs
     } catch (error) {
-      setError(error.message);
+      setError(error.response?.data?.message);
       console.error('Error adding eID:', error);
     }
   };
   
+
   // Function to handle removing eID
   const removeEID = async (id) => {
     try {
