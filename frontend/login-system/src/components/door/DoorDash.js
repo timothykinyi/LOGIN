@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const DoorManagement = () => {
+    const [error, setError] = useState(null);
   const [eID, setEID] = useState(''); // For input field
   const [allowedEIDs, setAllowedEIDs] = useState([]); // List of allowed eIDs
 
@@ -16,6 +17,7 @@ const DoorManagement = () => {
       const response = await axios.get('https://login-9ebe.onrender.com/door/eID/allowed-eids');
       setAllowedEIDs(response.data); // Assuming the response is an array of eIDs
     } catch (error) {
+        setError(error.message);
       console.error('Error fetching allowed eIDs:', error);
     }
   };
@@ -27,6 +29,7 @@ const DoorManagement = () => {
       setEID(''); // Clear input field
       fetchAllowedEIDs(); // Refresh list
     } catch (error) {
+        setError(error.message);
       console.error('Error adding eID:', error);
     }
   };
@@ -37,6 +40,7 @@ const DoorManagement = () => {
       await axios.delete(`https://login-9ebe.onrender.com/door/eID/allowed-eids/${id}`);
       fetchAllowedEIDs(); // Refresh list
     } catch (error) {
+        setError(error.message);
       console.error('Error removing eID:', error);
     }
   };
@@ -78,6 +82,7 @@ const DoorManagement = () => {
           </tbody>
         </table>
       </div>
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };

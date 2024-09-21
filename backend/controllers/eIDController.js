@@ -22,14 +22,22 @@ exports.addEID = async (req, res) => {
   }
 
   try {
+    // Check if the eID already exists in the database
+    const existingEID = await Allowed.findOne({ eID });
+    if (existingEID) {
+      return res.status(400).json({ message: 'eID already exists' }); // Handle duplicate eID
+    }
+
+    // Add new eID if it doesn't exist
     const newEID = new Allowed({ eID });
     await newEID.save();
     res.status(201).json({ message: 'eID added successfully' });
   } catch (error) {
     console.error('Error adding eID:', error);
-    res.status(500).json({ message: 'Server error',newEID });
+    res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 // Remove an eID
 exports.removeEID = async (req, res) => {
