@@ -24,16 +24,21 @@ const DoorManagement = () => {
 
   // Function to handle adding eID
   const addEID = async () => {
+    if (!eID) {
+      alert('eID cannot be empty');
+      return;
+    }
+  
     try {
       await axios.post('https://login-9ebe.onrender.com/door/eID/allowed-eids', { eID });
-      setEID(''); // Clear input field
-      fetchAllowedEIDs(); // Refresh list
+      setEID(''); // Clear the input field
+      fetchAllowedEIDs(); // Refresh the list of allowed eIDs
     } catch (error) {
-        setError(error.message);
+      setError(error.message);
       console.error('Error adding eID:', error);
     }
   };
-
+  
   // Function to handle removing eID
   const removeEID = async (id) => {
     try {

@@ -17,18 +17,19 @@ exports.getAllowedEIDs = async (req, res) => {
 exports.addEID = async (req, res) => {
   const { eID } = req.body;
 
-  if (!eID) {
-    return res.status(400).json({ message: 'eID is required' });
+  // Check if eID is provided and is not null/undefined/empty
+  if (!eID || typeof eID !== 'string') {
+    return res.status(400).json({ message: 'Invalid or missing eID' });
   }
 
   try {
     // Check if the eID already exists in the database
     const existingEID = await Allowed.findOne({ eID });
     if (existingEID) {
-      return res.status(400).json({ message: 'eID already exists' }); // Handle duplicate eID
+      return res.status(400).json({ message: 'eID already exists' });
     }
 
-    // Add new eID if it doesn't exist
+    // Add the new eID
     const newEID = new Allowed({ eID });
     await newEID.save();
     res.status(201).json({ message: 'eID added successfully' });
