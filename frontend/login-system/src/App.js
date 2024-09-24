@@ -26,6 +26,9 @@ import Displaypersonaldata from './components/displaypersonaldata';
 import Displaypreference from './components/displaypreference';
 import DisplaysocialFamily from './components/displaysocialFamily';
 import DD from './components/door/DoorDash';
+import Doormanagment from './components/door/doormanagment';
+import Phonedoor from './components/door/phonedoor';
+import UserDoorDash from './components/door/userdoormanagmentsystemdash';
 import GDashboard from './components/gDashboard';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
@@ -59,7 +62,10 @@ function App() {
         <Route path="/dDashboard/displaysocialFamily" element={<DisplaysocialFamily />} />
         <Route path="/dDashboard/displaypersonaldata" element={<Displaypersonaldata />} />
         <Route path="/biometrics" element={<Biometrics />} />
+        <Route path="/userDoorDash" element={<UserDoorDash />} />
         <Route path="/doordash" element={<DD />} />
+        <Route path="/userDoorDash/doormanagment" element={<Doormanagment />} />
+        <Route path="/userDoorDash/phonedoor" element={<Phonedoor />} />
         <Route path="/m" element={<Mw />} />
         {/* Add more routes as needed */}
       </Routes>

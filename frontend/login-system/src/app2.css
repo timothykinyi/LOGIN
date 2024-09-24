@@ -1,0 +1,57 @@
+.app {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .message-list {
+    width: 30%;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .chat-container {
+    width: 70%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chat-window {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .message-input {
+    display: flex;
+    padding: 10px 0;
+  }
+  
+  .message-input input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+  }
+  
+  .message-input button {
+    padding: 10px;
+  }
+  
+  .message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    max-width: 60%;
+  }
+  
+  .my-message {
+    background-color: #4CAF50;
+    color: white;
+    align-self: flex-end;
+  }
+  
+  .their-message {
+    background-color: #ddd;
+    color: black;
+    align-self: flex-start;
+  }
+  

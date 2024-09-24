@@ -1,7 +1,7 @@
 // models/Contact.js
 const mongoose = require('mongoose');
 
-const contactSchema = new mongoose.Schema({
+const eidSchema = new mongoose.Schema({
     allowed: [
         {
             eID: { type: Number, required: true, unique: true }, 
@@ -11,6 +11,6 @@ const contactSchema = new mongoose.Schema({
     ],
 });
 
-const Alloweds = mongoose.model('Alloweds', contactSchema);
+const Alloweds = mongoose.model('Alloweds', eidSchema);
 
 module.exports = Alloweds;
