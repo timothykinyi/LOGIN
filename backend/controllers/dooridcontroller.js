@@ -20,8 +20,11 @@ exports.addDID = async (req, res) => {
   }
 
   try {
+    // Create a new instance of Doorids
     const newDID = new Doorids({ doorID, name });
-    await newDID.save();
+    await newDID.save(); // Save the instance to the database
+
+    // Return the newly created instance as a response
     res.status(201).json({ message: 'Door ID added successfully', newDID });
   } catch (error) {
     console.error("Error adding door ID:", error);
