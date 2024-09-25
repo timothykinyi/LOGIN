@@ -3,94 +3,105 @@ import React, { useEffect, useState } from 'react';
 
 const DooruserManagement = () => {
   const [error, setError] = useState(null);
-  const [DID, setDID] = useState(''); // For input field
-  const [allowedDIDs, setAllowedDIDs] = useState([]); // List of allowed eIDs
+  const [doorID, setDoorID] = useState(''); // For door ID input
+  const [name, setName] = useState(''); // For door name input
+  const [allowedDIDs, setAllowedDIDs] = useState([]); // List of allowed door IDs
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
-  // Fetch allowed eIDs from the server on component mount
+  // Fetch allowed door IDs from the server on component mount
   useEffect(() => {
     fetchAllowedDIDs();
   }, []);
 
-  // Function to fetch allowed eIDs from the server
+  // Function to fetch allowed door IDs from the server
   const fetchAllowedDIDs = async () => {
+    setIsLoading(true);
     try {
-      const response = await axios.get('https://login-9ebe.onrender.com/door/dID/allowed-Dids');
-      // Assuming response contains an array of eIDs in the first document
-      if (response.data.length > 0) {
-        setAllowedDIDs(response.data[0].doorid); // Access the first document and its eIDs array
-      } else {
-        setAllowedDIDs([]);
-      }
+      const response = await axios.get('https://login-9ebe.onrender.com/door/dID/allowed-dids');
+      setAllowedDIDs(response.data);
     } catch (error) {
       setError(error.message);
-      console.error('Error fetching allowed eIDs:', error);
+      console.error('Error fetching allowed door IDs:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Function to handle adding eID
+  // Function to handle adding door ID
   const addDID = async () => {
-    if (!DID) {
-      alert('eID cannot be empty');
+    if (!doorID || !name) {
+      alert('Door ID and name cannot be empty');
       return;
     }
 
     try {
-      await axios.post('https://login-9ebe.onrender.com/door/dID/allowed-Dids', { DID });
-      setDID(''); // Clear the input field
-      fetchAllowedDIDs(); // Refresh the list of allowed eIDs
+      await axios.post('https://login-9ebe.onrender.com/door/dID/allowed-dids', { doorID, name });
+      setDoorID(''); // Clear the input fields
+      setName('');
+      fetchAllowedDIDs(); // Refresh the list of allowed door IDs
     } catch (error) {
       setError(error.response?.data?.message);
-      console.error('Error adding eID:', error);
+      console.error('Error adding door ID:', error);
     }
   };
 
-  // Function to handle removing eID
-  const removeDID = async (DIDToRemove) => {
+  // Function to handle removing door ID
+  const removeDID = async (id) => {
     try {
-      await axios.delete(`https://login-9ebe.onrender.com/door/dID/allowed-Dids/${DIDToRemove}`);
+      await axios.delete(`https://login-9ebe.onrender.com/door/dID/allowed-dids/${id}`);
       fetchAllowedDIDs(); // Refresh list
     } catch (error) {
       setError(error.message);
-      console.error('Error removing eID:', error);
+      console.error('Error removing door ID:', error);
     }
   };
 
   return (
     <div>
-      
-      <h1>Add comonly used doors for easy access</h1>
-      {/* Form to add eID */}
+      <h1>Add commonly used doors for easy access</h1>
+
+      {/* Form to add door ID */}
       <div>
         <input
-          type="text"
+          type="number"
           placeholder="Enter Door ID"
-          value={DID}
-          onChange={(e) => setDID(e.target.value)}
+          value={doorID}
+          onChange={(e) => setDoorID(e.target.value)}
         />
-        <button onClick={addDID}>Add Door Code</button>
+        <input
+          type="text"
+          placeholder="Enter Door Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <button onClick={addDID} disabled={isLoading}>Add Door Code</button>
       </div>
 
-      {/* Table to display allowed eIDs */}
+      {/* Table to display allowed door IDs */}
       <div>
         <h2>Allowed Doors</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Door</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {allowedDIDs.map((item) => (
-              <tr key={item}>
-                <td>{item}</td>
-                <td>
-                  <button onClick={() => removeDID(item)}>Remove</button>
-                </td>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Door</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {allowedDIDs.map((item) => (
+                <tr key={item._id}>
+                  <td>{item.doorID} - {item.name}</td>
+                  <td>
+                    <button onClick={() => removeDID(item._id)}>Remove</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
       {error && <p className="error">{error}</p>}
     </div>

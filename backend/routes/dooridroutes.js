@@ -1,15 +1,14 @@
-// routes/eIDRoutes.js
 const express = require('express');
 const router = express.Router();
 const DIDController = require('../controllers/dooridcontroller');
 
-// Route to get all allowed eIDs
-router.get('/allowed-Dids', DIDController.getAllowedDIDs);
+// Route to get all allowed door IDs
+router.get('/allowed-dids', DIDController.getAllowedDIDs);
 
-// Route to add a new eID
-router.post('/allowed-Dids', DIDController.addDID);
+// Route to add a new door ID
+router.post('/allowed-dids', DIDController.addDID);
 
-// Route to delete an eID by its ID
-router.delete('/allowed-Dids/:DIDToRemove', DIDController.removeDID);
+// Route to delete a door ID by its ID
+router.delete('/allowed-dids/:id', DIDController.removeDID);
 
 module.exports = router;

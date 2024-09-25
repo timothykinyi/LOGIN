@@ -1,15 +1,12 @@
-// models/Contact.js
 const mongoose = require('mongoose');
 
+// Define schema for each door with a unique doorID and name
 const dooridSchema = new mongoose.Schema({
-    doorid: [
-        {
-            doorID: { type: Number, required: true, unique: true }, 
-            name: { type: String, required: true },
-        },
-    ],
+  doorID: { type: Number, required: true, unique: true }, // doorID must be unique
+  name: { type: String, required: true }, // Human-readable name for the door
 });
 
-const Doorids = mongoose.model('doorid', dooridSchema);
+// Define and export the model
+const Doorids = mongoose.model('Doorids', dooridSchema);
 
 module.exports = Doorids;
