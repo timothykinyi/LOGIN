@@ -1,17 +1,17 @@
 const House = require('../models/House');
 
-// Register a new house
-exports.registerHouse = async (req, res) => {
-    const { name, address, ownerEID } = req.body;
+// Add a new house
+exports.addHouse = async (req, res) => {
+    const { name, ownerEID } = req.body;
 
-    if (!name || !address || !ownerEID) {
-        return res.status(400).json({ message: 'All fields are required' });
+    if (!name || !ownerEID) {
+        return res.status(400).json({ message: 'House name and owner EID are required' });
     }
 
     try {
-        const newHouse = new House({ name, address, ownerEID });
+        const newHouse = new House({ name, ownerEID });
         await newHouse.save();
-        res.status(201).json({ message: 'House registered successfully', newHouse });
+        res.status(201).json({ message: 'House registered successfully', houseId: newHouse._id });
     } catch (error) {
         console.error("Error registering house:", error);
         res.status(500).json({ message: 'Server error' });
@@ -19,7 +19,7 @@ exports.registerHouse = async (req, res) => {
 };
 
 // Get all houses
-exports.getAllHouses = async (req, res) => {
+exports.getHouses = async (req, res) => {
     try {
         const houses = await House.find();
         res.json(houses);
