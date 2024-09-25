@@ -11,26 +11,32 @@ exports.getAllowedDIDs = async (req, res) => {
   }
 };
 
-// Add a new door ID
+// Add multiple door IDs with corresponding names
 exports.addDID = async (req, res) => {
-  const { doorID, name } = req.body; // Extract doorID and name from request body
+  const { doors } = req.body; // Extract doors from request body
 
-  if (!doorID || !name) {
-    return res.status(400).json({ message: 'doorID and name are required' });
+  // Validate input
+  if (!doors || !Array.isArray(doors) || doors.length === 0) {
+    return res.status(400).json({ message: 'An array of doors is required' });
   }
 
   try {
-    const newDID = new Doorids({ doorID: [doorID], name: [name]});
-    
-    await newDID.save();
-    res.status(201).json({ message: 'Door ID added successfully' });
+    const newDIDs = doors.map(({ doorID, name }) => {
+      if (!doorID || !name) {
+        throw new Error('doorID and name are required for each door');
+      }
+      return { doorID, name };
+    });
+
+    // Insert new door IDs into the database
+    await Doorids.insertMany(newDIDs);
+    res.status(201).json({ message: 'Door IDs added successfully', newDIDs });
   } catch (error) {
-    console.error("Error adding door ID:", error);
+    console.error('Error adding door IDs:', error);
     if (error.code === 11000) {
-      res.status(400).json({ message: 'Door ID already exists' });
-    } else {
-      res.status(500).json({ message: 'Server error' });
+      return res.status(400).json({ message: 'One or more Door IDs already exist' });
     }
+    res.status(500).json({ message: error.message || 'Server error' });
   }
 };
 
