@@ -7,7 +7,7 @@ const DooruserManagement = () => {
   const [name, setName] = useState(''); // For door name input
   const [allowedDIDs, setAllowedDIDs] = useState([]); // List of allowed door IDs
   const [isLoading, setIsLoading] = useState(false); // Loading state
-  const [doorsToAdd, setDoorsToAdd] = useState([]); // List of doors to add
+  const [doorsToAdd, setDoorsToAdd] = useState([]); // List of doors to add (for multiple)
   const [isMultiple, setIsMultiple] = useState(false); // Toggle between single/multiple door mode
 
   // Fetch allowed door IDs from the server on component mount
@@ -29,7 +29,7 @@ const DooruserManagement = () => {
     }
   };
 
-  // Add door to list of doors to be added
+  // Add door to list (multiple doors mode)
   const addDoorToList = () => {
     if (!doorID || !name) {
       alert('Door ID and name cannot be empty');
@@ -42,8 +42,30 @@ const DooruserManagement = () => {
     setName('');
   };
 
-  // Function to handle submitting the list of doors to the server
-  const submitDoors = async () => {
+  // Submit a single door
+  const submitSingleDoor = async () => {
+    if (!doorID || !name) {
+      alert('Door ID and name cannot be empty');
+      return;
+    }
+
+    const singleDoor = [{ doorID: parseInt(doorID), name }];
+    try {
+      setIsLoading(true);
+      await axios.post('https://login-9ebe.onrender.com/door/dID/allowed-dids', { doors: singleDoor });
+      setDoorID(''); // Clear the input fields
+      setName('');
+      fetchAllowedDIDs(); // Refresh the list of allowed door IDs
+    } catch (error) {
+      setError(error.response?.data?.message);
+      console.error('Error adding door:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Submit multiple doors
+  const submitMultipleDoors = async () => {
     if (doorsToAdd.length === 0) {
       alert('No doors to add');
       return;
@@ -68,7 +90,7 @@ const DooruserManagement = () => {
     setDoorsToAdd(updatedDoors);
   };
 
-  // Function to handle removing door ID from the server
+  // Remove door ID from server
   const removeDID = async (id) => {
     try {
       setIsLoading(true);
@@ -116,7 +138,7 @@ const DooruserManagement = () => {
         {isMultiple ? (
           <button onClick={addDoorToList}>Add to List</button>
         ) : (
-          <button onClick={submitDoors} disabled={isLoading || !doorID || !name}>
+          <button onClick={submitSingleDoor} disabled={isLoading || !doorID || !name}>
             Add Single Door
           </button>
         )}
@@ -138,7 +160,7 @@ const DooruserManagement = () => {
           ) : (
             <p>No doors added yet</p>
           )}
-          <button onClick={submitDoors} disabled={isLoading || doorsToAdd.length === 0}>
+          <button onClick={submitMultipleDoors} disabled={isLoading || doorsToAdd.length === 0}>
             Submit Doors
           </button>
         </div>

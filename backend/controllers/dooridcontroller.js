@@ -12,18 +12,21 @@ exports.getAllowedDIDs = async (req, res) => {
 };
 
 // Add a new door ID (single or multiple doors)
+// Add a new door entry with multiple door IDs
 exports.addDID = async (req, res) => {
-  const { doors } = req.body; // Expecting an array of doors [{ doorID, name }, ...]
+  const { doorIDs, name } = req.body; // Extract doorIDs (array) and name from the request body
 
-  if (!doors || !Array.isArray(doors) || doors.length === 0) {
-    return res.status(400).json({ message: 'At least one door is required' });
+  if (!doorIDs || !Array.isArray(doorIDs) || doorIDs.length === 0 || !name) {
+    return res.status(400).json({ message: 'An array of doorIDs and a name are required' });
   }
 
   try {
-    const newDoors = await Doorids.insertMany(doors);
-    res.status(201).json({ message: `${newDoors.length} door(s) added successfully` });
+    // Create a new door entry with multiple door IDs
+    const newDoor = new Doorids({ doorIDs, name });
+    await newDoor.save();
+    res.status(201).json({ message: 'Door IDs added successfully' });
   } catch (error) {
-    console.error("Error adding door(s):", error);
+    console.error("Error adding door IDs:", error);
     if (error.code === 11000) {
       res.status(400).json({ message: 'One or more Door IDs already exist' });
     } else {
@@ -32,19 +35,45 @@ exports.addDID = async (req, res) => {
   }
 };
 
+
 // Remove a door ID
+// Remove a specific door ID from an entry
 exports.removeDID = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // The document ID
+  const { doorID } = req.body; // The specific door ID to remove
 
   try {
-    const result = await Doorids.findByIdAndDelete(id);
-    if (result) {
-      res.status(200).json({ message: 'Door ID removed successfully' });
+    const doorEntry = await Doorids.findById(id);
+
+    if (!doorEntry) {
+      return res.status(404).json({ message: 'Door entry not found' });
+    }
+
+    // Remove the specific door ID from the array
+    doorEntry.doorIDs = doorEntry.doorIDs.filter(did => did !== doorID);
+
+    // If no doorIDs left, delete the entry, otherwise update it
+    if (doorEntry.doorIDs.length === 0) {
+      await Doorids.findByIdAndDelete(id);
+      return res.status(200).json({ message: 'Door entry removed successfully as no doorIDs left' });
     } else {
-      res.status(404).json({ message: 'Door ID not found' });
+      await doorEntry.save();
+      return res.status(200).json({ message: 'Door ID removed successfully' });
     }
   } catch (error) {
     console.error("Error removing door ID:", error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+// Get all allowed door IDs
+exports.getAllowedDIDs = async (req, res) => {
+  try {
+    const allowedDIDs = await Doorids.find();
+    res.json(allowedDIDs); // This will now return multiple doorIDs for each entry
+  } catch (error) {
+    console.error("Error fetching allowed door IDs:", error);
     res.status(500).json({ message: 'Server error' });
   }
 };
