@@ -18,6 +18,9 @@ const preferencesRoutes = require('./routes/preferencesRoutes');
 const doorRoutes = require('./routes/doorRoutes');
 const eIDRoutes = require('./routes/eIDRoutes');
 const DIDRoutes = require('./routes/dooridroutes');
+const houseRoutes = require('./routes/houseRoutes');
+const doorManagmentRoutes = require('./routes/doormanagmentRoutes');
+
 // Initialize the app
 const app = express();
 
@@ -38,6 +41,9 @@ app.use('/api/preferences', preferencesRoutes);
 app.use('/door', doorRoutes);
 app.use('/door/eID', eIDRoutes);
 app.use('/door/dID', DIDRoutes);
+app.use('/api/houses', houseRoutes);
+app.use('/api/doors', doorManagmentRoutes);
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {

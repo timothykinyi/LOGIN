@@ -30,7 +30,7 @@ const DoorAccess = () => {
     setError(null); // Clear previous errors
 
     try {
-      const response = await axios.post('https://login-9ebe.onrender.com/door/check-eid', { eID, doorCode });
+      const response = await axios.post('https://login-9ebe.onrender.com/door/dID/check-eid', { eID, doorCode });
 
       if (response.data.code === 1) {
         setDoorStatus('Door Opened');
