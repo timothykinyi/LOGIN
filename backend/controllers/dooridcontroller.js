@@ -11,12 +11,12 @@ exports.getAllowedDIDs = async (req, res) => {
   }
 };
 
-// Add a new door ID and name
+// Add a new door ID
 exports.addDID = async (req, res) => {
   const { doorID, name } = req.body; // Extract doorID and name from request body
 
   if (!doorID || !name) {
-    return res.status(400).json({ message: 'doorID and name are required' });
+    return res.status(400).json({ message: 'Both doorID and name are required' });
   }
 
   try {
@@ -26,9 +26,9 @@ exports.addDID = async (req, res) => {
   } catch (error) {
     console.error("Error adding door ID:", error);
     if (error.code === 11000) {
-      res.status(400).json({ message: 'Door ID already exists' });
+      return res.status(400).json({ message: `Door ID ${doorID} already exists` });
     } else {
-      res.status(500).json({ message: 'Server error' });
+      return res.status(500).json({ message: 'Server error' });
     }
   }
 };
