@@ -20,7 +20,8 @@ exports.addDID = async (req, res) => {
   }
 
   try {
-    const newDID = new Doorids({ doorID, name });
+    const newDID = new Doorids({ doorID: [doorID], name: [name]});
+    
     await newDID.save();
     res.status(201).json({ message: 'Door ID added successfully' });
   } catch (error) {
