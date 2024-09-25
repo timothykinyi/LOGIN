@@ -14,7 +14,7 @@ const HouseRegistration = () => {
         }
 
         try {
-            const response = await axios.post('https://your-api-url.com/houses/add', {
+            const response = await axios.post('https://login-9ebe.onrender.com/api/houses/add', {
                 name: houseName,
                 ownerEID: ownerEID
             });

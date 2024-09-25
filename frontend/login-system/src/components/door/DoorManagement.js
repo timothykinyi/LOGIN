@@ -14,7 +14,7 @@ const DoorManagement = () => {
         if (!houseId) return; // Do nothing if houseId is not provided
         setIsLoading(true);
         try {
-            const response = await axios.get(`https://your-api-url.com/doors/${houseId}`);
+            const response = await axios.get(`https://login-9ebe.onrender.com/doors/${houseId}`);
             setDoors(response.data);
         } catch (error) {
             setError(error.message);
@@ -32,7 +32,7 @@ const DoorManagement = () => {
         }
 
         try {
-            const response = await axios.post('https://your-api-url.com/doors/add', { name: doorName, houseId });
+            const response = await axios.post('https://login-9ebe.onrender.com/doors/add', { name: doorName, houseId });
             setMessage(response.data.message);
             setDoorName(''); // Clear the input field
             fetchDoors(); // Refresh the list of doors

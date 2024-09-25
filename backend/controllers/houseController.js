@@ -9,7 +9,12 @@ exports.addHouse = async (req, res) => {
     }
 
     try {
-        const newHouse = new House({ name, ownerEID });
+        const generatehouseID = () => {
+            return Math.floor(100000 + Math.random() * 900000); // Generates a random 6-digit number
+          };
+      
+          const houseID = generatehouseID();
+        const newHouse = new House({ name, ownerEID, houseID });
         await newHouse.save();
         res.status(201).json({ message: 'House registered successfully', houseId: newHouse._id });
     } catch (error) {
