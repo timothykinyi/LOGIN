@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post('/add', addHouse);
 //router.get('/', getHouses);
-router.get('/', getHouses);
+router.get('/', getHousesByOwner);
 
 module.exports = router;

@@ -8,7 +8,7 @@ const DoorManagement = ({ houseId }) => {
   useEffect(() => {
     const fetchDoors = async () => {
       try {
-        const response = await axios.get(`/api/doors/${houseId}`);
+        const response = await axios.get(`https://login-9ebe.onrender.com//api/doors/${houseId}`);
         setDoors(response.data);
       } catch (error) {
         console.error("Error fetching doors:", error);
@@ -19,9 +19,9 @@ const DoorManagement = ({ houseId }) => {
 
   const handleAddDoor = async () => {
     try {
-      await axios.post('/api/doors/add', { name: doorName, houseId });
+      await axios.post('https://login-9ebe.onrender.com/api/doors/add', { name: doorName, houseId });
       setDoorName(''); // Clear input
-      const response = await axios.get(`/api/doors/${houseId}`); // Refresh door list
+      const response = await axios.get(`https://login-9ebe.onrender.com/api/doors/${houseId}`); // Refresh door list
       setDoors(response.data);
     } catch (error) {
       console.error("Error adding door:", error);

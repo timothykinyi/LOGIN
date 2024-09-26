@@ -10,8 +10,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchHouses = async () => {
       try {
-        const userEID = "4321"; // Example ownerEID
-        const response = await axios.get(`https://login-9ebe.onrender.com//api/houses?ownerEID=${userEID}`);
+        const ownerEID = "4321"; // Example ownerEID
+        const response = await axios.get(`https://login-9ebe.onrender.com//api/houses`, {ownerEID});
         setHouses(response.data);
       } catch (error) {
         console.error("Error fetching houses:", error);
