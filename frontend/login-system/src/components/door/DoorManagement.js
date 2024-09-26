@@ -1,85 +1,50 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-const DoorManagement = () => {
-    const [houseId, setHouseId] = useState('');
-    const [doorName, setDoorName] = useState('');
-    const [doors, setDoors] = useState([]);
-    const [error, setError] = useState(null);
-    const [message, setMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+const DoorManagement = ({ houseId }) => {
+  const [doors, setDoors] = useState([]);
+  const [doorName, setDoorName] = useState('');
 
-    // Function to fetch doors for the specified house ID
+  useEffect(() => {
     const fetchDoors = async () => {
-        if (!houseId) return; // Do nothing if houseId is not provided
-        setIsLoading(true);
-        try {
-            const response = await axios.get(`https://login-9ebe.onrender.com/doors/${houseId}`);
-            setDoors(response.data);
-        } catch (error) {
-            setError(error.message);
-            console.error('Error fetching doors:', error);
-        } finally {
-            setIsLoading(false);
-        }
+      try {
+        const response = await axios.get(`/api/doors/${houseId}`);
+        setDoors(response.data);
+      } catch (error) {
+        console.error("Error fetching doors:", error);
+      }
     };
+    fetchDoors();
+  }, [houseId]);
 
-    // Function to handle adding a new door
-    const addDoor = async () => {
-        if (!doorName || !houseId) {
-            alert('Door name and house ID are required.');
-            return;
-        }
+  const handleAddDoor = async () => {
+    try {
+      await axios.post('/api/doors/add', { name: doorName, houseId });
+      setDoorName(''); // Clear input
+      const response = await axios.get(`/api/doors/${houseId}`); // Refresh door list
+      setDoors(response.data);
+    } catch (error) {
+      console.error("Error adding door:", error);
+    }
+  };
 
-        try {
-            const response = await axios.post('https://login-9ebe.onrender.com/doors/add', { name: doorName, houseId });
-            setMessage(response.data.message);
-            setDoorName(''); // Clear the input field
-            fetchDoors(); // Refresh the list of doors
-        } catch (error) {
-            setError(error.response?.data?.message);
-            console.error('Error adding door:', error);
-        }
-    };
-
-    useEffect(() => {
-        fetchDoors(); // Fetch doors whenever houseId changes
-    }, [houseId]);
-
-    return (
-        <div>
-            <h1>Door Management</h1>
-            <div>
-                <input
-                    type="text"
-                    placeholder="Enter House ID"
-                    value={houseId}
-                    onChange={(e) => setHouseId(e.target.value)}
-                />
-            </div>
-            <div>
-                <input
-                    type="text"
-                    placeholder="Enter Door Name"
-                    value={doorName}
-                    onChange={(e) => setDoorName(e.target.value)}
-                />
-                <button onClick={addDoor}>Add Door</button>
-            </div>
-            <h2>Doors in House {houseId}</h2>
-            {isLoading ? (
-                <p>Loading...</p>
-            ) : (
-                <ul>
-                    {doors.map((door) => (
-                        <li key={door._id}>{door.name} (ID: {door.doorID})</li>
-                    ))}
-                </ul>
-            )}
-            {error && <p className="error">{error}</p>}
-            {message && <p className="success">{message}</p>}
-        </div>
-    );
+  return (
+    <div>
+      <h2>Manage Doors</h2>
+      <input 
+        type="text" 
+        value={doorName} 
+        onChange={(e) => setDoorName(e.target.value)} 
+        placeholder="Door Name"
+      />
+      <button onClick={handleAddDoor}>Add Door</button>
+      <ul>
+        {doors.map((door) => (
+          <li key={door._id}>{door.name} (ID: {door.doorID})</li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default DoorManagement;

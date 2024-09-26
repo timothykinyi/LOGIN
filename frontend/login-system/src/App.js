@@ -27,6 +27,8 @@ import Displaypreference from './components/displaypreference';
 import DisplaysocialFamily from './components/displaysocialFamily';
 import DD from './components/door/DoorDash';
 import DoorManagement from './components/door/DoorManagement';
+import HomePage from './components/door/HomePage';
+import HousePage from './components/door/HousePage';
 import HouseRegistration from './components/door/HouseRegistration';
 import Doormanagment from './components/door/doormanagment';
 import Phonedoor from './components/door/phonedoor';
@@ -34,6 +36,7 @@ import UserDoorDash from './components/door/userdoormanagmentsystemdash';
 import GDashboard from './components/gDashboard';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
+
 function App() {
   return (
     <Router>
@@ -71,6 +74,8 @@ function App() {
         <Route path="/userDoorDash/doormanagment" element={<Doormanagment />} /> 
         <Route path="/userDoorDash/phonedoor" element={<Phonedoor />} />
         <Route path="/m" element={<Mw />} />
+        <Route path="/house" element={<HomePage />} />
+        <Route path="/house/:houseId" element={<HousePage />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>

@@ -33,3 +33,25 @@ exports.getHouses = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+exports.getHousesByOwner = async (req, res) => {
+    const { ownerEID } = req.query;
+  
+    if (!ownerEID) {
+      return res.status(400).json({ message: 'ownerEID is required' });
+    }
+  
+    try {
+      const houses = await House.find({ ownerEID });
+      
+      if (!houses || houses.length === 0) {
+        return res.status(404).json({ message: 'No houses found for this owner' });
+      }
+  
+      res.json(houses);
+    } catch (error) {
+      console.error('Error fetching houses:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+  

@@ -1,4 +1,4 @@
-const Doorids = require('../models/Doorid');
+const Doorids = require('../models/doorid');
 
 // Get all allowed door IDs
 exports.getAllowedDIDs = async (req, res) => {

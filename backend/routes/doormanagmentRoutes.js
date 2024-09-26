@@ -1,9 +1,9 @@
 const express = require('express');
-const { addDoor, getDoorsByHouseId } = require('../controllers/doorManagementController');
+const { getDoorsByHouse, addDoor } = require('../controllers/doorManagementController');
 
 const router = express.Router();
 
-router.post('/add', addDoor);
-router.get('/:houseId', getDoorsByHouseId);
+router.get('/:houseId', getDoorsByHouse); // Get doors by house ID
+router.post('/add', addDoor); // Add a new door to a house
 
 module.exports = router;

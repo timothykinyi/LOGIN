@@ -20,6 +20,7 @@ const eIDRoutes = require('./routes/eIDRoutes');
 const DIDRoutes = require('./routes/dooridroutes');
 const houseRoutes = require('./routes/houseRoutes');
 const doorManagmentRoutes = require('./routes/doormanagmentRoutes');
+const accessManagementRoutes = require('./routes/accessManagementRoutes');
 
 // Initialize the app
 const app = express();
@@ -43,6 +44,7 @@ app.use('/door/eID', eIDRoutes);
 app.use('/door/dID', DIDRoutes);
 app.use('/api/houses', houseRoutes);
 app.use('/api/doors', doorManagmentRoutes);
+app.use('/api/access', accessManagementRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

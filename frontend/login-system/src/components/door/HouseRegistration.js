@@ -21,6 +21,7 @@ const HouseRegistration = () => {
             setMessage(response.data.message);
             setHouseName('');
             setOwnerEID('');
+            
         } catch (error) {
             setError(error.response?.data?.message || 'Error registering house');
             console.error('Error registering house:', error);

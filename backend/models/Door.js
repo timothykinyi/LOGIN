@@ -1,9 +1,21 @@
 const mongoose = require('mongoose');
 
 const doorSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    houseId: { type: mongoose.Schema.Types.ObjectId, ref: 'House', required: true },
-    doorID: { type: Number, unique: true }
+  doorID: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  house: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'House',
+    required: true,
+  },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Door', doorSchema);
+const Door = mongoose.model('Door', doorSchema);
+module.exports = Door;
