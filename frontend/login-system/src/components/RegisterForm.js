@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ProgressIndicator from './ProgressIndicator'; // Import the Progress Indicator
-import './styles/n.css';
+import './styles/RegisterForm.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({

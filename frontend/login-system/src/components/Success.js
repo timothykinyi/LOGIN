@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './styles/ThankYou.css';
+import './styles/success.css';
 
 function Success() {
   return (

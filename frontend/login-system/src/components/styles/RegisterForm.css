@@ -1,0 +1,131 @@
+/* styles/RegisterForm.css */
+
+/* Container for the form */
+.container {
+  background: white;
+  padding: 1.2rem; /* Reduced padding */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* Slightly smaller shadow */
+  border-radius: 10px; /* Slightly smaller border radius */
+  max-width: 440px; /* Reduced max-width */
+  width: 100%;
+  text-align: center;
+  margin-top: 1.8rem; /* Reduced margin-top */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18); /* Slightly smaller hover shadow */
+  transform: scale(1.02);
+}
+
+/* Headings */
+h2 {
+  color: #333;
+  margin-bottom: 1.6rem; /* Reduced margin-bottom */
+  font-size: 1.4rem; /* Slightly smaller font size */
+  font-weight: 600;
+}
+
+/* Form Step Wrapper */
+.form-step {
+  margin-bottom: 1.8rem; /* Reduced margin-bottom */
+}
+
+/* Form group */
+.form-group {
+  margin-bottom: 1.2rem; /* Reduced margin-bottom */
+}
+
+/* Inputs */
+input, select {
+  width: 100%;
+  padding: 0.75rem; /* Reduced padding */
+  border-radius: 6px; /* Slightly smaller border radius */
+  border: 1px solid #ddd;
+  margin-bottom: 0.5rem; /* Reduced margin */
+  font-size: 0.95rem; /* Slightly smaller font size */
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus {
+  border-color: #6e8efb;
+  outline: none;
+  box-shadow: 0 0 6px rgba(110, 142, 251, 0.3); /* Reduced focus shadow */
+}
+
+/* Error messages */
+.error-message {
+  color: #ff4d4d;
+  font-size: 0.8rem; /* Slightly smaller font size */
+  margin-top: -0.5rem;
+  margin-bottom: 0.9rem; /* Reduced margin-bottom */
+}
+
+/* Buttons */
+button {
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+  border: none;
+  border-radius: 6px; /* Slightly smaller border radius */
+  padding: 0.75rem 1rem; /* Reduced padding */
+  font-size: 1rem; /* Slightly smaller font size */
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 0.9rem; /* Reduced margin-bottom */
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #5b7de5, #9369c9);
+  transform: translateY(-1px); /* Reduced hover effect */
+}
+
+button:disabled {
+  background: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Loader */
+.loader {
+  font-size: 0.9rem; /* Slightly smaller font size */
+  margin-top: 1rem;
+}
+
+/* Progress Indicator */
+.progress-indicator {
+  margin-bottom: 1.2rem; /* Reduced margin-bottom */
+}
+
+/* Text links */
+a.toggle-link {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.85rem; /* Slightly smaller font size */
+  transition: color 0.2s ease;
+}
+
+a.toggle-link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.2rem; /* Slightly smaller padding */
+    max-width: 90%; /* Reduced max-width for mobile */
+  }
+
+  input, button {
+    font-size: 0.85rem; /* Reduced font size for mobile */
+    padding: 0.6rem; /* Smaller padding for mobile */
+  }
+}

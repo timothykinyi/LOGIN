@@ -133,14 +133,14 @@ const registerUser = async (req, res) => {
     const subject = "Verification - " + alphanumericCode;
     const vermessage = `Dear ${username},
 
-Thank you for registering with Grandelo. Please use the following verification code to complete your registration:
+Thank you for registering with eID. Please use the following verification code to complete your registration:
 
 Verification Code: ${alphanumericCode}
 
-Follow this link https://grandelo.web.app/verification to verify your account
+Follow this link https://own-my-data.web.app/verification to verify your account
 
 Best regards,
-Grandelo`;
+eID`;
 
     // Send verification email
     try {
@@ -280,14 +280,14 @@ const updateEmail = async (req, res) => {
     const subject = "Verification - " + user.verificationCode;
     const vermessage = `Dear ${user.username},
 
-Thank you for registering with Grandelo. Please use the following verification code to complete your registration:
+Thank you for registering with eID. Please use the following verification code to complete your registration:
 
 Verification Code: ${user.verificationCode}
 
-Follow this link https://grandelo.web.app/verification to verify your account
+Follow this link https://own-my-data.web.app/verification to verify your account
 
 Best regards,
-Grandelo`;
+eID`;
     try {
       await sendEmail(email, subject, vermessage);
       console.log('Email sent successfully');
@@ -323,14 +323,14 @@ const resendVerificationCode = async (req, res) => {
     const subject = "Verification - " + user.verificationCode;
     const vermessage = `Dear ${user.username},
 
-Thank you for registering with Grandelo. Please use the following verification code to complete your registration:
+Thank you for registering with eID. Please use the following verification code to complete your registration:
 
 Verification Code: ${user.verificationCode}
 
-Follow this link https://grandelo.web.app/verification to verify your account
+Follow this link https://own-my-data.web.app/verification to verify your account
 
 Best regards,
-Grandelo`;
+eID`;
     try {
       await sendEmail(user.email, subject, vermessage);
       console.log('Email sent successfully');
@@ -367,10 +367,12 @@ You have requested to reset your password. Please use the following token to res
 
 Password Reset Token: ${user.passwordRecoveryToken}
 
+Follow this link https://own-my-data.web.app/reset-password to reset your password.
+
 This token is valid for 1 hour. 
 
 Best regards,
-Grandelo`;
+eID`;
 
     try {
       await sendEmail(user.email, subject, message);
@@ -512,14 +514,14 @@ const changeemail = async (req, res) => {
     const subject = "Verification - " + user.verificationCode;
     const vermessage = `Dear ${user.username},
 
-Thank you for registering with Grandelo. Please use the following verification code to complete your registration:
+Thank you for registering with eID. Please use the following verification code to complete your registration:
 
 Verification Code: ${user.verificationCode}
 
-Follow this link https://grandelo.web.app/verification to verify your account
+Follow this link https://own-my-data.web.app/verification to verify your account
 
 Best regards,
-Grandelo`;
+eID`;
     try {
       await sendEmail(lemail, subject, vermessage);
       console.log('Email sent successfully');
@@ -535,6 +537,7 @@ Grandelo`;
     res.status(500).json({ message: 'An error occurred while updating Email' });
   }
 };
+
 const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-passwordHash');
