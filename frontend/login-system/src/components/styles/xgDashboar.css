@@ -1,0 +1,246 @@
+/* styles/gDashboard.css */
+
+
+.dashboard {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-nav {
+  flex: 1;
+  background-color: #3a3f58; /* Sleek dark color */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dashboard-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dashboard-nav ul li {
+  margin-bottom: 15px;
+}
+
+.dashboard-nav ul li {
+  width: 100%;
+  padding: 5px;
+  background: none;
+  color: #ffffff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.dashboard-nav ul li {
+  background-color: #4a506d;
+  transform: scale(1.05);
+}
+
+.dashboard-nav ul li {
+  background-color: #ff715b; /* Active state with vibrant color */
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.toggle-nav {
+  position: absolute;
+  top: 20px;
+  right: -45px;
+  background-color: #ff715b;
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+}
+
+.dashboard-content {
+  flex: 3;
+  padding: 40px;
+  background-color: #f9f9f9;
+  border-radius: 0 20px 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.dashboard-content > div {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Sidebar collapse for small screens */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .dashboard-nav {
+    display: none;
+  }
+
+  .dashboard-nav.active {
+    transform: translateX(0);
+  }
+
+  .dashboard-content {
+    flex: none;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .dashboard-content > div {
+    width: 90%;
+  }
+
+  .toggle-nav {
+    display: block;
+  }
+}
+
+/* Larger screens */
+@media (min-width: 769px) {
+  .dashboard-nav ul li {
+    text-align: center;
+  }
+}
+
+.phone-nav-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.nav-toggle-btn {
+
+  border: none;
+  max-width: 10%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: fixed;
+  bottom: 0px;
+  right: 10px;
+  z-index: 1001;
+}
+
+.phone-nav {
+  position: fixed;
+  bottom: 0;
+  width: 60px;
+  background: none;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  bottom: 100px;
+  right: 10px;
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+.phone-nav-container {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(100%);
+}
+
+.phone-nav-container.open {
+  transform: translateX(0);
+}
+.nav-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-item {
+  list-style: none;
+}
+
+.nav-item {
+  background: none;
+  color: rgb(44, 42, 43);
+  border: none;
+  max-width: 30px;
+  font-size: 1.5rem;
+  margin: 0%;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+/* Media Query for Larger Screens */
+@media (min-width: 768px) {
+  .phone-nav-container {
+    display: none; /* Hide phone navigation on larger screens */
+  }
+  .dashboard-nav {
+    display: block; /* Show default nav on larger screens */
+  }
+}
+/* Styles for mobile navigation and swipe gesture */
+
+
+
+
+
+.phone-nav .close-btn {
+  position: absolute;
+  top: 10px;
+  right: -5px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #303030;
+  cursor: pointer;
+}
+
+.phone-nav .nav-items {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+.phone-nav .nav-item {
+  color: #ddd; /* Change color on hover */
+}
+/* Open/close transitions */
+@media (max-width: 768px) {
+  .dashboard-nav {
+    display: none;
+  }
+}

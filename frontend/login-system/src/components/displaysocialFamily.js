@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './styles/displaysocialFamily.css';
 
 const DisplaySocialFamilyData = () => {
   const [socialFamilyData, setSocialFamilyData] = useState([]);
@@ -35,40 +36,41 @@ const DisplaySocialFamilyData = () => {
   }
 
   return (
-    <div>
-      <h2>Social Family Data</h2>
-      <ul>
-        {socialFamilyData.map((entry) => (
-          <li key={entry._id}>
-            <p>Marital Status: {entry.maritalStatus}</p>
-            <p>Family Members:</p>
-            <ul>
-              {entry.familyMembers.map((member, index) => (
-                <li key={index}>
-                  {member.name} - {member.relationship}
-                </li>
-              ))}
-            </ul>
-            <p>Dependents:</p>
-            <ul>
-              {entry.dependents.map((dependent, index) => (
-                <li key={index}>
-                  {dependent.name} - {dependent.relationship}
-                </li>
-              ))}
-            </ul>
-            <p>Social Affiliations:</p>
-            <ul>
-              {entry.socialAffiliations.map((affiliation, index) => (
-                <li key={index}>
-                  {affiliation.organization} - {affiliation.role}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-    </div>
+<div className="socfam-container">
+  <h2>Social Family Data</h2>
+  <ul className="socfam-list">
+    {socialFamilyData.map((entry) => (
+      <li className="socfam-item" key={entry._id}>
+        <p><strong>Marital Status:</strong> {entry.maritalStatus}</p>
+        <p><strong>Family Members:</strong></p>
+        <ul>
+          {entry.familyMembers.map((member, index) => (
+            <li key={index}>
+              {member.name} - {member.relationship}
+            </li>
+          ))}
+        </ul>
+        <p><strong>Dependents:</strong></p>
+        <ul>
+          {entry.dependents.map((dependent, index) => (
+            <li key={index}>
+              {dependent.name} - {dependent.relationship}
+            </li>
+          ))}
+        </ul>
+        <p><strong>Social Affiliations:</strong></p>
+        <ul>
+          {entry.socialAffiliations.map((affiliation, index) => (
+            <li key={index}>
+              {affiliation.organization} - {affiliation.role}
+            </li>
+          ))}
+        </ul>
+      </li>
+    ))}
+  </ul>
+</div>
+
   );
 };
 

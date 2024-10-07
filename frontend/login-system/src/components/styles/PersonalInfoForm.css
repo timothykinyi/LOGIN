@@ -1,29 +1,26 @@
 /* styles/PersonalInfoForm.css */
 
 .personal-info-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Reduce gaps between elements */
-  background-color: #ffffff;
-  padding: 20px; /* Reduce padding */
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-  width: 100%;
-  max-width: 700px; /* Reduce the width for a more compact form */
+  max-width: 600px;
   margin: 0 auto;
-  height: 100%; /* Ensure it takes full height of its container */
-  overflow-y: auto; /* Add scroll for overflow */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: rgba(25, 69, 110, 0.451);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enables scrolling if content overflows */
+  height: 80vh;
+  width: 80vw;  /* Sets a height limit for the form */
 }
 
 h2 {
   font-size: 1.6rem; /* Adjust font size */
-  color: #333;
   margin-bottom: 15px; /* Reduce margin */
 }
 
 h3 {
   font-size: 1.2rem; /* Adjust font size */
-  color: #555;
+  color: white;
   margin-bottom: 10px; /* Reduce margin */
   margin-top: 15px; /* Reduce margin */
 }
@@ -37,7 +34,7 @@ h3 {
 
 label {
   font-size: 0.9rem; /* Adjust label font size */
-  color: #555;
+  color: white;
 }
 
 input, select {
@@ -53,24 +50,6 @@ input, select {
 input:focus, select:focus {
   border-color: #ff715b;
   outline: none;
-}
-
-button[type="submit"] {
-  background-color: #ff715b;
-  color: white;
-  border: none;
-  padding: 10px 16px; /* Reduce button padding */
-  font-size: 1rem;
-  border-radius: 6px; /* Smaller rounded corners */
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  max-width: 160px; /* Reduce button width */
-  margin-top: 15px; /* Reduce margin-top */
-}
-
-button[type="submit"]:hover {
-  background-color: #e65a44;
 }
 
 .error {
@@ -98,11 +77,6 @@ select {
 @media (max-width: 768px) {
   .personal-info-form {
     padding: 15px; /* Further reduce padding on small screens */
-  }
-
-  input, select, button {
-    font-size: 0.85rem; /* Adjust font size on smaller screens */
-    padding: 8px; /* Adjust padding on smaller screens */
   }
 
   h2 {

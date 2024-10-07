@@ -1,0 +1,77 @@
+/* General Styles */
+.pers-container {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f8f8fb;
+  color: #2d3e50;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  margin: 30px auto;
+  max-height: 80vh; /* Limit the height of the container to fit within the viewport */
+  overflow-y: auto;
+  }
+  
+  .pers-container h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2b2d42;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #ef233c;
+    padding-bottom: 10px;
+  }
+  
+  .pers-info-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .pers-info-item {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .pers-info-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .pers-info-item p {
+    font-size: 16px;
+    color: #4f4f4f;
+    margin-bottom: 10px;
+  }
+  
+  .pers-info-item p span {
+    font-weight: 600;
+    color: #2b2d42;
+  }
+  
+  /* Error Message */
+  .pers-error {
+    color: #d90429;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .pers-container {
+      padding: 20px;
+    }
+  
+    .pers-info-item {
+      padding: 15px;
+    }
+  
+    .pers-info-item p {
+      font-size: 14px;
+    }
+  }
+  

@@ -34,6 +34,7 @@ import Doormanagment from './components/door/doormanagment';
 import Phonedoor from './components/door/phonedoor';
 import UserDoorDash from './components/door/userdoormanagmentsystemdash';
 import GDashboard from './components/gDashboard';
+import Landing from './components/landing';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
 
@@ -41,7 +42,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginForm />} />
+      <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/verification" element={<Verification />} />

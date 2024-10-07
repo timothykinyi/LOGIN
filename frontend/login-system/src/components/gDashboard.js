@@ -1,9 +1,8 @@
-// Dashboard.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { FaBriefcase, FaCogs, FaHeartbeat, FaMoneyBill, FaPhone, FaTimes, FaUniversity, FaUser, FaUsers } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import './styles/gDashboard.css'; // Ensure to import the CSS file for dashboard styling
+import './styles/gDashboard.css';
 
-// Import individual form components
 import ContactForm from './ContactForm';
 import EducationForm from './EducationForm';
 import EmploymentForm from './EmploymentForm';
@@ -16,15 +15,75 @@ import SocialAndFamilyForm from './SocialAndFamilyForm';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeForm, setActiveForm] = useState(''); // State to track the active form
+  const [isNavOpen, setIsNavOpen] = useState(false); // State for toggling navigation
+  const [lastTap, setLastTap] = useState(0); // To track double-tap timing
+  const navListRef = useRef(null); // Ref for the nav-items list to manipulate scrolling
+
   useEffect(() => {
     const eID = sessionStorage.getItem('eID');
     const token = sessionStorage.getItem('userToken');
-  if (!eID || !token)
-    {
+    if (!eID || !token) {
       navigate('/');
       return;
     }
-  },[navigate]);
+  }, [navigate]);
+
+  // Function to toggle navigation menu
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen); // Toggle the nav open/close state
+  };
+
+  // Function to close nav
+  const closeNav = () => {
+    setIsNavOpen(false);
+  };
+
+  // Double-tap detection and toggling the nav
+  const handleDoubleTap = (e) => {
+    const currentTime = new Date().getTime();
+    const tapGap = currentTime - lastTap;
+
+    if (tapGap < 300 && tapGap > 0) {
+      // If two taps occurred within 300ms, toggle the nav (open if closed, close if open)
+      setIsNavOpen((prevState) => !prevState);
+    }
+
+    setLastTap(currentTime);
+  };
+
+  useEffect(() => {
+    // Add event listener for double-tap detection
+    window.addEventListener('touchend', handleDoubleTap);
+
+    return () => {
+      // Clean up event listener
+      window.removeEventListener('touchend', handleDoubleTap);
+    };
+  }, [lastTap]);
+
+  // Function to handle the infinite scrolling effect
+  const handleScroll = () => {
+    const navList = navListRef.current;
+    const maxScrollLeft = navList.scrollWidth - navList.clientWidth;
+    
+    if (navList.scrollLeft === 0) {
+      navList.scrollLeft = maxScrollLeft; // Loop back to the end
+    } else if (navList.scrollLeft >= maxScrollLeft) {
+      navList.scrollLeft = 0; // Loop back to the start
+    }
+  };
+
+  const navItems = [
+    { icon: <FaUser />, form: 'personalinfoForm', label: 'Personal Info' },
+    { icon: <FaUniversity />, form: 'educationForm', label: 'Education' },
+    { icon: <FaPhone />, form: 'contactForm', label: 'Contact' },
+    { icon: <FaHeartbeat />, form: 'healthForm', label: 'Health' },
+    { icon: <FaBriefcase />, form: 'employmentForm', label: 'Employment' },
+    { icon: <FaMoneyBill />, form: 'financialForm', label: 'Financial' },
+    { icon: <FaUsers />, form: 'socialAndFamilyForm', label: 'Social and Family' },
+    { icon: <FaCogs />, form: 'preferencesAndLifestyleForm', label: 'Preferences and Lifestyle' },
+  ];
+
   const renderForm = () => {
     switch (activeForm) {
       case 'personalinfoForm':
@@ -44,25 +103,44 @@ const Dashboard = () => {
       case 'preferencesAndLifestyleForm':
         return <PreferencesAndLifestyleForm />;
       default:
-        return <div>Please select a form to view.</div>;
+        return <PersonalInfoForm />;
     }
   };
 
   return (
     <div className="dashboard">
+      {/* Main navigation for larger screens */}
       <nav className="dashboard-nav">
         <ul>
-          <li><button onClick={() => setActiveForm('personalinfoForm')}>Personal Info</button></li>
-          <li><button onClick={() => setActiveForm('educationForm')}>Education</button></li>
-          <li><button onClick={() => setActiveForm('contactForm')}>Contact</button></li>
-          <li><button onClick={() => setActiveForm('healthForm')}>Health</button></li>
-          <li><button onClick={() => setActiveForm('employmentForm')}>Employment</button></li>
-          <li><button onClick={() => setActiveForm('financialForm')}>Financial</button></li>
-          <li><button onClick={() => setActiveForm('socialAndFamilyForm')}>Social and Family</button></li>
-          <li><button onClick={() => setActiveForm('preferencesAndLifestyleForm')}>Preferences and Lifestyle</button></li>
-          {/* Add more buttons as necessary */}
+          {navItems.map((item, index) => (
+            <li key={index}><button onClick={() => setActiveForm(item.form)}>{item.label}</button></li>
+          ))}
         </ul>
       </nav>
+
+      {/* Bottom Navigation for mobile view */}
+      <div className={`phone-nav-container ${isNavOpen ? 'open' : ''}`}>
+        {isNavOpen && (
+          <nav className="phone-nav">
+            {/* Close button inside nav */}
+            <button className="close-btn" onClick={closeNav}>
+              <FaTimes />
+            </button>
+
+            <ul className="nav-items" ref={navListRef} onScroll={handleScroll}>
+              {navItems.map((item, index) => (
+                <li key={index} className="nav-item">
+                  <button onClick={() => setActiveForm(item.form)}>
+                    {item.icon}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+      </div>
+
+      {/* Main content area */}
       <main className="dashboard-content">
         {renderForm()}
       </main>

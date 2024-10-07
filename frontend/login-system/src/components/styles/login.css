@@ -2,7 +2,7 @@
   
   /* Container for the form */
   .container {
-    background: white;
+    background-color: rgba(16, 23, 30, 0.374);
     padding: 2.5rem;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
@@ -10,6 +10,7 @@
     width: 100%;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
   }
   
   .container:hover {
@@ -19,7 +20,7 @@
   
   /* Headings */
   h2 {
-    color: #333;
+    color: #f8f8f8;
     margin-bottom: 1.8rem;
     font-size: 1.6rem;
     font-weight: 600;
@@ -30,7 +31,7 @@
     display: block;
     font-size: 0.95rem;
     margin-bottom: 0.4rem;
-    color: #666;
+    color: white;
     text-align: left;
   }
   
@@ -54,52 +55,20 @@
   .password-container {
     display: flex;
     align-items: center;
+    position: relative;
   }
   
-  .password-container input {
+  .password-input {
     flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    padding-right: 40px;
   }
   
-  /* Password toggle button */
-  .toggle-password {
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 1.3rem;
-    padding: 0.5rem;
-    color: #007bff;
-    transition: transform 0.3s ease;
-  }
-  
-  .toggle-password:hover {
-    transform: scale(1.2);
-  }
-  
-  /* Buttons */
-  button {
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0.85rem 1rem;
-    font-size: 1.1rem;
-    font-weight: 500;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 1rem;
-    transition: background 0.3s ease, transform 0.3s ease;
-  }
-  
-  button:hover {
-    background: linear-gradient(135deg, #5b7de5, #9369c9);
-    transform: translateY(-2px);
-  }
-  
-  button:disabled {
-    background: #ddd;
-    cursor: not-allowed;
-  }
-  
+
+
   /* Message below form */
   .message {
     color: #ff4d4d;
@@ -142,7 +111,7 @@
   
   /* Animation for loading state */
   button:disabled::after {
-    content: ' ⏳';
+    content: ' ';
     animation: spin 1s infinite linear;
   }
   

@@ -83,29 +83,32 @@ const registerUser = async (req, res) => {
     return enteredDate <= today;
   };
 
-  const isDate12Valid = (date) => {
+  const isDate18Valid = (date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const enteredDate = new Date(date);
-    const minAgeDate = new Date(today.setFullYear(today.getFullYear() - 12));
+    const minAgeDate = new Date(today.setFullYear(today.getFullYear() - 18));
     return enteredDate < minAgeDate;
   };
 
-  const isDate85Valid = (date) => {
+  const isDate18upValid = (date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const enteredDate = new Date(date);
-    const maxAgeDate = new Date(today.setFullYear(today.getFullYear() - 85));
-    return enteredDate > maxAgeDate;
+    const minAgeDate = new Date(today.setFullYear(today.getFullYear() - 18));
+    return enteredDate > minAgeDate;
   };
 
   if (!isDateValid(dateOfBirth)) {
     return res.status(400).json({ message: 'Date cannot be past today.' });
-  } else if (!isDate12Valid(dateOfBirth)) {
-    return res.status(400).json({ message: 'You have to be at least 12 years old to join this site.' });
-  } else if (!isDate85Valid(dateOfBirth)) {
-    return res.status(400).json({ message: 'You have to be less than 85 years old to join this site.' });
+  }else if(category == 'Self' && (!isDate18Valid(dateOfBirth)))
+  {
+    return res.status(400).json({ message: 'You have to be at least 18 years old to join this site or have your parents open an account for you' });
+  } else if  (category == 'Child' && (!isDate18upValid(dateOfBirth)))
+  {
+    return res.status(400).json({ message: 'You have to be less than 18 years old to join this site as a child.' });
   }
+  
 
   if (password !== confirmPassword) {
     return res.status(400).json({ message: 'Passwords do not match' });

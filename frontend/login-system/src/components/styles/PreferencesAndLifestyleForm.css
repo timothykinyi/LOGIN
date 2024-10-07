@@ -1,10 +1,33 @@
+@media (max-width: 768px) {
+  .preferences-lifestyle-form {
+    padding: 15px;
+    max-width: 350px;
+  }
+
+  input, select, button {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+}
 .preferences-lifestyle-form {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: rgba(25, 69, 110, 0.451);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enables scrolling if content overflows */
+  height: 80vh;
+  width: 80vw;  /* Sets a height limit for the form */
   }
   
   .preferences-lifestyle-form h2 {
@@ -37,18 +60,5 @@
   .form-group .radio-group label,
   .form-group .checkbox-group label {
     margin-right: 20px;
-  }
-  
-  button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
   }
   

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './styles/displaypreference.css';
 const DisplayPreferences = () => {
   const [preferences, setPreferences] = useState([]);
   const [error, setError] = useState(null);
@@ -34,21 +34,21 @@ const DisplayPreferences = () => {
   }
 
   return (
-    <div>
-      <h2>All Preferences</h2>
-      <ul>
-        {preferences.map((preference) => (
-          <li key={preference._id}>
-            <p>Hobbies: {preference.hobbies.join(', ')}</p>
-            <p>Dietary Preference: {preference.dietaryPreference}</p>
-            <p>Religious Affiliation: {preference.religiousAffiliation}</p>
-            <p>Selected Hobbies: {preference.selectedHobbies.join(', ')}</p>
-            <p>Favorite Cuisine: {preference.favoriteCuisine}</p>
-            <p>Pet Preference: {preference.petPreference}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+  <div className="pref-container">
+    <h2>All Preferences</h2>
+    <ul className="pref-list">
+      {preferences.map((preference) => (
+        <li className="pref-item" key={preference._id}>
+          <p><strong>Hobbies:</strong> {preference.hobbies.join(', ')}</p>
+          <p><strong>Dietary Preference:</strong> {preference.dietaryPreference}</p>
+          <p><strong>Religious Affiliation:</strong> {preference.religiousAffiliation}</p>
+          <p><strong>Selected Hobbies:</strong> {preference.selectedHobbies.join(', ')}</p>
+          <p><strong>Favorite Cuisine:</strong> {preference.favoriteCuisine}</p>
+          <p><strong>Pet Preference:</strong> {preference.petPreference}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
   );
 };
 

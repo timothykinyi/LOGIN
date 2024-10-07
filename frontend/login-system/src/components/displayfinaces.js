@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './styles/displayfinaces.css';
 const FinancialDataList = () => {
   const [financialData, setFinancialData] = useState([]);
   const navigate = useNavigate();
@@ -27,21 +27,22 @@ const FinancialDataList = () => {
   },[navigate]);
 
   return (
-    <div>
-      <h2>Financial Data</h2>
-      <ul>
-        {financialData.map((financial, index) => (
-          <li key={index}>
-            <p><strong>Bank Account Number:</strong> {financial.bankAccountNumber}</p>
-            <p><strong>Bank Name:</strong> {financial.bankName}</p>
-            <p><strong>Income:</strong> {financial.income}</p>
-            <p><strong>Credit Score:</strong> {financial.creditScore}</p>
-            <p><strong>Tax ID:</strong> {financial.taxId}</p>
-            <p><strong>Mobile Number:</strong> {financial.mobileNumber}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+  <div className="fin-container">
+    <h2>Financial Data</h2>
+    <ul className="fin-list">
+      {financialData.map((financial, index) => (
+        <li className="fin-item" key={index}>
+          <p><strong>Bank Account Number:</strong> {financial.bankAccountNumber}</p>
+          <p><strong>Bank Name:</strong> {financial.bankName}</p>
+          <p><strong>Income:</strong> {financial.income}</p>
+          <p><strong>Credit Score:</strong> {financial.creditScore}</p>
+          <p><strong>Tax ID:</strong> {financial.taxId}</p>
+          <p><strong>Mobile Number:</strong> {financial.mobileNumber}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+
   );
 };
 

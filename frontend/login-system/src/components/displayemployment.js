@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './styles/displayemployment.css';
 const EmploymentList = () => {
   const [employmentData, setEmploymentData] = useState([]);
   const navigate = useNavigate();
@@ -26,11 +26,11 @@ const EmploymentList = () => {
   },[navigate]);
 
   return (
-    <div>
+    <div className="emp-container">
       <h2>Employment Data</h2>
-      <ul>
+      <ul className="emp-list">
         {employmentData.map((employment, index) => (
-          <li key={index}>
+          <li className="emp-item" key={index}>
             <p><strong>Job Title:</strong> {employment.jobTitle}</p>
             <p><strong>Employer:</strong> {employment.employer}</p>
             <p><strong>Job Category:</strong> {employment.jobCategory}</p>
@@ -41,6 +41,7 @@ const EmploymentList = () => {
         ))}
       </ul>
     </div>
+
   );
 };
 

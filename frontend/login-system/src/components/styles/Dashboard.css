@@ -13,7 +13,7 @@
   
   /* Header */
   .dashboard-container h2 {
-    color: #333;
+    color: #f8f8f8;
     font-size: 28px;
     margin-bottom: 20px;
   }
@@ -21,29 +21,13 @@
   /* User details */
   .dashboard-container p {
     font-size: 18px;
-    color: #555;
+    color: white;
     margin: 10px 0;
   }
-  
-  /* Logout button */
-  .dashboard-container button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .dashboard-container button:hover {
-    background-color: #0056b3;
-  }
-  
+
   /* Loading state */
   .dashboard-container p.loading {
     font-size: 16px;
-    color: #888;
+    color: white;
   }
   

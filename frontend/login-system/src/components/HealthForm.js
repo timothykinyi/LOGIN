@@ -6,15 +6,15 @@ import './styles/HealthForm.css';
 const HealthForm = () => {
   const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+  
   useEffect(() => {
-    const eID = sessionStorage.getItem('eID');
     const token = sessionStorage.getItem('userToken');
-    if (!eID || !token)
-      {
-        navigate('/');
-        return;
-      }
-    },[navigate]);
+    if (!eID || !token) {
+      navigate('/');
+      return;
+    }
+  }, [navigate]);
+
   const [healthData, setHealthData] = useState({
     eID: eID,
     bloodType: '',
@@ -95,16 +95,16 @@ const HealthForm = () => {
   };
 
   return (
-    <form className="health-form" onSubmit={handleSubmit}>
-      <h2>Health Data</h2>
+    <form className="hel-health-form" onSubmit={handleSubmit}>
+      <h2 className="hel-title">Health Data</h2>
 
-      <div className="form-group">
-        <label>Blood Type:</label>
+      <div className="hel-form-group">
+        <label className="hel-label">Blood Type:</label>
         <select
           name="bloodType"
           value={healthData.bloodType}
           onChange={handleChange}
-          className={errors.bloodType ? 'error' : ''}
+          className={errors.bloodType ? 'hel-error' : ''}
           required
         >
           <option value="">Select Blood Type</option>
@@ -117,11 +117,11 @@ const HealthForm = () => {
           <option value="AB+">AB+</option>
           <option value="AB-">AB-</option>
         </select>
-        {errors.bloodType && <small className="error-message">{errors.bloodType}</small>}
+        {errors.bloodType && <small className="hel-error-message">{errors.bloodType}</small>}
       </div>
 
-      <div className="form-group">
-        <label>Allergies:</label>
+      <div className="hel-form-group">
+        <label className="hel-label">Allergies:</label>
         <input
           type="text"
           name="allergies"
@@ -130,11 +130,11 @@ const HealthForm = () => {
         />
       </div>
 
-      <div className="section">
-        <h3>Medical History</h3>
+      <div className="hel-section">
+        <h3 className="hel-section-title">Medical History</h3>
         {healthData.medicalHistory.map((entry) => (
-          <div key={entry.id} className="form-group">
-            <label>Date:</label>
+          <div key={entry.id} className="hel-form-group">
+            <label className="hel-label">Date:</label>
             <input
               type="date"
               name="date"
@@ -142,7 +142,7 @@ const HealthForm = () => {
               onChange={(e) => handleMedicalHistoryChange(entry.id, e)}
               required
             />
-            <label>Description:</label>
+            <label className="hel-label">Description:</label>
             <input
               type="text"
               name="description"
@@ -150,57 +150,57 @@ const HealthForm = () => {
               onChange={(e) => handleMedicalHistoryChange(entry.id, e)}
               required
             />
-            <button type="button" onClick={() => handleRemoveMedicalHistory(entry.id)} className="remove-entry">
+            <button type="button" onClick={() => handleRemoveMedicalHistory(entry.id)} className="hel-remove-entry">
               Remove This Entry
             </button>
           </div>
         ))}
-        <button type="button" onClick={handleAddMedicalHistory} className="add-entry">
+        <button type="button" onClick={handleAddMedicalHistory} className="hel-add-entry">
           Add Another Medical History Entry
         </button>
       </div>
 
-      <div className="form-group">
-        <label>Insurance Provider:</label>
+      <div className="hel-form-group">
+        <label className="hel-label">Insurance Provider:</label>
         <input
           type="text"
           name="insuranceProvider"
           value={healthData.insuranceProvider}
           onChange={handleChange}
-          className={errors.insuranceProvider ? 'error' : ''}
+          className={errors.insuranceProvider ? 'hel-error' : ''}
           required
         />
-        {errors.insuranceProvider && <small className="error-message">{errors.insuranceProvider}</small>}
+        {errors.insuranceProvider && <small className="hel-error-message">{errors.insuranceProvider}</small>}
       </div>
 
-      <div className="form-group">
-        <label>Policy Number:</label>
+      <div className="hel-form-group">
+        <label className="hel-label">Policy Number:</label>
         <input
           type="text"
           name="policyNumber"
           value={healthData.policyNumber}
           onChange={handleChange}
-          className={errors.policyNumber ? 'error' : ''}
+          className={errors.policyNumber ? 'hel-error' : ''}
           required
         />
-        {errors.policyNumber && <small className="error-message">{errors.policyNumber}</small>}
+        {errors.policyNumber && <small className="hel-error-message">{errors.policyNumber}</small>}
       </div>
 
-      <div className="form-group">
-        <label>Coverage Details:</label>
+      <div className="hel-form-group">
+        <label className="hel-label">Coverage Details:</label>
         <input
           type="text"
           name="coverageDetails"
           value={healthData.coverageDetails}
           onChange={handleChange}
-          className={errors.coverageDetails ? 'error' : ''}
+          className={errors.coverageDetails ? 'hel-error' : ''}
           required
         />
-        {errors.coverageDetails && <small className="error-message">{errors.coverageDetails}</small>}
+        {errors.coverageDetails && <small className="hel-error-message">{errors.coverageDetails}</small>}
       </div>
 
-      <div className="form-group">
-        <label>Conditions:</label>
+      <div className="hel-form-group">
+        <label className="hel-label">Conditions:</label>
         <input
           type="text"
           name="conditions"
@@ -209,8 +209,8 @@ const HealthForm = () => {
         />
       </div>
 
-      <div className="form-group">
-        <label>Disabilities:</label>
+      <div className="hel-form-group">
+        <label className="hel-label">Disabilities:</label>
         <input
           type="text"
           name="disabilities"
@@ -219,8 +219,8 @@ const HealthForm = () => {
         />
       </div>
 
-      <div className="form-group">
-        <label>Additional Information:</label>
+      <div className="hel-form-group">
+        <label className="hel-label">Additional Information:</label>
         <textarea
           name="additionalInfo"
           value={healthData.additionalInfo}
@@ -228,9 +228,9 @@ const HealthForm = () => {
         />
       </div>
 
-      <button type="submit">Submit</button>
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {apiError && <p className="error-message">{apiError}</p>}
+      <button type="submit" className="hel-submit-button">Submit</button>
+      {successMessage && <p className="hel-success-message">{successMessage}</p>}
+      {apiError && <p className="hel-error-message">{apiError}</p>}
     </form>
   );
 };

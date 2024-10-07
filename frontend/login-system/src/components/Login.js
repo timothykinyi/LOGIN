@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import './styles/button.css';
 import './styles/login.css';
 
 const Login = () => {
@@ -22,7 +23,7 @@ const Login = () => {
       setMessage(response.data.message);
       sessionStorage.setItem('userToken', response.data.token);
       sessionStorage.setItem('eID', response.data.eID);
-      navigate('/Dashboard');
+      navigate('/dDashboard');
     } catch (error) {
       setLoading(false);
       if (error.response && error.response.data) {
@@ -80,21 +81,21 @@ const Login = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 style={{background: "none"}}
               >
-                {showPassword ? '🙈' : '👁️'}
+                {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
-            <button type="submit"disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
-            <button type="button" onClick={handleRecoverPassword}>Forgot Password</button>
-            <p>Verify your account <Link to="/verification">Verify Account</Link></p>
-            <p>If you don't have an account <Link to="/register">Register</Link></p>
+            <button className='button' type="submit"disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
+            <button className='button' type="button" onClick={handleRecoverPassword}>Forgot Password</button>
+            <p style={{color: 'white'}} >Verify your account  <Link to="/verification">Verify Account</Link></p>
+            <p style={{color: 'white'}}>If you don't have an account <Link to="/register">Register</Link></p>
           </div>
         ) : (
           <div>
             <h2>Recover password</h2>
             <label>Enter your username:</label>
             <input type="text" value={username} placeholder="Enter your username" onChange={(e) => setUsername(e.target.value)} required/>
-            <button type="submit">Recover password</button>
-            <button type="button" onClick={handleRecoverPassword}>Back</button>
+            <button type="submit" className='button' >Recover password</button>
+            <button type="button" className='button' onClick={handleRecoverPassword}>Back</button>
           </div>
         )}
       </form>

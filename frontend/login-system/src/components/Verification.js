@@ -92,7 +92,7 @@ function Verification() {
   return (
     <div className="container">
       <h2>Verify Your Account</h2>
-      <h4>Check your email to get the verification code.</h4>
+      <h4 style={{color: 'white'}}>Check your email to get the verification code.</h4>
       <form onSubmit={handleVerify}>
         {emailPresent && !editingEmail ? (
           <div>
@@ -135,9 +135,9 @@ function Verification() {
             required
           />
         </div>
-        <button type="submit">Verify</button>
+        <button className='button'  type="submit">Verify</button>
       </form>
-      <button type="button" onClick={handleresendEmail}>Resend verification code</button>
+      <button type="button" className='button'  onClick={handleresendEmail}>Resend verification code</button>
       {error && <p className="error">{error}</p>}
     </div>
   );

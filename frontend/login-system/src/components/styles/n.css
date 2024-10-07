@@ -12,7 +12,6 @@
   h2 {
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
     margin-bottom: 20px;
   }
   
@@ -26,7 +25,7 @@
   label {
     margin-bottom: 5px;
     font-weight: bold;
-    color: #555;
+    color: white;
   }
   
   /* Input Fields */
@@ -61,34 +60,10 @@
     margin-bottom: 15px;
   }
   
-  /* Button Styling */
-  button {
-    background-color: #6c63ff;
-    color: #fff;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-  }
-  
-  /* Button Hover */
-  button:hover {
-    background-color: #5849e5;
-  }
-  
-  /* Disabled Button */
-  button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
   /* Message Display */
   p {
     font-size: 14px;
-    color: #333;
+    color: white;
     margin-top: 15px;
     text-align: center;
   }

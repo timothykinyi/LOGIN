@@ -2,7 +2,6 @@
 
 /* Container for the form */
 .container {
-  background: white;
   padding: 1.2rem; /* Reduced padding */
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* Slightly smaller shadow */
   border-radius: 10px; /* Slightly smaller border radius */
@@ -20,7 +19,6 @@
 
 /* Headings */
 h2 {
-  color: #333;
   margin-bottom: 1.6rem; /* Reduced margin-bottom */
   font-size: 1.4rem; /* Slightly smaller font size */
   font-weight: 600;
@@ -59,38 +57,6 @@ input:focus, select:focus {
   font-size: 0.8rem; /* Slightly smaller font size */
   margin-top: -0.5rem;
   margin-bottom: 0.9rem; /* Reduced margin-bottom */
-}
-
-/* Buttons */
-button {
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  color: white;
-  border: none;
-  border-radius: 6px; /* Slightly smaller border radius */
-  padding: 0.75rem 1rem; /* Reduced padding */
-  font-size: 1rem; /* Slightly smaller font size */
-  font-weight: 500;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom: 0.9rem; /* Reduced margin-bottom */
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-button:hover {
-  background: linear-gradient(135deg, #5b7de5, #9369c9);
-  transform: translateY(-1px); /* Reduced hover effect */
-}
-
-button:disabled {
-  background: #ddd;
-  color: #aaa;
-  cursor: not-allowed;
-}
-
-button:disabled:hover {
-  background: #ddd;
-  color: #aaa;
-  cursor: not-allowed;
 }
 
 /* Loader */

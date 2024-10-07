@@ -6,18 +6,19 @@ import './styles/EducationForm.css';
 const EducationForm = () => {
   const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+
   useEffect(() => {
-    const eID = sessionStorage.getItem('eID');
     const token = sessionStorage.getItem('userToken');
-    if (!eID || !token)
-      {
-        navigate('/');
-        return;
-      }
-    },[navigate]);
+    if (!eID || !token) {
+      navigate('/');
+      return;
+    }
+  }, [navigate, eID]);
+
   const [educationEntries, setEducationEntries] = useState([
-    { eID: eID, id: 1, educationLevel: '', institutionName: '', degreeType: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', country: '', transferDetails: '' }
+    { eID, id: 1, educationLevel: '', institutionName: '', degreeType: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', country: '', transferDetails: '' }
   ]);
+
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [apiError, setApiError] = useState('');
@@ -74,158 +75,157 @@ const EducationForm = () => {
   };
 
   return (
-    <form className="education-form" onSubmit={handleSubmit}>
+    <form className="edu-form" onSubmit={handleSubmit}>
       <h2>Education Information</h2>
 
-      {educationEntries.map((entry) => (
-        <div key={entry.id} className="education-entry">
-          <h3>Education Entry {educationEntries.indexOf(entry) + 1}</h3>
+      <fieldset className="edu-fieldset">
+        <legend>Education Entries</legend>
+        {educationEntries.map((entry) => (
+          <div key={entry.id} className="edu-education-entry">
+            <h3>Education Entry {educationEntries.indexOf(entry) + 1}</h3>
 
-          
-          <div className="form-group">
-            <label>Education Level:</label>
-            <select
-              name="educationLevel"
-              value={entry.educationLevel}
-              onChange={(e) => handleChange(entry.id, e)}
-              className={errors[`educationLevel${entry.id}`] ? 'error' : ''}
-              required
-            >
-              <option value="">Select Education Level</option>
-              <option value="Kindergarten">Kindergarten</option>
-              <option value="Primary School">Primary School</option>
-              <option value="Secondary School">Secondary School</option>
-              <option value="Undergraduate">Undergraduate</option>
-              <option value="Postgraduate">Postgraduate</option>
-              <option value="Other">Other</option>
-            </select>
-            {errors[`educationLevel${entry.id}`] && <small className="error-message">{errors[`educationLevel${entry.id}`]}</small>}
+            <div className="edu-form-group">
+              <label>Education Level:</label>
+              <select
+                name="educationLevel"
+                value={entry.educationLevel}
+                onChange={(e) => handleChange(entry.id, e)}
+                className={errors[`educationLevel${entry.id}`] ? 'edu-error' : ''}
+                required
+              >
+                <option value="">Select Education Level</option>
+                <option value="Kindergarten">Kindergarten</option>
+                <option value="Primary School">Primary School</option>
+                <option value="Secondary School">Secondary School</option>
+                <option value="Undergraduate">Undergraduate</option>
+                <option value="Postgraduate">Postgraduate</option>
+                <option value="Other">Other</option>
+              </select>
+              {errors[`educationLevel${entry.id}`] && <small className="edu-error-message">{errors[`educationLevel${entry.id}`]}</small>}
+            </div>
+
+            <div className="edu-form-group">
+              <label>Institution Name:</label>
+              <input
+                type="text"
+                name="institutionName"
+                value={entry.institutionName}
+                onChange={(e) => handleChange(entry.id, e)}
+                className={errors[`institutionName${entry.id}`] ? 'edu-error' : ''}
+                required
+              />
+              {errors[`institutionName${entry.id}`] && <small className="edu-error-message">{errors[`institutionName${entry.id}`]}</small>}
+            </div>
+
+            {(entry.educationLevel === 'Undergraduate' || entry.educationLevel === 'Postgraduate' || entry.educationLevel === 'Other') && (
+              <>
+                <div className="edu-form-group">
+                  <label>Degree Type:</label>
+                  <select
+                    name="degreeType"
+                    value={entry.degreeType}
+                    onChange={(e) => handleChange(entry.id, e)}
+                    className={errors[`degreeType${entry.id}`] ? 'edu-error' : ''}
+                    required
+                  >
+                    <option value="">Select Degree Type</option>
+                    <option value="Degree">Degree</option>
+                    <option value="Certificate">Certificate</option>
+                    <option value="Diploma">Diploma</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  {errors[`degreeType${entry.id}`] && <small className="edu-error-message">{errors[`degreeType${entry.id}`]}</small>}
+                </div>
+
+                <div className="edu-form-group">
+                  <label>Degree:</label>
+                  <input
+                    type="text"
+                    name="degree"
+                    value={entry.degree}
+                    onChange={(e) => handleChange(entry.id, e)}
+                    className={errors[`degree${entry.id}`] ? 'edu-error' : ''}
+                    required
+                  />
+                  {errors[`degree${entry.id}`] && <small className="edu-error-message">{errors[`degree${entry.id}`]}</small>}
+                </div>
+
+                <div className="edu-form-group">
+                  <label>Field of Study:</label>
+                  <input
+                    type="text"
+                    name="fieldOfStudy"
+                    value={entry.fieldOfStudy}
+                    onChange={(e) => handleChange(entry.id, e)}
+                    className={errors[`fieldOfStudy${entry.id}`] ? 'edu-error' : ''}
+                    required
+                  />
+                  {errors[`fieldOfStudy${entry.id}`] && <small className="edu-error-message">{errors[`fieldOfStudy${entry.id}`]}</small>}
+                </div>
+              </>
+            )}
+
+            <div className="edu-form-group">
+              <label>Start Date:</label>
+              <input
+                type="date"
+                name="startDate"
+                value={entry.startDate}
+                onChange={(e) => handleChange(entry.id, e)}
+                className={errors[`startDate${entry.id}`] ? 'edu-error' : ''}
+                required
+              />
+              {errors[`startDate${entry.id}`] && <small className="edu-error-message">{errors[`startDate${entry.id}`]}</small>}
+            </div>
+
+            <div className="edu-form-group">
+              <label>End Date:</label>
+              <input
+                type="date"
+                name="endDate"
+                value={entry.endDate}
+                onChange={(e) => handleChange(entry.id, e)}
+                className={errors[`endDate${entry.id}`] ? 'edu-error' : ''}
+                required
+              />
+              {errors[`endDate${entry.id}`] && <small className="edu-error-message">{errors[`endDate${entry.id}`]}</small>}
+            </div>
+
+            <div className="edu-form-group">
+              <label>Country:</label>
+              <input
+                type="text"
+                name="country"
+                value={entry.country}
+                onChange={(e) => handleChange(entry.id, e)}
+                className={errors[`country${entry.id}`] ? 'edu-error' : ''}
+                required
+              />
+              {errors[`country${entry.id}`] && <small className="edu-error-message">{errors[`country${entry.id}`]}</small>}
+            </div>
+
+            <div className="edu-form-group">
+              <label className='edu-label'>Transfer Details (if any):</label>
+              <textarea
+                name="transferDetails"
+                value={entry.transferDetails}
+                onChange={(e) => handleChange(entry.id, e)}
+                className="edu-transfer-details" // Added class name
+              />
+            </div>
+
+            <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="edu-remove-entry">
+              Remove This Entry
+            </button>
           </div>
+        ))}
+      </fieldset>
 
-          <div className="form-group">
-            <label>Institution Name:</label>
-            <input
-              type="text"
-              name="institutionName"
-              value={entry.institutionName}
-              onChange={(e) => handleChange(entry.id, e)}
-              className={errors[`institutionName${entry.id}`] ? 'error' : ''}
-              required
-            />
-            {errors[`institutionName${entry.id}`] && <small className="error-message">{errors[`institutionName${entry.id}`]}</small>}
-          </div>
-
-          {(entry.educationLevel === 'Undergraduate' || entry.educationLevel === 'Postgraduate' || entry.educationLevel === 'Other') && (
-            <>
-              <div className="form-group">
-                <label>Degree Type:</label>
-                <select
-                  name="degreeType"
-                  value={entry.degreeType}
-                  onChange={(e) => handleChange(entry.id, e)}
-                  className={errors[`degreeType${entry.id}`] ? 'error' : ''}
-                  required
-                >
-                  <option value="">Select Degree Type</option>
-                  <option value="Degree">Degree</option>
-                  <option value="Certificate">Certificate</option>
-                  <option value="Diploma">Diploma</option>
-                  <option value="Other">Other</option>
-                </select>
-                {errors[`degreeType${entry.id}`] && <small className="error-message">{errors[`degreeType${entry.id}`]}</small>}
-              </div>
-
-              <div className="form-group">
-                <label>Degree:</label>
-                <input
-                  type="text"
-                  name="degree"
-                  value={entry.degree}
-                  onChange={(e) => handleChange(entry.id, e)}
-                  className={errors[`degree${entry.id}`] ? 'error' : ''}
-                  required
-                />
-                {errors[`degree${entry.id}`] && <small className="error-message">{errors[`degree${entry.id}`]}</small>}
-              </div>
-
-              <div className="form-group">
-                <label>Field of Study:</label>
-                <input
-                  type="text"
-                  name="fieldOfStudy"
-                  value={entry.fieldOfStudy}
-                  onChange={(e) => handleChange(entry.id, e)}
-                  className={errors[`fieldOfStudy${entry.id}`] ? 'error' : ''}
-                  required
-                />
-                {errors[`fieldOfStudy${entry.id}`] && <small className="error-message">{errors[`fieldOfStudy${entry.id}`]}</small>}
-              </div>
-            </>
-          )}
-
-          <div className="form-group">
-            <label>Start Date:</label>
-            <input
-              type="date"
-              name="startDate"
-              value={entry.startDate}
-              onChange={(e) => handleChange(entry.id, e)}
-              className={errors[`startDate${entry.id}`] ? 'error' : ''}
-              required
-            />
-            {errors[`startDate${entry.id}`] && <small className="error-message">{errors[`startDate${entry.id}`]}</small>}
-          </div>
-
-          <div className="form-group">
-            <label>End Date:</label>
-            <input
-              type="date"
-              name="endDate"
-              value={entry.endDate}
-              onChange={(e) => handleChange(entry.id, e)}
-              className={errors[`endDate${entry.id}`] ? 'error' : ''}
-              required
-            />
-            {errors[`endDate${entry.id}`] && <small className="error-message">{errors[`endDate${entry.id}`]}</small>}
-          </div>
-
-          <div className="form-group">
-            <label>Country:</label>
-            <input
-              type="text"
-              name="country"
-              value={entry.country}
-              onChange={(e) => handleChange(entry.id, e)}
-              className={errors[`country${entry.id}`] ? 'error' : ''}
-              required
-            />
-            {errors[`country${entry.id}`] && <small className="error-message">{errors[`country${entry.id}`]}</small>}
-          </div>
-
-          <div className="form-group">
-            <label>Transfer Details (if any):</label>
-            <textarea
-              name="transferDetails"
-              value={entry.transferDetails}
-              onChange={(e) => handleChange(entry.id, e)}
-            />
-          </div>
-
-          <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="remove-entry">
-            Remove This Entry
-          </button>
-        </div>
-      ))}
-
-      <button type="button" onClick={handleAddEntry} className="add-entry">
-        Add Another Education Entry
-      </button>
-
-      <button type="submit">Submit</button>
+      <button type="submit" className="edu-submit">Submit</button>
 
       {/* Display success or error messages */}
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {apiError && <p className="error-message">{apiError}</p>}
+      {successMessage && <p className="edu-success-message">{successMessage}</p>}
+      {apiError && <p className="edu-error-message">{apiError}</p>}
     </form>
   );
 };

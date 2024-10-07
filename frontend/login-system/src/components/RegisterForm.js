@@ -198,7 +198,7 @@ const Register = () => {
             />
             {formErrors.username && <p className="error-message">{formErrors.username}</p>}
 
-            <button type="button" onClick={nextStep} disabled={!isNextEnabled}>
+            <button className='button' type="button" onClick={nextStep} disabled={!isNextEnabled}>
               Next
             </button>
           </div>
@@ -241,10 +241,10 @@ const Register = () => {
             />
             {formErrors.confirmPassword && <p className="error-message">{formErrors.confirmPassword}</p>}
 
-            <button type="button" onClick={previousStep}>
+            <button className='button'type="button" onClick={previousStep}>
               Back
             </button>
-            <button type="button" onClick={nextStep} disabled={!isNextEnabled}>
+            <button className='button' type="button" onClick={nextStep} disabled={!isNextEnabled}>
               Next
             </button>
           </div>
@@ -286,22 +286,22 @@ const Register = () => {
               required
             >
               <option value="">Select Category</option>
-              <option value="Self">Self</option>
-              <option value="Child">Child</option>
+              <option value="Self">My own account</option>
+              <option value="Child">My child's account</option>
             </select>
             {formErrors.category && <p className="error-message">{formErrors.category}</p>}
 
-            <button type="button" onClick={previousStep}>
+            <button className='button' type="button" onClick={previousStep}>
               Back
             </button>
-            <button type="submit" disabled={loading}>
+            <button className='button' type="submit" disabled={loading}>
               {loading ? 'Registering...' : 'Register'}
             </button>
           </div>
         )}
       </form>
       {message && <p className="message">{message}</p>}
-      <p>If you have an account <Link to="/">Login</Link></p>
+      <p style={{color: 'white'}}> If you have an account <Link to="/">Login</Link></p>
     </div>
   );
 };

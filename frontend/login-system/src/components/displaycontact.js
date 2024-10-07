@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './styles/displaycontact.css';
 const ContactInfoList = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,18 +37,18 @@ const ContactInfoList = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
+    <div className="contact-container">
       <h2>Contact Information</h2>
       {contacts.length === 0 ? (
-        <p>No contact information available</p>
+        <p className="contact-message">No contact information available</p>
       ) : (
-        <ul>
+        <ul className="contact-list">
           {contacts.map((contact) => (
-            <li key={contact._id}>
+            <li className="contact-item" key={contact._id}>
               <p><strong>Phone Numbers:</strong> {contact.phoneNumbers.map(num => num.number).join(', ')}</p>
               <p><strong>Emails:</strong> {contact.emails.map(email => email.email).join(', ')}</p>
               <p><strong>Emergency Contacts:</strong></p>
-              <ul>
+              <ul className="contact-sublist">
                 {contact.emergencyContacts.map((emergency, idx) => (
                   <li key={idx}>
                     <p>Name: {emergency.name}</p>
@@ -58,7 +58,7 @@ const ContactInfoList = () => {
                 ))}
               </ul>
               <p><strong>Social Media:</strong></p>
-              <ul>
+              <ul className="contact-sublist">
                 {contact.socialMedia.map((social, idx) => (
                   <li key={idx}>
                     <p>Platform: {social.platform}</p>
@@ -78,6 +78,7 @@ const ContactInfoList = () => {
         </ul>
       )}
     </div>
+
   );
 };
 

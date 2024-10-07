@@ -1,0 +1,69 @@
+/* Container Styling */
+.fin-container {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f8f8fb;
+  color: #2d3e50;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  margin: 30px auto;
+  max-height: 80vh; /* Limit the height of the container to fit within the viewport */
+  overflow-y: auto;
+  }
+  
+  .fin-container h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #3498db;
+    margin-bottom: 25px;
+    text-align: center;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+  }
+  
+  /* List Styling */
+  .fin-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .fin-item {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+  
+  .fin-item:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  .fin-item p {
+    font-size: 16px;
+    color: #34495e;
+    margin-bottom: 10px;
+  }
+  
+  .fin-item p strong {
+    color: #2980b9;
+    font-weight: 600;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .fin-container {
+      padding: 20px;
+    }
+  
+    .fin-item {
+      padding: 15px;
+    }
+  
+    .fin-item p {
+      font-size: 14px;
+    }
+  }
+  

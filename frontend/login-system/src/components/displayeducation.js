@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './styles/displayeducation.css';
 const EducationList = () => {
   const [educationData, setEducationData] = useState([]);
   const navigate = useNavigate();
@@ -28,14 +28,14 @@ const EducationList = () => {
   }, [eID, navigate]);
 
   return (
-    <div>
+    <div className="edu-container">
       <h2>Education Data</h2>
-      <ul>
+      <ul className="edu-list">
         {educationData.length === 0 ? (
-          <p>No education data available for this user.</p>
+          <p className="edu-message">No education data available for this user.</p>
         ) : (
           educationData.map((education, index) => (
-            <li key={index}>
+            <li className="edu-item" key={index}>
               <p><strong>Level:</strong> {education.educationLevel}</p>
               <p><strong>Institution:</strong> {education.institutionName}</p>
               <p><strong>Degree:</strong> {education.degree}</p>
@@ -49,6 +49,7 @@ const EducationList = () => {
         )}
       </ul>
     </div>
+
   );
 };
 

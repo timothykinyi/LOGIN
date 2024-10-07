@@ -6,15 +6,15 @@ import './styles/FinancialForm.css';
 const FinancialForm = () => {
   const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+  
   useEffect(() => {
-    const eID = sessionStorage.getItem('eID');
     const token = sessionStorage.getItem('userToken');
-    if (!eID || !token)
-      {
-        navigate('/');
-        return;
-      }
-    },[navigate]);
+    if (!eID || !token) {
+      navigate('/');
+      return;
+    }
+  }, [navigate, eID]);
+
   const [financialEntries, setFinancialEntries] = useState([
     { eID: eID, id: Date.now(), bankAccountNumber: '', bankName: '', income: '', creditScore: '', taxId: '', mobileNumber: '' }
   ]);
@@ -60,8 +60,6 @@ const FinancialForm = () => {
       }));
 
       try {
-        // Replace the URL with your backend endpoint
-      
         const response = await axios.post('https://login-9ebe.onrender.com/api/financial', updatedEntries);
         setResponseMessage(`Success: ${response.data.message}`);
       } catch (error) {
@@ -72,14 +70,14 @@ const FinancialForm = () => {
 
   return (
     <form className="financial-form" onSubmit={handleSubmit}>
-      <h2>Financial Information</h2>
+      <h2 className="fin-h2">Financial Information</h2>
 
       {financialEntries.map((entry) => (
-        <div key={entry.id} className="financial-entry">
-          <h3>Financial Entry {financialEntries.indexOf(entry) + 1}</h3>
+        <div key={entry.id} className="financial-entry fin-fieldset">
+          <h3 className="fin-legend">Financial Entry {financialEntries.indexOf(entry) + 1}</h3>
 
-          <div className="form-group">
-            <label>Bank Account Number:</label>
+          <div className="fin-form-group">
+            <label className="fin-label">Bank Account Number:</label>
             <input
               type="password"
               name="bankAccountNumber"
@@ -88,11 +86,11 @@ const FinancialForm = () => {
               className={errors[`bankAccountNumber${entry.id}`] ? 'error' : ''}
               required
             />
-            {errors[`bankAccountNumber${entry.id}`] && <small className="error-message">{errors[`bankAccountNumber${entry.id}`]}</small>}
+            {errors[`bankAccountNumber${entry.id}`] && <small className="fin-error-message">{errors[`bankAccountNumber${entry.id}`]}</small>}
           </div>
 
-          <div className="form-group">
-            <label>Bank Name:</label>
+          <div className="fin-form-group">
+            <label className="fin-label">Bank Name:</label>
             <input
               type="text"
               name="bankName"
@@ -101,11 +99,11 @@ const FinancialForm = () => {
               className={errors[`bankName${entry.id}`] ? 'error' : ''}
               required
             />
-            {errors[`bankName${entry.id}`] && <small className="error-message">{errors[`bankName${entry.id}`]}</small>}
+            {errors[`bankName${entry.id}`] && <small className="fin-error-message">{errors[`bankName${entry.id}`]}</small>}
           </div>
 
-          <div className="form-group">
-            <label>Income:</label>
+          <div className="fin-form-group">
+            <label className="fin-label">Income:</label>
             <input
               type="number"
               name="income"
@@ -114,11 +112,11 @@ const FinancialForm = () => {
               className={errors[`income${entry.id}`] ? 'error' : ''}
               required
             />
-            {errors[`income${entry.id}`] && <small className="error-message">{errors[`income${entry.id}`]}</small>}
+            {errors[`income${entry.id}`] && <small className="fin-error-message">{errors[`income${entry.id}`]}</small>}
           </div>
 
-          <div className="form-group">
-            <label>Credit Score:</label>
+          <div className="fin-form-group">
+            <label className="fin-label">Credit Score:</label>
             <input
               type="number"
               name="creditScore"
@@ -127,11 +125,11 @@ const FinancialForm = () => {
               className={errors[`creditScore${entry.id}`] ? 'error' : ''}
               required
             />
-            {errors[`creditScore${entry.id}`] && <small className="error-message">{errors[`creditScore${entry.id}`]}</small>}
+            {errors[`creditScore${entry.id}`] && <small className="fin-error-message">{errors[`creditScore${entry.id}`]}</small>}
           </div>
 
-          <div className="form-group">
-            <label>Tax ID:</label>
+          <div className="fin-form-group">
+            <label className="fin-label">Tax ID:</label>
             <input
               type="text"
               name="taxId"
@@ -140,11 +138,11 @@ const FinancialForm = () => {
               className={errors[`taxId${entry.id}`] ? 'error' : ''}
               required
             />
-            {errors[`taxId${entry.id}`] && <small className="error-message">{errors[`taxId${entry.id}`]}</small>}
+            {errors[`taxId${entry.id}`] && <small className="fin-error-message">{errors[`taxId${entry.id}`]}</small>}
           </div>
 
-          <div className="form-group">
-            <label>Mobile Number (e.g., for M-Pesa):</label>
+          <div className="fin-form-group">
+            <label className="fin-label">Mobile Number (e.g., for M-Pesa):</label>
             <input
               type="tel"
               name="mobileNumber"
@@ -154,22 +152,22 @@ const FinancialForm = () => {
               pattern="[0-9]{10}"
               required
             />
-            {errors[`mobileNumber${entry.id}`] && <small className="error-message">{errors[`mobileNumber${entry.id}`]}</small>}
+            {errors[`mobileNumber${entry.id}`] && <small className="fin-error-message">{errors[`mobileNumber${entry.id}`]}</small>}
           </div>
 
-          <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="remove-entry">
+          <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="fin-remove-entry">
             Remove This Entry
           </button>
         </div>
       ))}
 
-      <button type="button" onClick={handleAddEntry} className="add-entry">
+      <button type="button" onClick={handleAddEntry} className="fin-add-entry">
         Add Another Financial Entry
       </button>
 
       <button type="submit">Submit</button>
 
-      {responseMessage && <div className="response-message">{responseMessage}</div>}
+      {responseMessage && <div className="fin-response-message">{responseMessage}</div>}
     </form>
   );
 };

@@ -6,21 +6,23 @@ import './styles/EmploymentForm.css';
 const EmploymentForm = () => {
   const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+  
   useEffect(() => {
     const eID = sessionStorage.getItem('eID');
     const token = sessionStorage.getItem('userToken');
 
-    if (!eID || !token)
-      {
-        navigate('/');
-        return;
-      }
-    },[navigate]);
+    if (!eID || !token) {
+      navigate('/');
+      return;
+    }
+  }, [navigate]);
+
   const [jobEntries, setJobEntries] = useState([
-    { eID: eID,id: Date.now(), jobTitle: '', employer: '', jobCategory: '', startDate: '', endDate: '', skills: '' }
+    { eID: eID, id: Date.now(), jobTitle: '', employer: '', jobCategory: '', startDate: '', endDate: '', skills: '' }
   ]);
+  
   const [errors, setErrors] = useState({});
-  const [responseMessage, setResponseMessage] = useState(''); // For displaying response
+  const [responseMessage, setResponseMessage] = useState('');
 
   const handleChange = (id, e) => {
     const { name, value } = e.target;
@@ -56,11 +58,10 @@ const EmploymentForm = () => {
     if (validateForm()) {
       const updatedEntries = jobEntries.map(entry => ({
         ...entry,
-        endDate: entry.endDate || 'Continuing' // Marking end date as "Continuing" if empty
+        endDate: entry.endDate || 'Continuing'
       }));
-      
+
       try {
-        // Replace the URL with your backend endpoint
         const response = await axios.post('https://login-9ebe.onrender.com/api/employment', updatedEntries);
         setResponseMessage(`Success: ${response.data.message}`);
       } catch (error) {
@@ -73,95 +74,97 @@ const EmploymentForm = () => {
     <form className="employment-form" onSubmit={handleSubmit}>
       <h2>Employment History</h2>
 
-      {jobEntries.map((entry) => (
-        <div key={entry.id} className="job-entry">
-          <h3>Job Entry {jobEntries.indexOf(entry) + 1}</h3>
+      <div className="job-entries">
+        {jobEntries.map((entry) => (
+          <div key={entry.id} className="job-entry">
+            <h3>Job Entry {jobEntries.indexOf(entry) + 1}</h3>
 
-          <div className="form-group">
-            <label>Job Title:</label>
-            <input
-              type="text"
-              name="jobTitle"
-              value={entry.jobTitle}
-              onChange={(e) => handleChange(entry.id, e)}
-              className={errors[`jobTitle${entry.id}`] ? 'error' : ''}
-              required
-            />
-            {errors[`jobTitle${entry.id}`] && <small className="error-message">{errors[`jobTitle${entry.id}`]}</small>}
+            <div className="form-group">
+              <label>Job Title:</label>
+              <input
+                type="text"
+                name="jobTitle"
+                value={entry.jobTitle}
+                onChange={(e) => handleChange(entry.id, e)}
+                className={errors[`jobTitle${entry.id}`] ? 'error' : ''}
+                required
+              />
+              {errors[`jobTitle${entry.id}`] && <small className="error-message">{errors[`jobTitle${entry.id}`]}</small>}
+            </div>
+
+            <div className="form-group">
+              <label>Employer:</label>
+              <input
+                type="text"
+                name="employer"
+                value={entry.employer}
+                onChange={(e) => handleChange(entry.id, e)}
+                className={errors[`employer${entry.id}`] ? 'error' : ''}
+                required
+              />
+              {errors[`employer${entry.id}`] && <small className="error-message">{errors[`employer${entry.id}`]}</small>}
+            </div>
+
+            <div className="form-group">
+              <label>Job Category:</label>
+              <select
+                name="jobCategory"
+                value={entry.jobCategory}
+                onChange={(e) => handleChange(entry.id, e)}
+                className={errors[`jobCategory${entry.id}`] ? 'error' : ''}
+                required
+              >
+                <option value="">Select Job Category</option>
+                <option value="Full-Time">Full-Time</option>
+                <option value="Part-Time">Part-Time</option>
+                <option value="Internship">Internship</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Contract">Contract</option>
+                <option value="Temporary">Temporary</option>
+                <option value="Other">Other</option>
+              </select>
+              {errors[`jobCategory${entry.id}`] && <small className="error-message">{errors[`jobCategory${entry.id}`]}</small>}
+            </div>
+
+            <div className="form-group">
+              <label>Start Date:</label>
+              <input
+                type="date"
+                name="startDate"
+                value={entry.startDate}
+                onChange={(e) => handleChange(entry.id, e)}
+                className={errors[`startDate${entry.id}`] ? 'error' : ''}
+                required
+              />
+              {errors[`startDate${entry.id}`] && <small className="error-message">{errors[`startDate${entry.id}`]}</small>}
+            </div>
+
+            <div className="form-group">
+              <label>End Date:</label>
+              <input
+                type="date"
+                name="endDate"
+                value={entry.endDate}
+                onChange={(e) => handleChange(entry.id, e)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Skills Acquired:</label>
+              <input
+                type="text"
+                name="skills"
+                value={entry.skills}
+                onChange={(e) => handleChange(entry.id, e)}
+              />
+            </div>
+
+            <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="remove-entry">
+              Remove This Entry
+            </button>
           </div>
-
-          <div className="form-group">
-            <label>Employer:</label>
-            <input
-              type="text"
-              name="employer"
-              value={entry.employer}
-              onChange={(e) => handleChange(entry.id, e)}
-              className={errors[`employer${entry.id}`] ? 'error' : ''}
-              required
-            />
-            {errors[`employer${entry.id}`] && <small className="error-message">{errors[`employer${entry.id}`]}</small>}
-          </div>
-
-          <div className="form-group">
-            <label>Job Category:</label>
-            <select
-              name="jobCategory"
-              value={entry.jobCategory}
-              onChange={(e) => handleChange(entry.id, e)}
-              className={errors[`jobCategory${entry.id}`] ? 'error' : ''}
-              required
-            >
-              <option value="">Select Job Category</option>
-              <option value="Full-Time">Full-Time</option>
-              <option value="Part-Time">Part-Time</option>
-              <option value="Internship">Internship</option>
-              <option value="Freelance">Freelance</option>
-              <option value="Contract">Contract</option>
-              <option value="Temporary">Temporary</option>
-              <option value="Other">Other</option>
-            </select>
-            {errors[`jobCategory${entry.id}`] && <small className="error-message">{errors[`jobCategory${entry.id}`]}</small>}
-          </div>
-
-          <div className="form-group">
-            <label>Start Date:</label>
-            <input
-              type="date"
-              name="startDate"
-              value={entry.startDate}
-              onChange={(e) => handleChange(entry.id, e)}
-              className={errors[`startDate${entry.id}`] ? 'error' : ''}
-              required
-            />
-            {errors[`startDate${entry.id}`] && <small className="error-message">{errors[`startDate${entry.id}`]}</small>}
-          </div>
-
-          <div className="form-group">
-            <label>End Date:</label>
-            <input
-              type="date"
-              name="endDate"
-              value={entry.endDate}
-              onChange={(e) => handleChange(entry.id, e)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Skills Acquired:</label>
-            <input
-              type="text"
-              name="skills"
-              value={entry.skills}
-              onChange={(e) => handleChange(entry.id, e)}
-            />
-          </div>
-
-          <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="remove-entry">
-            Remove This Entry
-          </button>
-        </div>
-      ))}
+        ))}
+      </div>
 
       <button type="button" onClick={handleAddEntry} className="add-entry">
         Add Another Job Entry
