@@ -191,7 +191,7 @@ eID`;
 };
 
 const login = async (req, res) => {
-
+/*
   try {
     const newFields = {
       active: false,
@@ -214,6 +214,7 @@ const login = async (req, res) => {
   } catch (error) {
     console.error('Error updating users:', error);
   }
+*/
 
   const { username, password } = req.body;
   try {
@@ -223,6 +224,19 @@ const login = async (req, res) => {
     }
     if (!user.isVerified) {
       return res.status(401).json({ message: 'Please verify your account first' });
+    }
+    if (user.category == 'Child') {
+      const isDate18Valid = (date) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const enteredDate = new Date(date);
+        const minAgeDate = new Date(today.setFullYear(today.getFullYear() - 18));
+        return enteredDate < minAgeDate;
+      };
+      if (!isDate18Valid(user.dateOfBirth)) {
+        user.category = 'Self';
+        await user.save();
+      }
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
