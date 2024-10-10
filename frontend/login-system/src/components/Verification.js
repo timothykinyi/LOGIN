@@ -135,9 +135,9 @@ function Verification() {
             required
           />
         </div>
-        <button className='button'  type="submit">Verify</button>
+        <button className='sign-in-btn'  type="submit">Verify</button>
       </form>
-      <button type="button" className='button'  onClick={handleresendEmail}>Resend verification code</button>
+      <button type="button" className='sign-in-btn'  onClick={handleresendEmail}>Resend verification code</button>
       {error && <p className="error">{error}</p>}
     </div>
   );

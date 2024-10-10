@@ -150,14 +150,20 @@ const HealthForm = () => {
               onChange={(e) => handleMedicalHistoryChange(entry.id, e)}
               required
             />
-            <button type="button" onClick={() => handleRemoveMedicalHistory(entry.id)} className="hel-remove-entry">
-              Remove This Entry
-            </button>
+            <div className="button-group">
+              <button type="button" onClick={() => handleRemoveMedicalHistory(entry.id)} className="sign-in-btn">
+                Remove This Entry
+              </button>
+            </div>
+
           </div>
         ))}
-        <button type="button" onClick={handleAddMedicalHistory} className="hel-add-entry">
-          Add Another Medical History Entry
-        </button>
+        <div className="button-group">
+          <button type="button" onClick={handleAddMedicalHistory} className="sign-in-btn">
+            Add Another Medical History Entry
+          </button>
+        </div>
+
       </div>
 
       <div className="hel-form-group">
@@ -227,8 +233,9 @@ const HealthForm = () => {
           onChange={handleChange}
         />
       </div>
-
-      <button type="submit" className="hel-submit-button">Submit</button>
+      <div className="button-group">
+        <button type="submit" className="sign-in-btn">Submit</button>
+      </div>
       {successMessage && <p className="hel-success-message">{successMessage}</p>}
       {apiError && <p className="hel-error-message">{apiError}</p>}
     </form>

@@ -154,18 +154,24 @@ const FinancialForm = () => {
             />
             {errors[`mobileNumber${entry.id}`] && <small className="fin-error-message">{errors[`mobileNumber${entry.id}`]}</small>}
           </div>
+          <div className="button-group">
+            <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="sign-in-btn">
+              Remove This Entry
+            </button>
+          </div>
 
-          <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="fin-remove-entry">
-            Remove This Entry
-          </button>
         </div>
       ))}
 
-      <button type="button" onClick={handleAddEntry} className="fin-add-entry">
-        Add Another Financial Entry
-      </button>
+      <div className="button-group">
+        <button type="button" onClick={handleAddEntry} className="sign-in-btn">
+          Add Another Financial Entry
+        </button>
+      </div>
 
-      <button type="submit">Submit</button>
+      <div className="button-group">
+        <button type="submit" className="sign-in-btn" >Submit</button>
+      </div>
 
       {responseMessage && <div className="fin-response-message">{responseMessage}</div>}
     </form>

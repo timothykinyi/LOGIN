@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './styles/button.css';
+import './styles/landingPage.css';
 import './styles/login.css';
 
 const Login = () => {
@@ -84,8 +84,11 @@ const Login = () => {
                 {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
-            <button className='button' type="submit"disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
-            <button className='button' type="button" onClick={handleRecoverPassword}>Forgot Password</button>
+            <div className="button-group">
+              <button className='sign-in-btn' type="submit"disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
+              <button className='sign-in-btn' type="button" onClick={handleRecoverPassword}>Forgot Password</button>
+            </div>
+
             <p style={{color: 'white'}} >Verify your account  <Link to="/verification">Verify Account</Link></p>
             <p style={{color: 'white'}}>If you don't have an account <Link to="/register">Register</Link></p>
           </div>
@@ -94,8 +97,10 @@ const Login = () => {
             <h2>Recover password</h2>
             <label>Enter your username:</label>
             <input type="text" value={username} placeholder="Enter your username" onChange={(e) => setUsername(e.target.value)} required/>
-            <button type="submit" className='button' >Recover password</button>
-            <button type="button" className='button' onClick={handleRecoverPassword}>Back</button>
+            <div className="button-group">
+            <button type="submit" className='sign-in-btn' >Recover password</button>
+            <button type="button" className='sign-in-btn' onClick={handleRecoverPassword}>Back</button>
+            </div>
           </div>
         )}
       </form>

@@ -59,13 +59,13 @@ button:disabled:hover {
 .toggle-password {
   position: absolute;
   background: none;
-  color: black;
+  color: rgb(233, 233, 233);
   font-size: small;
   border: none;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   outline: none;
-  left: 75%;
+  left: 90%;
   top: 0%;
   padding: 0.5%;
 }

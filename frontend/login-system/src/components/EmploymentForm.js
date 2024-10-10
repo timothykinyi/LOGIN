@@ -159,18 +159,26 @@ const EmploymentForm = () => {
               />
             </div>
 
-            <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="remove-entry">
-              Remove This Entry
-            </button>
+            <div className="button-group">
+              <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="sign-in-btn">
+                Remove This Entry
+              </button>
+            </div>
+
           </div>
         ))}
       </div>
 
-      <button type="button" onClick={handleAddEntry} className="add-entry">
-        Add Another Job Entry
-      </button>
+      <div className="button-group">
+        <button type="button" onClick={handleAddEntry} className="sign-in-btn">
+          Add Another Job Entry
+        </button>
+      </div>
 
-      <button type="submit">Submit</button>
+
+      <div className="button-group">
+        <button type="submit" className="sign-in-btn" >Submit</button>
+      </div>
 
       {responseMessage && <div className="response-message">{responseMessage}</div>}
     </form>

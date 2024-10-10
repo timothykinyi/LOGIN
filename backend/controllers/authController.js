@@ -125,112 +125,34 @@ const registerUser = async (req, res) => {
   }
 
   try {
-// Check if user already exists
-let user = await User.findOne({ $or: [{ email }, { username }] });
-if (user) {
-  return res.status(400).json({ message: 'User already exists' });
-}
+    // Check if user already exists
+    let user = await User.findOne({ $or: [{ email }, { username }] });
+    if (user) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
 
-// Generate verification code
-const alphanumericCode = generateAlphanumericVerificationCode(6);
-const subject = "Verification - " + alphanumericCode;
+    // Generate verification code
+    const alphanumericCode = generateAlphanumericVerificationCode(6);
+    const subject = "Verification - " + alphanumericCode;
+    const vermessage = `Dear ${username},
 
-// HTML message with inline CSS
-const vermessage = `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verification</title>
-    <style>
-      /* You can include some basic CSS for email clients */
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        color: #333;
-        padding: 0;
-        margin: 0;
-      }
-      .email-container {
-        max-width: 600px;
-        margin: 0 auto;
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      .email-header {
-        background-color: #0171ad;
-        padding: 20px;
-        text-align: center;
-        color: #ffffff;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-      }
-      .email-body {
-        padding: 20px;
-      }
-      .email-body h2 {
-        color: #333;
-        font-size: 24px;
-      }
-      .email-body p {
-        line-height: 1.5;
-        margin-bottom: 20px;
-        color: #555;
-      }
-      .verification-code {
-        display: inline-block;
-        background-color: #f0f0f0;
-        padding: 10px 20px;
-        font-size: 20px;
-        letter-spacing: 2px;
-        font-weight: bold;
-        color: #0171ad;
-        margin-bottom: 20px;
-        border-radius: 4px;
-      }
-      .email-footer {
-        padding: 20px;
-        text-align: center;
-        font-size: 12px;
-        color: #999;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="email-container">
-      <div class="email-header">
-        <h1>eID Verification</h1>
-      </div>
-      <div class="email-body">
-        <h2>Dear ${username},</h2>
-        <p>Thank you for registering with eID. Please use the following verification code to complete your registration:</p>
-        <p class="verification-code">${alphanumericCode}</p>
-        <p>
-          Follow this link to verify your account:<br />
-          <a href="https://own-my-data.web.app/verification" style="color: #0171ad; text-decoration: none;">https://own-my-data.web.app/verification</a>
-        </p>
-        <p>Best regards,<br />The eID Team</p>
-      </div>
-      <div class="email-footer">
-        <p>&copy; 2024 eID. All rights reserved.</p>
-      </div>
-    </div>
-  </body>
-  </html>
-`;
+Thank you for registering with eID. Please use the following verification code to complete your registration:
 
-// Send verification email
-try {
-  await sendEmail(email, subject, vermessage);
-  console.log('Email sent successfully');
-} catch (error) {
-  console.error('Error sending email:', error);
-  return res.status(500).json({ message: 'Error sending verification email' });
-}
+Verification Code: ${alphanumericCode}
 
+Follow this link https://own-my-data.web.app/verification to verify your account
+
+Best regards,
+eID`;
+
+    // Send verification email
+    try {
+      await sendEmail(email, subject, vermessage);
+      console.log('Email sent successfully');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).json({ message: 'Error sending verification email' });
+    }
 
     // Generate E ID (minimum 6-digit number)
     const generateEID = () => {

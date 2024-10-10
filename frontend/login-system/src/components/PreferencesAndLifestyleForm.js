@@ -494,10 +494,12 @@ const PreferencesAndLifestyleForm = () => {
         </select>
       </div>
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Submitting...' : 'Submit'}
-      </button>
-
+      <div className="button-group">
+        <button type="submit" className="sign-in-btn"disabled={isLoading}>
+          {isLoading ? 'Submitting...' : 'Submit'}
+        </button>
+      </div>
+      
       {/* Response Message */}
       {responseMessage && <p className="response-message">{responseMessage}</p>}
     </form>

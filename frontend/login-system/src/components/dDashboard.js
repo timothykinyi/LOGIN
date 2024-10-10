@@ -1,3 +1,5 @@
+import axios from 'axios'; // Import axios
+import { jwtDecode } from 'jwt-decode'; // Correctly import jwtDecode
 import React, { useEffect, useRef, useState } from 'react';
 import { FaBriefcase, FaCogs, FaHeartbeat, FaMoneyBill, FaPhone, FaSignOutAlt, FaTimes, FaUniversity, FaUser, FaUsers } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -28,17 +30,41 @@ const Dashboard = () => {
   const [isNavOpen, setIsNavOpen] = useState(false); // State for toggling navigation
   const [isAddingNew, setIsAddingNew] = useState(false); // State to toggle between display and form
   const [lastTap, setLastTap] = useState(0); // To track double-tap timing
+  const [swipeStart, setSwipeStart] = useState(null); // State to track the start position of a swipe
   const navListRef = useRef(null); // Ref for the nav-items list to manipulate scrolling
   const scrollRef = useRef(null); // To keep track of auto-scroll state
   const eID = sessionStorage.getItem('eID');
+
   useEffect(() => {
-    const eID = sessionStorage.getItem('eID');
     const token = sessionStorage.getItem('userToken');
     if (!eID || !token) {
       navigate('/');
       return;
     }
   }, [navigate]);
+
+  // Function to perform logout
+  const performLogout = async () => {
+    try {
+      const token = sessionStorage.getItem('userToken');
+      const decodedToken = jwtDecode(token); // Decode the token
+      const username = decodedToken?.username;
+
+      if (!username) {
+        console.error('Username is missing.');
+        return;
+      }
+
+      await axios.post('https://login-9ebe.onrender.com/api/auth/logout', { username });
+
+      // Clear the user token or session
+      sessionStorage.removeItem('userToken'); // Clear user token
+      sessionStorage.removeItem('eID'); // Clear user ID
+      navigate('/login'); 
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
 
   const toggleAddNew = () => {
     setIsAddingNew(!isAddingNew);
@@ -100,11 +126,31 @@ const Dashboard = () => {
     }
   };
 
-  // Function to handle logout
-  const handleLogout = () => {
-    sessionStorage.removeItem('userToken'); // Clear user token
-    sessionStorage.removeItem('eID'); // Clear user ID
-    navigate('/login'); // Redirect to login page
+  // Add swipe handling
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    setSwipeStart(touch.clientX); // Set the swipe start position
+  };
+
+  const handleTouchMove = (e) => {
+    const touch = e.touches[0];
+    const swipeDistance = touch.clientX - swipeStart;
+
+    if (swipeStart !== null) {
+      if (swipeDistance > 50) { // Right swipe
+        changeForm(-1); // Change to previous form
+        setSwipeStart(null); // Reset the swipe start position
+      } else if (swipeDistance < -50) { // Left swipe
+        changeForm(1); // Change to next form
+        setSwipeStart(null); // Reset the swipe start position
+      }
+    }
+  };
+
+  const changeForm = (direction) => {
+    const currentIndex = navItems.findIndex(item => item.form === activeForm);
+    const newIndex = (currentIndex + direction + navItems.length - 1) % (navItems.length - 1); // Exclude logout
+    setActiveForm(navItems[newIndex].form);
   };
 
   const navItems = [
@@ -123,15 +169,18 @@ const Dashboard = () => {
     const currentItem = navItems.find(item => item.form === activeForm);
     if (currentItem) {
       if (currentItem.isLogout) {
-        handleLogout(); // Call handleLogout directly
+        performLogout(); // Call performLogout directly
         return null; // Render nothing as we are logging out
       }
       return (
         <div>
           {isAddingNew ? currentItem.formComponent : currentItem.display}
-          <button className="dash-toggle-btn" onClick={toggleAddNew}>
-            {isAddingNew ? 'Back to Display' : 'Add/Update Info'}
-          </button>
+          <div className="button-group">
+            <button className="sign-in-btn" onClick={toggleAddNew}>
+              {isAddingNew ? 'Back to Display' : 'Add/Update Info'}
+            </button>
+          </div>
+
         </div>
       );
     }
@@ -139,7 +188,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dash-dashboard">
+    <div className="dash-dashboard" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
       <nav className="dash-dashboard-nav">
         <ul>
           {navItems.map((item, index) => (
@@ -159,11 +208,17 @@ const Dashboard = () => {
               <FaTimes />
             </button>
             <ul className="dash-nav-items" ref={navListRef} onScroll={handleScrollLoop}>
-              {navItems.map((item, index) => (
+              {/* Create a continuous scrolling effect by duplicating nav items */}
+              {[...navItems].map((item, index) => (
                 <li key={index} className="dash-nav-item">
-                  <button onClick={() => { 
-                      setActiveForm(item.form); 
-                      setIsAddingNew(false); 
+                  <button
+                    onClick={() => {
+                      if (item.isLogout) {
+                        performLogout(); // Trigger the logout function directly
+                      } else {
+                        setActiveForm(item.form);
+                        setIsAddingNew(false);
+                      }
                     }}>
                     {item.icon}
                   </button>
@@ -174,9 +229,9 @@ const Dashboard = () => {
         )}
       </div>
 
-      <main className="dash-dashboard-content">
-      {eID && <div className="eID-display">User eID: {eID}</div>} {/* Display eID */}
 
+      <main className="dash-dashboard-content">
+        {eID && <div className="sign-in-btn">Your eID: {eID}</div>}
         {renderContent()}
       </main>
     </div>

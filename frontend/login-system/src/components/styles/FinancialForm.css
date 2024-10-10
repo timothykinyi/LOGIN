@@ -76,8 +76,7 @@ input[type="password"].error {
 }
 
 .fin-add-entry,
-.fin-remove-entry,
-button[type="submit"] {
+.fin-remove-entry {
   padding: 10px 15px; /* Padding for buttons */
   background-color: #007bff; /* Bootstrap blue */
   color: white; /* White text */
@@ -88,8 +87,7 @@ button[type="submit"] {
 }
 
 .fin-add-entry:hover,
-.fin-remove-entry:hover,
-button[type="submit"]:hover {
+.fin-remove-entry:hover {
   background-color: #0056b3; /* Darker blue on hover */
 }
 

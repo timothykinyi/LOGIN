@@ -1,0 +1,187 @@
+/* Reset browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Main landing page container with background image */
+  .landing-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 20px;
+    color: white; /* Make text white for contrast on the image */
+  }
+  
+  /* Dark overlay to enhance text readability on background image */
+
+  
+  /* Hero section (centered content) */
+  .hero {
+    max-width: 400px; /* Slightly wider for better spacing */
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(7, 63, 89, 0.6), rgba(28, 145, 184, 0.7),  rgba(7, 63, 89, 0.6));/* Light transparent background */
+    border-radius: 12px;
+    text-align: center;
+    animation: fadeIn 1.2s ease;
+  }
+  
+  /* Hero heading */
+  .hero h1 {
+    font-size: 3.8rem; /* Increased font size */
+    font-weight: bold;
+    color: white;
+    margin-bottom: 20px;
+  }
+  
+  /* Hero description */
+  .hero-description {
+    font-size: 1.2rem; /* Larger font for description */
+    color: #ecf0f1; /* Light grey for description */
+    margin-bottom: 40px;
+  }
+  
+  /* Button group for sign-in and sign-up buttons */
+  .button-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* Base styles for buttons */
+  button {
+    padding: 14px 28px; /* Increased padding */
+    font-size: 1.1rem; /* Increased font size */
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1; /* Make buttons take up equal width */
+    width: 100px;
+  }
+  
+  /* Sign in button */
+  .sign-in-btn {
+    background-color: #3498db; /* Blue color */
+    
+    color: white;
+  }
+  
+  /* Sign in button hover */
+  .sign-in-btn:hover {
+    background-color: #2980b9; /* Darker blue */
+  }
+  
+  /* Sign up button */
+  .sign-up-btn {
+    background-color: #3498db; /* Green color */
+    width: 100px;
+    color: white;
+  }
+  
+  /* Sign up button hover */
+  .sign-up-btn:hover {
+    background-color: #2980b9; /* Darker green */
+  }
+  
+  /* Fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2.2rem; /* Slightly smaller for tablets */
+    }
+  
+    .hero-description {
+      font-size: 1.1rem;
+    }
+  
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .hero h1 {
+      font-size: 2rem; /* Reduced for smaller screens */
+    }
+  
+    .hero-description {
+      font-size: 1rem;
+    }
+  
+    button {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+  }
+  /* Logo image styling */
+.log {
+  height: 120px; /* Adjust based on your design */
+  width: 120px; /* Ensure it's a square */
+  object-fit: contain; /* Ensures the image fits inside without being distorted */
+  border-radius: 50%; /* Optional: To make the logo circular */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add some shadow for depth */
+  margin-bottom: 20px; /* Adds space below the logo */
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .log {
+    height: 90px;
+    width: 90px;
+  }
+}
+
+@media (max-width: 480px) {
+  .log {
+    height: 70px;
+    width: 70px;
+  }
+}
+
+/* Logo image styling */
+.log {
+    height: 180px; /* Increased size */
+    width: 180px;  /* Ensure it's a square */
+    object-fit: contain; /* Ensures the image fits inside without being distorted */
+    border-radius: 50%; /* Optional: To make the logo circular */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add some shadow for depth */
+    margin-bottom: 20px; /* Adds space below the logo */
+  }
+  
+  /* Responsive adjustments for mobile */
+  @media (max-width: 768px) {
+    .log {
+      height: 150px; /* Larger for tablets */
+      width: 150px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .log {
+      height: 130px; /* Larger for small screens */
+      width: 130px;
+    }
+  }
+  

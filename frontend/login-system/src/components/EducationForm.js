@@ -214,15 +214,18 @@ const EducationForm = () => {
               />
             </div>
 
-            <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="edu-remove-entry">
-              Remove This Entry
-            </button>
+            <div className="button-group">
+              <button type="button" onClick={() => handleRemoveEntry(entry.id)} className="sign-in-btn">
+                Remove This Entry
+              </button>
+            </div>
           </div>
         ))}
       </fieldset>
 
-      <button type="submit" className="edu-submit">Submit</button>
-
+      <div className="button-group">
+        <button type="submit" className="sign-in-btn">Submit</button>
+      </div>
       {/* Display success or error messages */}
       {successMessage && <p className="edu-success-message">{successMessage}</p>}
       {apiError && <p className="edu-error-message">{apiError}</p>}

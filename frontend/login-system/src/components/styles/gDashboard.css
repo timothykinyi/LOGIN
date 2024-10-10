@@ -32,7 +32,7 @@ body {
   justify-content: start;
   transition: all 0.3s ease;
   position: relative;
-  width: 80px; /* Compact default width */
+  max-width: 300px; /* Compact default width */
 }
 
 .dash-dashboard-nav:hover {
@@ -137,6 +137,7 @@ body {
 
 .dash-phone-nav {
   background-color: rgba(4, 55, 103, 0.309);
+  overflow-x: hidden;
   position: fixed;
   bottom: 0;
   right: 0;
@@ -146,6 +147,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
 }
 
 .dash-nav-items {

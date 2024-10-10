@@ -135,14 +135,20 @@ const ContactForm = () => {
               onChange={(e) => handlePhoneChange(entry.id, e)}
               required
             />
-            <button type="button" onClick={() => handleRemovePhone(entry.id)} className="remove-entry">
-              Remove This Phone
-            </button>
+            <div className="button-group">
+              <button type="button" onClick={() => handleRemovePhone(entry.id)} className="sign-in-btn">
+                Remove This Phone
+              </button>
+            </div>
+
           </div>
         ))}
-        <button type="button" onClick={handleAddPhone} className="add-entry">
-          Add Another Phone Number
-        </button>
+        <div className="button-group">
+          <button type="button" onClick={handleAddPhone} className="sign-in-btn">
+            Add Another Phone Number
+          </button>
+        </div>
+
       </div>
 
       <div className="section">
@@ -157,14 +163,20 @@ const ContactForm = () => {
               onChange={(e) => handleEmailChange(entry.id, e)}
               required
             />
-            <button type="button" onClick={() => handleRemoveEmail(entry.id)} className="remove-entry">
-              Remove This Email
-            </button>
+            <div className="button-group">
+              <button type="button" onClick={() => handleRemoveEmail(entry.id)} className="sign-in-btn">
+                Remove This Email
+              </button>
+            </div>
+
           </div>
         ))}
-        <button type="button" onClick={handleAddEmail} className="add-entry">
-          Add Another Email Address
-        </button>
+        <div className="button-group">
+          <button type="button" onClick={handleAddEmail} className="sign-in-btn">
+            Add Another Email Address
+          </button>
+        </div>
+
       </div>
 
       <div className="section">
@@ -238,14 +250,20 @@ const ContactForm = () => {
               value={entry.address}
               onChange={(e) => handleEmergencyContactChange(entry.id, e)}
             />
-            <button type="button" onClick={() => handleRemoveEmergencyContact(entry.id)} className="remove-entry">
-              Remove This Emergency Contact
-            </button>
+            <div className="button-group">
+              <button type="button" onClick={() => handleRemoveEmergencyContact(entry.id)} className="sign-in-btn">
+                Remove This Emergency Contact
+              </button>
+            </div>
+
           </div>
         ))}
-        <button type="button" onClick={handleAddEmergencyContact} className="add-entry">
-          Add Another Emergency Contact
-        </button>
+        <div className="button-group">
+          <button type="button" onClick={handleAddEmergencyContact} className="sign-in-btn">
+            Add Another Emergency Contact
+          </button>
+        </div>
+
       </div>
 
       <div className="section">
@@ -273,17 +291,24 @@ const ContactForm = () => {
               value={entry.username}
               onChange={(e) => handleSocialMediaChange(entry.id, e)}
             />
-            <button type="button" onClick={() => handleRemoveSocialMedia(entry.id)} className="remove-entry">
-              Remove This Social Media
-            </button>
+            <div className="button-group">
+              <button type="button" onClick={() => handleRemoveSocialMedia(entry.id)} className="sign-in-btn">
+                Remove This Social Media
+              </button>
+            </div>
+
           </div>
         ))}
-        <button type="button" onClick={handleAddSocialMedia} className="add-entry">
-          Add Another Social Media Account
-        </button>
-      </div>
+        <div className="button-group">
+          <button type="button" onClick={handleAddSocialMedia} className="sign-in-btn">
+            Add Another Social Media Account
+          </button>
+        </div>
 
-      <button type="submit">Submit</button>
+      </div>
+      <div className="button-group">
+      <button type="submit"className="sign-in-btn">Submit</button>
+      </div>
       {successMessage && <p className="success-message">{successMessage}</p>}
       {apiError && <p className="error-message">{apiError}</p>}
     </form>

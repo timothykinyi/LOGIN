@@ -281,7 +281,9 @@ const PersonalInfoForm = () => {
         {errors.country && <small className="error-message">{errors.country}</small>}
       </div>
 
-      <button type="submit">Submit</button>
+      <div className="button-group">
+        <button type="submit"className="sign-in-btn">Submit</button>
+      </div>
       {submitMessage && <p className="submit-message">{submitMessage}</p>}
     </form>
 

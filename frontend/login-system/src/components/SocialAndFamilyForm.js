@@ -179,14 +179,20 @@ const SocialAndFamilyForm = () => {
               {errors[`familyRelationship${member.id}`] && <small className="error-message">{errors[`familyRelationship${member.id}`]}</small>}
             </div>
 
-            <button type="button" onClick={() => handleRemoveFamilyMember(member.id)} className="remove-entry">
-              Remove This Member
-            </button>
+            <div className="button-group">
+              <button type="button" onClick={() => handleRemoveFamilyMember(member.id)} className="sign-in-btn">
+                Remove This Member
+              </button>
+            </div>
+
           </div>
         ))}
-        <button type="button" onClick={handleAddFamilyMember} className="add-entry">
-          Add Another Family Member
-        </button>
+        <div className="button-group">
+          <button type="button" onClick={handleAddFamilyMember}className="sign-in-btn">
+            Add Another Family Member
+          </button>
+        </div>
+
       </div>
 
       <div className="dependents">
@@ -223,14 +229,20 @@ const SocialAndFamilyForm = () => {
               {errors[`dependentRelationship${dependent.id}`] && <small className="error-message">{errors[`dependentRelationship${dependent.id}`]}</small>}
             </div>
 
-            <button type="button" onClick={() => handleRemoveDependent(dependent.id)} className="remove-entry">
-              Remove This Dependent
-            </button>
+            <div className="button-group">
+              <button type="button" onClick={() => handleRemoveDependent(dependent.id)} className="sign-in-btn">
+                Remove This Dependent
+              </button>
+            </div>
+
           </div>
         ))}
-        <button type="button" onClick={handleAddDependent} className="add-entry">
-          Add Another Dependent
-        </button>
+        <div className="button-group">
+          <button type="button" onClick={handleAddDependent} className="sign-in-btn">
+            Add Another Dependent
+          </button>
+        </div>
+
       </div>
 
       <div className="social-affiliations">
@@ -262,21 +274,29 @@ const SocialAndFamilyForm = () => {
               />
               {errors[`role${affiliation.id}`] && <small className="error-message">{errors[`role${affiliation.id}`]}</small>}
             </div>
+            <div className="button-group">
+              <button type="button" onClick={() => handleRemoveSocialAffiliation(affiliation.id)} className="sign-in-btn">
+                Remove This Affiliation
+              </button>
+            </div>
 
-            <button type="button" onClick={() => handleRemoveSocialAffiliation(affiliation.id)} className="remove-entry">
-              Remove This Affiliation
-            </button>
           </div>
         ))}
-        <button type="button" onClick={handleAddSocialAffiliation} className="add-entry">
-          Add Another Social Affiliation
-        </button>
+        <div className="button-group">
+          <button type="button" onClick={handleAddSocialAffiliation} className="sign-in-btn">
+            Add Another Social Affiliation
+          </button>
+        </div>
+
+      </div>
+      <div className="button-group">
+        <button type="submit" className="sign-in-btn">Submit</button>
       </div>
 
-      <button type="submit" className="submit-button">Submit</button>
-      
       {responseMessage && <p className="response-message">{responseMessage}</p>}
+      
     </form>
+
   );
 };
 
