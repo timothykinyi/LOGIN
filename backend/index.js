@@ -7,6 +7,7 @@ require('dotenv').config();
 
 // Import routes
 const authRoutes = require('./routes/auth');
+const notificationsRoutes = require('./routes/notifications');
 const personalInfoRoutes = require('./routes/personalInfoRoutes');
 const educationRoutes = require('./routes/educationRoutes');
 const contactRoutes = require('./routes/contactRoutes');
@@ -45,7 +46,7 @@ app.use('/door/dID', DIDRoutes);
 app.use('/api/houses', houseRoutes);
 app.use('/api/doors', doorManagmentRoutes);
 app.use('/api/access', accessManagementRoutes);
-
+app.use('/api/notifications', notificationsRoutes);
 // Error handling middleware
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {

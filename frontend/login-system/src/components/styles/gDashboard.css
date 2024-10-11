@@ -1,6 +1,6 @@
 /* Header styles */
 .dash-dashboard-header {
-  background-color: none; /* Header background color */
+  background-color: rgba(19, 51, 85, 0.533); /* Header background color */
   color: rgb(78, 78, 78); /* Text color */
   padding: 15px; /* Padding around the header */
   display: flex; /* Flexbox layout */

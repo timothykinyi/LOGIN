@@ -34,7 +34,9 @@ const Dashboard = () => {
   const navListRef = useRef(null); // Ref for the nav-items list to manipulate scrolling
   const scrollRef = useRef(null); // To keep track of auto-scroll state
   const eID = sessionStorage.getItem('eID');
-  const [notifications, setNotifications] = useState(0); // Initialize notifications count
+  const [notifications, setNotifications] = useState([]); // Holds fetched notifications
+  const [unreadCount, setUnreadCount] = useState(0); // Holds the count of unread notifications
+  const [showNotifications, setShowNotifications] = useState(false); // Toggle notification dropdown
 
   useEffect(() => {
     const token = sessionStorage.getItem('userToken');
@@ -42,7 +44,23 @@ const Dashboard = () => {
       navigate('/');
       return;
     }
+
+    // Fetch notifications on load
+    fetchNotifications();
   }, [navigate]);
+
+  // Function to fetch notifications
+  const fetchNotifications = async () => {
+    try {
+      const userId = sessionStorage.getItem('eID');
+      const response = await axios.get(`https://login-9ebe.onrender.com/api/notifications/${userId}`);
+      setNotifications(response.data);
+      const unread = response.data.filter((n) => !n.isRead).length;
+      setUnreadCount(unread); // Set unread count
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    }
+  };
 
   // Function to perform logout
   const performLogout = async () => {
@@ -129,7 +147,6 @@ const Dashboard = () => {
     }
   };
 
-  // Add swipe handling
   const handleTouchStart = (e) => {
     const touch = e.touches[0];
     setSwipeStart(touch.clientX); // Set the swipe start position
@@ -150,10 +167,23 @@ const Dashboard = () => {
     }
   };
 
+  // Toggle notification dropdown
   const handleNotificationClick = () => {
-    // Handle your notification logic here, e.g., navigate to a notification page
-    console.log("Notifications clicked");
+    setShowNotifications(!showNotifications); // Toggle visibility
+    markNotificationsAsRead(); // Mark as read when opened
   };
+
+  // Mark all notifications as read
+  const markNotificationsAsRead = async () => {
+    try {
+      const userId = sessionStorage.getItem('eID');
+      await axios.post(`https://login-9ebe.onrender.com/api/notifications/read-all/${userId}`);
+      setUnreadCount(0); // Reset unread count after marking
+    } catch (error) {
+      console.error('Error marking notifications as read:', error);
+    }
+  };
+
   const changeForm = (direction) => {
     const currentIndex = navItems.findIndex(item => item.form === activeForm);
     const newIndex = (currentIndex + direction + navItems.length - 1) % (navItems.length - 1); // Exclude logout
@@ -169,11 +199,8 @@ const Dashboard = () => {
     { icon: <FaMoneyBill />, form: 'financial', display: <DisplayFinancial />, formComponent: <FinancialForm />, label: 'Financial' },
     { icon: <FaUsers />, form: 'socialFamily', display: <DisplaySocialAndFamily />, formComponent: <SocialAndFamilyForm />, label: 'Social and Family' },
     { icon: <FaCogs />, form: 'preferences', display: <DisplayPreferencesAndLifestyle />, formComponent: <PreferencesAndLifestyleForm />, label: 'Preferences and Lifestyle' },
-    { form: 'preferences', display: <DisplayPreferencesAndLifestyle />, formComponent: <PreferencesAndLifestyleForm />, label: 'Preferences and Lifestyle' },
   ];
 
-
-  
   const renderContent = () => {
     const currentItem = navItems.find(item => item.form === activeForm);
     if (currentItem) {
@@ -189,7 +216,6 @@ const Dashboard = () => {
               {isAddingNew ? 'Back to Display' : 'Add/Update Info'}
             </button>
           </div>
-
         </div>
       );
     }
@@ -238,22 +264,35 @@ const Dashboard = () => {
         )}
       </div>
 
-
       <main className="dash-dashboard-content">
         <header className="dash-dashboard-header">
-        <div className="header-content">
-          {eID && <div className="header-eid">eID: {eID}</div>}
-          <div className="header-notifications">
-          
-          <button className="notification-button" onClick={performLogout}>
-              <FaSignOutAlt />
-            </button>
-            <button className="notification-button" onClick={handleNotificationClick}>
-              <FaBell />
-            </button>
-            {notifications > 0 && <span className="notification-count">{notifications}</span>}
+          <div className="header-content">
+            {eID && <div className="header-eid">eID: {eID}</div>}
+            <div className="header-notifications">
+              <button className="notification-button" onClick={handleNotificationClick}>
+                <FaBell />
+                {unreadCount > 0 && <span className="notification-count">{unreadCount}</span>}
+              </button>
+              {showNotifications && (
+                <div className="notification-dropdown">
+                  <ul>
+                    {notifications.length > 0 ? (
+                      notifications.map((notification, index) => (
+                        <li key={index} className={notification.isRead ? 'read' : 'unread'}>
+                          {notification.message}
+                        </li>
+                      ))
+                    ) : (
+                      <li>No new notifications</li>
+                    )}
+                  </ul>
+                </div>
+              )}
+              <button className="notification-button" onClick={performLogout}>
+                <FaSignOutAlt />
+              </button>
+            </div>
           </div>
-        </div>
         </header>
         {renderContent()}
       </main>
