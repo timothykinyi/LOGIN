@@ -245,17 +245,7 @@ const login = async (req, res) => {
     );
 
     // Function to send a message and create a notification
-    const sendMessage = async (userId, messageContent) => {
-      try {
-        // Now create a notification
-        const title = 'New Message';
-        const message = `You have received a new message: "${messageContent}"`;
-        await notificationController.postNotification(userId, title, message);
-        console.log('Notification sent');
-      } catch (error) {
-        console.error('Error sending message:', error);
-      }
-    };
+
 
     // Send login success notification
     const messageContent = 'You are now logged in';
@@ -269,6 +259,17 @@ const login = async (req, res) => {
   }
 };
 
+const sendMessage = async (nuserId, messageContent) => {
+  try {
+    // Now create a notification
+    const title = 'New Message';
+    const message = `You have received a new message: "${messageContent}"`;
+    await notificationController.postNotification(nuserId, title, message);
+    console.log('Notification sent');
+  } catch (error) {
+    console.error('Error sending message:', error);
+  }
+};
 
 const verifyUser = async (req, res) => {
   const { email, verificationCode } = req.body;
