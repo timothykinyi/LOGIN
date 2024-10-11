@@ -195,70 +195,58 @@ eID`;
 };
 
 const login = async (req, res) => {
-/*
-  try {
-    const newFields = {
-      active: false,
-    };
-
-    const updateFields = {};
-    for (const [key, value] of Object.entries(newFields)) {
-        updateFields[key] = { $ifNull: [`$${key}`, value] };
-    }
-    
-
-    await User.updateMany(
-      {
-        $or: Object.keys(newFields).map((key) => ({ [key]: { $exists: false } })),
-      },
-      { $set: newFields }
-    );
-
-    console.log('New fields added to users that were missing them');
-  } catch (error) {
-    console.error('Error updating users:', error);
-  }
-*/
-
   const { username, password } = req.body;
+  
   try {
     const user = await User.findOne({ username });
+    
+    // Check if the user exists
     if (!user) {
       return res.status(401).json({ message: 'Invalid username' });
     }
+
+    // Check if the user is verified
     if (!user.isVerified) {
       return res.status(401).json({ message: 'Please verify your account first' });
     }
-    if (user.category == 'Child') {
+
+    // Age verification if the user is categorized as a "Child"
+    if (user.category === 'Child') {
       const isDate18Valid = (date) => {
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0); // Reset hours to avoid time comparison issues
         const enteredDate = new Date(date);
         const minAgeDate = new Date(today.setFullYear(today.getFullYear() - 18));
         return enteredDate < minAgeDate;
       };
+
+      // Update user category to "Self" if the user is over 18
       if (!isDate18Valid(user.dateOfBirth)) {
         user.category = 'Self';
         await user.save();
       }
     }
 
+    // Check if the password matches
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid password '});
+      return res.status(401).json({ message: 'Invalid password' });
     }
+
+    // Set user as active upon successful login
     user.active = true;
     await user.save();
-    const token = jwt.sign({ id: user._id, eID: user.eID, username: user.username, email: user.email, category: user.category }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
 
-    const userId = user.eID;
-    const messageContent = 'You are now loged in';
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, eID: user.eID, username: user.username, email: user.email, category: user.category },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    // Function to send a message and create a notification
     const sendMessage = async (userId, messageContent) => {
       try {
-        // Send the message to the user...
-    
         // Now create a notification
         const title = 'New Message';
         const message = `You have received a new message: "${messageContent}"`;
@@ -268,13 +256,19 @@ const login = async (req, res) => {
         console.error('Error sending message:', error);
       }
     };
-    
-    res.json({ message: 'Login successful', token ,eID: user.eID, category: user.category});
+
+    // Send login success notification
+    const messageContent = 'You are now logged in';
+    await sendMessage(user.eID, messageContent);  // Make sure to await this to handle it asynchronously
+
+    // Respond to the client
+    res.json({ message: 'Login successful', token, eID: user.eID, category: user.category });
   } catch (error) {
     console.error('Error logging in:', error);
     res.status(500).json({ message: 'Error logging in', error });
   }
 };
+
 
 const verifyUser = async (req, res) => {
   const { email, verificationCode } = req.body;
