@@ -7,6 +7,10 @@ const { generateAlphanumericVerificationCode } = require('../services/verificati
 const { generateRegistrationOptions, verifyRegistrationResponse } = require('@simplewebauthn/server');
 const sendEmail = require('../services/emailService');
 require('dotenv').config();
+const notificationController = require('../controllers/notificationController');
+
+// Example: Function that sends a message and posts a notification
+
 
 const getWebAuthnOptions = async (req, res) => {
   try {
@@ -249,6 +253,22 @@ const login = async (req, res) => {
       expiresIn: '1h',
     });
 
+    const userId = user.eID;
+    const messageContent = 'You are now loged in';
+    const sendMessage = async (userId, messageContent) => {
+      try {
+        // Send the message to the user...
+    
+        // Now create a notification
+        const title = 'New Message';
+        const message = `You have received a new message: "${messageContent}"`;
+        await notificationController.postNotification(userId, title, message);
+        console.log('Notification sent');
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
+    };
+    
     res.json({ message: 'Login successful', token ,eID: user.eID, category: user.category});
   } catch (error) {
     console.error('Error logging in:', error);

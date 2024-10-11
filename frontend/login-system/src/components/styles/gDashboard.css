@@ -1,3 +1,85 @@
+/* Header styles */
+.dash-dashboard-header {
+  background-color: none; /* Header background color */
+  color: rgb(78, 78, 78); /* Text color */
+  padding: 15px; /* Padding around the header */
+  display: flex; /* Flexbox layout */
+  justify-content: space-between; /* Space between elements */
+   /* Center elements vertically */
+  min-width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+/* Content inside the header */
+.header-content {
+  display: flex; /* Flexbox layout for header content */
+  align-items: center; /* Center items vertically */
+  min-width: 100%;
+  justify-content: space-between; 
+}
+
+/* eID display styles */
+.header-eid {
+  margin-right: 20px; /* Space between eID and notification button */
+  font-size: 2.5em; /* Font size for eID */
+  font-weight: 600;
+}
+
+/* Notification button styles */
+.header-notifications {
+  position: relative; /* Position relative for notification count badge */
+}
+
+.notification-button {
+  background: none; /* No background */
+  border: none; /* No border */
+  width: 50px;
+  color: rgb(81, 81, 81); /* Text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 1.5em; /* Font size for notification icon */
+  position: relative; /* Position relative for badge placement */
+  transition: transform 0.2s; /* Animation on hover */
+  right: 0;
+}
+
+/* Hover effect for notification button */
+.notification-button:hover {
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Notification count badge styles */
+.notification-count {
+  background-color: red; /* Badge background color */
+  color: white; /* Text color */
+  border-radius: 50%; /* Circular badge */
+  padding: 3px 6px; /* Padding for the badge */
+  position: absolute; /* Position absolute to overlap with button */
+  top: -5px; /* Position above button */
+  right: -10px; /* Position to the right */
+  font-size: 0.75em; /* Smaller font size for count */
+}
+
+/* Responsive styles for the header */
+@media (max-width: 768px) {
+  .dash-dashboard-header {
+    padding: 10px; /* Reduce padding on mobile */
+  }
+
+  .header-eid {
+    font-size: 0.9em; /* Smaller font size for eID on mobile */
+    margin-right: 10px; /* Reduce margin for mobile */
+  }
+
+  .notification-button {
+    font-size: 1.3em; /* Slightly smaller icon on mobile */
+  }
+
+  .notification-count {
+    top: -4px; /* Adjust position for mobile */
+    right: -8px; /* Adjust position for mobile */
+  }
+}
+
 /* General Styles */
 * {
   margin: 0;

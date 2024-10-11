@@ -1,13 +1,13 @@
-// App.js
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import ContactForm from './components/ContactForm';
-import Dashboard from './components/Dashboard'; // Example of a protected route
+import Dashboard from './components/Dashboard';
 import EducationForm from './components/EducationForm';
 import EmploymentForm from './components/EmploymentForm';
 import FinancialForm from './components/FinancialForm';
 import HealthForm from './components/HealthForm';
 import LoginForm from './components/Login';
+import OfflinePage from './components/OfflinePage';
 import PersonalInfoForm from './components/PersonalInfoForm';
 import PreferencesAndLifestyleForm from './components/PreferencesAndLifestyleForm';
 import ProfileForm from './components/ProfileForm';
@@ -37,12 +37,14 @@ import GDashboard from './components/gDashboard';
 import Landing from './components/landing';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
+import useOnlineStatus from './hooks/useOnlineStatus'; // Import the hook
 
 function App() {
   return (
     <Router>
+      <OnlineStatusChecker /> {/* This component will handle online status */}
       <Routes>
-      <Route path="/" element={<Landing />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -71,6 +73,7 @@ function App() {
         <Route path="/biometrics" element={<Biometrics />} />
         <Route path="/userDoorDash" element={<UserDoorDash />} />
         <Route path="/doordash" element={<DD />} />
+        <Route path="/offline" element={<OfflinePage />} />
         <Route path="/doorManagement" element={<DoorManagement />} />
         <Route path="/houseRegistration" element={<HouseRegistration />} />
         <Route path="/userDoorDash/doormanagment" element={<Doormanagment />} /> 
@@ -78,10 +81,16 @@ function App() {
         <Route path="/m" element={<Mw />} />
         <Route path="/house" element={<HomePage />} />
         <Route path="/house/:houseId" element={<HousePage />} />
-        {/* Add more routes as needed */}
       </Routes>
     </Router>
   );
+}
+
+// New component to handle online/offline status
+function OnlineStatusChecker() {
+  const isOnline = useOnlineStatus();  // This now runs within the Router context
+
+  return null;  // No need to render anything
 }
 
 export default App;

@@ -1,7 +1,7 @@
 import axios from 'axios'; // Import axios
 import { jwtDecode } from 'jwt-decode'; // Correctly import jwtDecode
 import React, { useEffect, useRef, useState } from 'react';
-import { FaBriefcase, FaCogs, FaHeartbeat, FaMoneyBill, FaPhone, FaSignOutAlt, FaTimes, FaUniversity, FaUser, FaUsers } from 'react-icons/fa';
+import { FaBell, FaBriefcase, FaCogs, FaHeartbeat, FaMoneyBill, FaPhone, FaSignOutAlt, FaTimes, FaUniversity, FaUser, FaUsers } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './styles/gDashboard.css'; // Your prefixed CSS file
 
@@ -34,6 +34,7 @@ const Dashboard = () => {
   const navListRef = useRef(null); // Ref for the nav-items list to manipulate scrolling
   const scrollRef = useRef(null); // To keep track of auto-scroll state
   const eID = sessionStorage.getItem('eID');
+  const [notifications, setNotifications] = useState(0); // Initialize notifications count
 
   useEffect(() => {
     const token = sessionStorage.getItem('userToken');
@@ -60,6 +61,8 @@ const Dashboard = () => {
       // Clear the user token or session
       sessionStorage.removeItem('userToken'); // Clear user token
       sessionStorage.removeItem('eID'); // Clear user ID
+      localStorage.removeItem('eID');
+      localStorage.removeItem('userToken');
       navigate('/login'); 
     } catch (error) {
       console.error('Error logging out:', error);
@@ -137,16 +140,20 @@ const Dashboard = () => {
     const swipeDistance = touch.clientX - swipeStart;
 
     if (swipeStart !== null) {
-      if (swipeDistance > 50) { // Right swipe
+      if (swipeDistance > 100) { // Right swipe
         changeForm(-1); // Change to previous form
         setSwipeStart(null); // Reset the swipe start position
-      } else if (swipeDistance < -50) { // Left swipe
+      } else if (swipeDistance < -100) { // Left swipe
         changeForm(1); // Change to next form
         setSwipeStart(null); // Reset the swipe start position
       }
     }
   };
 
+  const handleNotificationClick = () => {
+    // Handle your notification logic here, e.g., navigate to a notification page
+    console.log("Notifications clicked");
+  };
   const changeForm = (direction) => {
     const currentIndex = navItems.findIndex(item => item.form === activeForm);
     const newIndex = (currentIndex + direction + navItems.length - 1) % (navItems.length - 1); // Exclude logout
@@ -162,9 +169,11 @@ const Dashboard = () => {
     { icon: <FaMoneyBill />, form: 'financial', display: <DisplayFinancial />, formComponent: <FinancialForm />, label: 'Financial' },
     { icon: <FaUsers />, form: 'socialFamily', display: <DisplaySocialAndFamily />, formComponent: <SocialAndFamilyForm />, label: 'Social and Family' },
     { icon: <FaCogs />, form: 'preferences', display: <DisplayPreferencesAndLifestyle />, formComponent: <PreferencesAndLifestyleForm />, label: 'Preferences and Lifestyle' },
-    { icon: <FaSignOutAlt />, form: 'logout', label: 'Logout', isLogout: true }, // Added Logout item
+    { form: 'preferences', display: <DisplayPreferencesAndLifestyle />, formComponent: <PreferencesAndLifestyleForm />, label: 'Preferences and Lifestyle' },
   ];
 
+
+  
   const renderContent = () => {
     const currentItem = navItems.find(item => item.form === activeForm);
     if (currentItem) {
@@ -231,7 +240,21 @@ const Dashboard = () => {
 
 
       <main className="dash-dashboard-content">
-        {eID && <div className="sign-in-btn">Your eID: {eID}</div>}
+        <header className="dash-dashboard-header">
+        <div className="header-content">
+          {eID && <div className="header-eid">eID: {eID}</div>}
+          <div className="header-notifications">
+          
+          <button className="notification-button" onClick={performLogout}>
+              <FaSignOutAlt />
+            </button>
+            <button className="notification-button" onClick={handleNotificationClick}>
+              <FaBell />
+            </button>
+            {notifications > 0 && <span className="notification-count">{notifications}</span>}
+          </div>
+        </div>
+        </header>
         {renderContent()}
       </main>
     </div>

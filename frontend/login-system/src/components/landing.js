@@ -10,6 +10,17 @@ const LandingPage = () => {
 
   // Check if app is installed and listen for the install prompt
   useEffect(() => {
+    const eID = localStorage.getItem('eID');
+    const token = localStorage.getItem('userToken');
+    // Check if the user is logged in (check for valid token and eID)
+    if (eID && token) {
+      // Redirect to the dashboard if already logged in
+      sessionStorage.setItem('userToken', token);
+      sessionStorage.setItem('eID', eID);
+      navigate('/dDashboard');
+      return;
+    }
+
     // Check if app is already installed
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setIsInstalled(true); // If installed, set the flag to true
@@ -28,7 +39,7 @@ const LandingPage = () => {
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
-  }, []);
+  }, [navigate]);
 
   // Function to trigger the install prompt
   const handleInstallClick = () => {

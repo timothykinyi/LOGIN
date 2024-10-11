@@ -18,17 +18,18 @@ const PreferencesAndLifestyleForm = () => {
   const [isLoading, setIsLoading] = useState(false); // State to track loading
   const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+
   useEffect(() => {
     const eID = sessionStorage.getItem('eID');
     const token = sessionStorage.getItem('userToken');
-    if (!eID || !token)
-      {
-        navigate('/');
-        return;
-      }
-    },[navigate]);
+    if (!eID || !token) {
+      navigate('/');
+      return;
+    }
+  }, [navigate]);
+
   const handleSelectChange = (setState, value) => {
-    setState(Array.from(value));
+    setState([...value].map((option) => option.value)); // Extract values from selected options
   };
 
   const handleSubmit = async (e) => {
@@ -69,105 +70,105 @@ const PreferencesAndLifestyleForm = () => {
           value={selectedHobbies}
           onChange={(e) => handleSelectChange(setSelectedHobbies, e.target.selectedOptions)}
         >
-        <option value="Reading">Reading</option>
-        <option value="Traveling">Traveling</option>
-        <option value="Cooking">Cooking</option>
-        <option value="Photography">Photography</option>
-        <option value="Gardening">Gardening</option>
-        <option value="Painting">Painting</option>
-        <option value="Writing">Writing</option>
-        <option value="Crafting">Crafting</option>
-        <option value="Music">Music</option>
-        <option value="Sports">Sports</option>
-        <option value="Gaming">Gaming</option>
-        <option value="Collecting">Collecting</option>
-        <option value="Dancing">Dancing</option>
-        <option value="Fishing">Fishing</option>
-        <option value="Hiking">Hiking</option>
-        <option value="Yoga">Yoga</option>
-        <option value="Travel Photography">Travel Photography</option>
-        <option value="Knitting">Knitting</option>
-        <option value="Sculpting">Sculpting</option>
-        <option value="Pottery">Pottery</option>
-        <option value="Bird Watching">Bird Watching</option>
-        <option value="Camping">Camping</option>
-        <option value="DIY Projects">DIY Projects</option>
-        <option value="Astronomy">Astronomy</option>
-        <option value="Meditation">Meditation</option>
-        <option value="Woodworking">Woodworking</option>
-        <option value="Model Building">Model Building</option>
-        <option value="Origami">Origami</option>
-        <option value="Juggling">Juggling</option>
-        <option value="Geocaching">Geocaching</option>
-        <option value="Historical Reenactment">Historical Reenactment</option>
-        <option value="Magic Tricks">Magic Tricks</option>
-        <option value="Candle Making">Candle Making</option>
-        <option value="Soap Making">Soap Making</option>
-        <option value="Soap Carving">Soap Carving</option>
-        <option value="Calligraphy">Calligraphy</option>
-        <option value="Wine Tasting">Wine Tasting</option>
-        <option value="Travel Writing">Travel Writing</option>
-        <option value="Surfing">Surfing</option>
-        <option value="Motorcycling">Motorcycling</option>
-        <option value="Snowmobiling">Snowmobiling</option>
-        <option value="Scuba Diving">Scuba Diving</option>
-        <option value="Horseback Riding">Horseback Riding</option>
-        <option value="Skydiving">Skydiving</option>
-        <option value="Tattoo Art">Tattoo Art</option>
-        <option value="Surfing">Surfing</option>
-        <option value="Motorcycling">Motorcycling</option>
-        <option value="Snowmobiling">Snowmobiling</option>
-        <option value="Scuba Diving">Scuba Diving</option>
-        <option value="Horseback Riding">Horseback Riding</option>
-        <option value="Skydiving">Skydiving</option>
-        <option value="Tattoo Art">Tattoo Art</option>
-        <option value="Bowling">Bowling</option>
-        <option value="Baking">Baking</option>
-        <option value="Rock Climbing">Rock Climbing</option>
-        <option value="Fishing">Fishing</option>
-        <option value="Caving">Caving</option>
-        <option value="Camping">Camping</option>
-        <option value="Astrology">Astrology</option>
-        <option value="Swimming">Swimming</option>
-        <option value="Sailing">Sailing</option>
-        <option value="Kayaking">Kayaking</option>
-        <option value="Puzzles">Puzzles</option>
-        <option value="Tattoo Design">Tattoo Design</option>
-        <option value="Board Games">Board Games</option>
-        <option value="Digital Art">Digital Art</option>
-        <option value="Lego Building">Lego Building</option>
-        <option value="Pet Training">Pet Training</option>
-        <option value="Homebrewing">Homebrewing</option>
-        <option value="Fencing">Fencing</option>
-        <option value="Magic Tricks">Magic Tricks</option>
-        <option value="Origami">Origami</option>
-        <option value="Soap Making">Soap Making</option>
-        <option value="Cycling">Cycling</option>
-        <option value="Bungee Jumping">Bungee Jumping</option>
-        <option value="Triathlons">Triathlons</option>
-        <option value="Stand-Up Comedy">Stand-Up Comedy</option>
-        <option value="Vlogging">Vlogging</option>
-        <option value="Remote Control Cars">Remote Control Cars</option>
-        <option value="Digital Photography">Digital Photography</option>
-        <option value="Home Improvement">Home Improvement</option>
-        <option value="Urban Exploration">Urban Exploration</option>
-        <option value="Public Speaking">Public Speaking</option>
-        <option value="Sculpture">Sculpture</option>
-        <option value="Glassblowing">Glassblowing</option>
-        <option value="Fishing">Fishing</option>
-        <option value="Rock Balancing">Rock Balancing</option>
-        <option value="Origami">Origami</option>
-        <option value="Flower Arranging">Flower Arranging</option>
-        <option value="Amateur Radio">Amateur Radio</option>
-        <option value="Cycling">Cycling</option>
-        <option value="Quilting">Quilting</option>
-        <option value="Antique Collecting">Antique Collecting</option>
-        <option value="Drones">Drones</option>
-        <option value="Motor Racing">Motor Racing</option>
-        <option value="Street Art">Street Art</option>
-        <option value="Acrobatics">Acrobatics</option>
-        <option value="Leatherworking">Leatherworking</option>
-        <option value="Genealogy">Genealogy</option>
+          <option value="Reading">Reading</option>
+          <option value="Traveling">Traveling</option>
+          <option value="Cooking">Cooking</option>
+          <option value="Photography">Photography</option>
+          <option value="Gardening">Gardening</option>
+          <option value="Painting">Painting</option>
+          <option value="Writing">Writing</option>
+          <option value="Crafting">Crafting</option>
+          <option value="Music">Music</option>
+          <option value="Sports">Sports</option>
+          <option value="Gaming">Gaming</option>
+          <option value="Collecting">Collecting</option>
+          <option value="Dancing">Dancing</option>
+          <option value="Fishing">Fishing</option>
+          <option value="Hiking">Hiking</option>
+          <option value="Yoga">Yoga</option>
+          <option value="Travel Photography">Travel Photography</option>
+          <option value="Knitting">Knitting</option>
+          <option value="Sculpting">Sculpting</option>
+          <option value="Pottery">Pottery</option>
+          <option value="Bird Watching">Bird Watching</option>
+          <option value="Camping">Camping</option>
+          <option value="DIY Projects">DIY Projects</option>
+          <option value="Astronomy">Astronomy</option>
+          <option value="Meditation">Meditation</option>
+          <option value="Woodworking">Woodworking</option>
+          <option value="Model Building">Model Building</option>
+          <option value="Origami">Origami</option>
+          <option value="Juggling">Juggling</option>
+          <option value="Geocaching">Geocaching</option>
+          <option value="Historical Reenactment">Historical Reenactment</option>
+          <option value="Magic Tricks">Magic Tricks</option>
+          <option value="Candle Making">Candle Making</option>
+          <option value="Soap Making">Soap Making</option>
+          <option value="Soap Carving">Soap Carving</option>
+          <option value="Calligraphy">Calligraphy</option>
+          <option value="Wine Tasting">Wine Tasting</option>
+          <option value="Travel Writing">Travel Writing</option>
+          <option value="Surfing">Surfing</option>
+          <option value="Motorcycling">Motorcycling</option>
+          <option value="Snowmobiling">Snowmobiling</option>
+          <option value="Scuba Diving">Scuba Diving</option>
+          <option value="Horseback Riding">Horseback Riding</option>
+          <option value="Skydiving">Skydiving</option>
+          <option value="Tattoo Art">Tattoo Art</option>
+          <option value="Surfing">Surfing</option>
+          <option value="Motorcycling">Motorcycling</option>
+          <option value="Snowmobiling">Snowmobiling</option>
+          <option value="Scuba Diving">Scuba Diving</option>
+          <option value="Horseback Riding">Horseback Riding</option>
+          <option value="Skydiving">Skydiving</option>
+          <option value="Tattoo Art">Tattoo Art</option>
+          <option value="Bowling">Bowling</option>
+          <option value="Baking">Baking</option>
+          <option value="Rock Climbing">Rock Climbing</option>
+          <option value="Fishing">Fishing</option>
+          <option value="Caving">Caving</option>
+          <option value="Camping">Camping</option>
+          <option value="Astrology">Astrology</option>
+          <option value="Swimming">Swimming</option>
+          <option value="Sailing">Sailing</option>
+          <option value="Kayaking">Kayaking</option>
+          <option value="Puzzles">Puzzles</option>
+          <option value="Tattoo Design">Tattoo Design</option>
+          <option value="Board Games">Board Games</option>
+          <option value="Digital Art">Digital Art</option>
+          <option value="Lego Building">Lego Building</option>
+          <option value="Pet Training">Pet Training</option>
+          <option value="Homebrewing">Homebrewing</option>
+          <option value="Fencing">Fencing</option>
+          <option value="Magic Tricks">Magic Tricks</option>
+          <option value="Origami">Origami</option>
+          <option value="Soap Making">Soap Making</option>
+          <option value="Cycling">Cycling</option>
+          <option value="Bungee Jumping">Bungee Jumping</option>
+          <option value="Triathlons">Triathlons</option>
+          <option value="Stand-Up Comedy">Stand-Up Comedy</option>
+          <option value="Vlogging">Vlogging</option>
+          <option value="Remote Control Cars">Remote Control Cars</option>
+          <option value="Digital Photography">Digital Photography</option>
+          <option value="Home Improvement">Home Improvement</option>
+          <option value="Urban Exploration">Urban Exploration</option>
+          <option value="Public Speaking">Public Speaking</option>
+          <option value="Sculpture">Sculpture</option>
+          <option value="Glassblowing">Glassblowing</option>
+          <option value="Fishing">Fishing</option>
+          <option value="Rock Balancing">Rock Balancing</option>
+          <option value="Origami">Origami</option>
+          <option value="Flower Arranging">Flower Arranging</option>
+          <option value="Amateur Radio">Amateur Radio</option>
+          <option value="Cycling">Cycling</option>
+          <option value="Quilting">Quilting</option>
+          <option value="Antique Collecting">Antique Collecting</option>
+          <option value="Drones">Drones</option>
+          <option value="Motor Racing">Motor Racing</option>
+          <option value="Street Art">Street Art</option>
+          <option value="Acrobatics">Acrobatics</option>
+          <option value="Leatherworking">Leatherworking</option>
+          <option value="Genealogy">Genealogy</option>
 
         </select>
       </div>
@@ -179,6 +180,7 @@ const PreferencesAndLifestyleForm = () => {
           value={selectedActivities}
           onChange={(e) => handleSelectChange(setSelectedActivities, e.target.selectedOptions)}
         >
+
         <option value="Running">Running</option>
         <option value="Swimming">Swimming</option>
         <option value="Gym">Gym</option>
@@ -281,7 +283,8 @@ const PreferencesAndLifestyleForm = () => {
           value={selectedMusicGenres}
           onChange={(e) => handleSelectChange(setSelectedMusicGenres, e.target.selectedOptions)}
         >
-          <option value="Pop">Pop</option>
+
+<option value="Pop">Pop</option>
           <option value="Rock">Rock</option>
           <option value="Hip-Hop">Hip-Hop</option>
           <option value="Classical">Classical</option>
@@ -495,11 +498,11 @@ const PreferencesAndLifestyleForm = () => {
       </div>
 
       <div className="button-group">
-        <button type="submit" className="sign-in-btn"disabled={isLoading}>
+        <button type="submit" className="sign-in-btn" disabled={isLoading}>
           {isLoading ? 'Submitting...' : 'Submit'}
         </button>
       </div>
-      
+
       {/* Response Message */}
       {responseMessage && <p className="response-message">{responseMessage}</p>}
     </form>

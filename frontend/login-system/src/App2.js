@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import './App.css';
 import ChatWindow from './message/ChatWindow';
 import MessageInput from './message/MessageInput';
 import MessageList from './message/MessageList';
-import './app2.css';
 // Connect to the backend server for real-time messaging
 const socket = io('http://localhost:5000');
 
