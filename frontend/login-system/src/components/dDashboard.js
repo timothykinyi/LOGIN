@@ -65,7 +65,7 @@ const Dashboard = () => {
       navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification('New Notification', {
           body: message,
-          icon: './images/lg.png', // Path to notification icon
+          icon: '../favicon.ico', // Path to notification icon
           vibrate: [100, 50, 100],
         });
       });
@@ -79,7 +79,7 @@ const Dashboard = () => {
       const response = await axios.get(`https://login-9ebe.onrender.com/api/notifications/${userId}`);
       setNotifications(response.data);
       const unread = response.data.filter((n) => !n.isRead).length;
-      triggerPhoneNotification ('Notification');
+      triggerPhoneNotification ('You are now logged in');
       setUnreadCount(unread); // Set unread count
     } catch (error) {
       console.error('Error fetching notifications:', error);

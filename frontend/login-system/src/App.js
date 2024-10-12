@@ -58,6 +58,9 @@ function App() {
     }
   }, []);
 
+  const eID = localStorage.getItem('eID');
+  const userId = eID;  // Replace this with the real user ID from your auth system
+
   const subscribeUserToPush = async (registration) => {
     try {
       const subscription = await registration.pushManager.subscribe({
@@ -67,10 +70,10 @@ function App() {
 
       console.log('User is subscribed:', subscription);
 
-      // Send subscription to your server
+      // Send subscription and user ID to your server
       await fetch('/subscribe', {
         method: 'POST',
-        body: JSON.stringify(subscription),
+        body: JSON.stringify({ userId, subscription }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -79,6 +82,7 @@ function App() {
       console.error('Failed to subscribe the user:', error);
     }
   };
+
   return (
     <Router>
       <OnlineStatusChecker /> {/* This component will handle online status */}
