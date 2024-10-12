@@ -79,8 +79,8 @@ const DataShareComponent = () => {
     if (!confirmSubmit) return;
 
     try {
-      const response = await axios.post('https://login-9ebe.onrender.com/api/shared/share', { selectedData });
-      setShareableLink(`'https://login-9ebe.onrender.com/api/shared//shared-data/${response.data.id}`);
+      const response = await axios.post('https://login-9ebe.onrender.com/api/shared/share', { selectedData, eID });
+      setShareableLink(`'https://login-9ebe.onrender.com/api/shared/shared-data/${response.data.id}`);
     } catch (error) {
       console.error('Error sharing data:', error);
       setError('Failed to share data. Please try again later.');
