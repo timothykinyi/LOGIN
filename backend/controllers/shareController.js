@@ -56,8 +56,4 @@ const getSharedDataByEID = async (req, res) => {
     shareSelectedData,
     getSharedDataByEID, // Add this line to export the new function
   };
-  
 
-module.exports = {
-  shareSelectedData,
-};
