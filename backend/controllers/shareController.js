@@ -43,7 +43,7 @@ const getSharedDataByEID = async (req, res) => {
   const { eID } = req.params; // Retrieve eID from URL parameters
 
   try {
-    const sharedData = await SharedData.find({ eID }); // Fetch based on eID
+    const sharedData = await SharedData.find({ dID: eID }); // Fetch based on eID
 
     if (sharedData.length === 0) {
       return res.status(404).json({ message: 'No shared data found for this eID.' });
