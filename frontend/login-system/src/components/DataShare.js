@@ -12,10 +12,20 @@ const DataShareComponent = () => {
   const [personalInfoList, setPersonalInfoList] = useState([]);
   const [preferences, setPreferences] = useState([]);
   const [socialFamilyData, setSocialFamilyData] = useState([]);
-  const [selectedData, setSelectedData] = useState({});
+  const [selectedData, setSelectedData] = useState({
+    contacts: {},
+    education: {},
+    employment: {},
+    financial: {},
+    health: {},
+    personal: {},
+    preferences: {},
+    socialFamily: {}
+  });
   const [shareableLink, setShareableLink] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deadlineDate, setDeadlineDate] = useState(''); // New state for deadline
   const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
 
@@ -59,19 +69,28 @@ const DataShareComponent = () => {
     fetchData();
   }, [navigate, eID]);
 
-  const handleSelectData = (category, itemId, value) => {
-    setSelectedData(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        [itemId]: value,
-      },
-    }));
+  const handleSelectData = (category, item, isSelected) => {
+    setSelectedData(prev => {
+      const updatedCategory = { ...prev[category] };
+      if (isSelected) {
+        // Add the entire item to the selected data
+        updatedCategory[item._id] = item;
+      } else {
+        // Remove the item from selected data
+        delete updatedCategory[item._id];
+      }
+      return { ...prev, [category]: updatedCategory };
+    });
   };
 
   const handleSubmit = async () => {
-    if (!Object.keys(selectedData).length) {
+    if (!Object.keys(selectedData).some(cat => Object.keys(selectedData[cat]).length > 0)) {
       alert('Please select at least one item to share.');
+      return;
+    }
+
+    if (!deadlineDate) {
+      alert('Please select a deadline date for sharing the data.');
       return;
     }
 
@@ -79,8 +98,8 @@ const DataShareComponent = () => {
     if (!confirmSubmit) return;
 
     try {
-      const response = await axios.post('https://login-9ebe.onrender.com/api/shared/share', { selectedData, eID });
-      setShareableLink(`'https://login-9ebe.onrender.com/api/shared/shared-data/${response.data.id}`);
+      const response = await axios.post('https://login-9ebe.onrender.com/api/shared/share', { selectedData, eID, deadlineDate });
+      setShareableLink(`https://login-9ebe.onrender.com/api/shared/shared-data/${response.data.id}`);
     } catch (error) {
       console.error('Error sharing data:', error);
       setError('Failed to share data. Please try again later.');
@@ -88,7 +107,17 @@ const DataShareComponent = () => {
   };
 
   const handleClearSelection = () => {
-    setSelectedData({});
+    setSelectedData({
+      contacts: {},
+      education: {},
+      employment: {},
+      financial: {},
+      health: {},
+      personal: {},
+      preferences: {},
+      socialFamily: {}
+    });
+    setDeadlineDate(''); // Clear the deadline date
   };
 
   return (
@@ -106,8 +135,8 @@ const DataShareComponent = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={!!selectedData.contacts?.[contact._id]}
-                  onChange={e => handleSelectData('contacts', contact._id, e.target.checked)}
+                  checked={!!selectedData.contacts[contact._id]}
+                  onChange={e => handleSelectData('contacts', contact, e.target.checked)}
                 />
                 {contact.phoneNumbers.map(num => num.number).join(', ')}
               </label>
@@ -120,8 +149,8 @@ const DataShareComponent = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={!!selectedData.education?.[education._id]}
-                  onChange={e => handleSelectData('education', education._id, e.target.checked)}
+                  checked={!!selectedData.education[education._id]}
+                  onChange={e => handleSelectData('education', education, e.target.checked)}
                 />
                 {education.institutionName} ({education.degree})
               </label>
@@ -134,8 +163,8 @@ const DataShareComponent = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={!!selectedData.employment?.[employment._id]}
-                  onChange={e => handleSelectData('employment', employment._id, e.target.checked)}
+                  checked={!!selectedData.employment[employment._id]}
+                  onChange={e => handleSelectData('employment', employment, e.target.checked)}
                 />
                 {employment.jobTitle} at {employment.employer}
               </label>
@@ -148,8 +177,8 @@ const DataShareComponent = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={!!selectedData.financial?.[financial._id]}
-                  onChange={e => handleSelectData('financial', financial._id, e.target.checked)}
+                  checked={!!selectedData.financial[financial._id]}
+                  onChange={e => handleSelectData('financial', financial, e.target.checked)}
                 />
                 {financial.bankName}
               </label>
@@ -162,8 +191,8 @@ const DataShareComponent = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={!!selectedData.health?.[health._id]}
-                  onChange={e => handleSelectData('health', health._id, e.target.checked)}
+                  checked={!!selectedData.health[health._id]}
+                  onChange={e => handleSelectData('health', health, e.target.checked)}
                 />
                 Blood Type: {health.bloodType}
               </label>
@@ -176,8 +205,8 @@ const DataShareComponent = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={!!selectedData.personal?.[personal._id]}
-                  onChange={e => handleSelectData('personal', personal._id, e.target.checked)}
+                  checked={!!selectedData.personal[personal._id]}
+                  onChange={e => handleSelectData('personal', personal, e.target.checked)}
                 />
                 {personal.firstName} {personal.lastName}
               </label>
@@ -190,8 +219,8 @@ const DataShareComponent = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={!!selectedData.preferences?.[preference._id]}
-                  onChange={e => handleSelectData('preferences', preference._id, e.target.checked)}
+                  checked={!!selectedData.preferences[preference._id]}
+                  onChange={e => handleSelectData('preferences', preference, e.target.checked)}
                 />
                 {preference.favoriteCuisine}
               </label>
@@ -204,13 +233,26 @@ const DataShareComponent = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={!!selectedData.socialFamily?.[family._id]}
-                  onChange={e => handleSelectData('socialFamily', family._id, e.target.checked)}
+                  checked={!!selectedData.socialFamily[family._id]}
+                  onChange={e => handleSelectData('socialFamily', family, e.target.checked)}
                 />
                 Marital Status: {family.maritalStatus}
               </label>
             </div>
           ))}
+
+          {/* Date Picker for Deadline */}
+          <div style={{ margin: '10px 0' }}>
+            <label style={{ color: 'lightgray' }}>
+              Deadline Date:
+              <input
+                type="date"
+                value={deadlineDate}
+                onChange={e => setDeadlineDate(e.target.value)}
+                style={{ marginLeft: '10px' }}
+              />
+            </label>
+          </div>
 
           <button onClick={handleClearSelection} style={{ margin: '10px', padding: '10px', backgroundColor: 'red', color: 'white' }}>
             Clear All Selections
