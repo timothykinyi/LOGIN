@@ -1,62 +1,85 @@
-// src/components/FingerprintAuth.js
+// src/components/DataShare.js
+import axios from 'axios';
 import React, { useState } from 'react';
 
-const FingerprintAuth = () => {
-  const [message, setMessage] = useState('');
+const DataShare = () => {
+  const [selectedData, setSelectedData] = useState([]);
+  const [shareDuration, setShareDuration] = useState('1'); // Duration in days
+  const [shareLink, setShareLink] = useState('');
 
-  const authenticateWithFingerprint = async () => {
+  // Sample data categories you may want to share
+  const dataOptions = [
+    { id: 'personalInfo', label: 'Personal Information' },
+    { id: 'contact', label: 'Contact Information' },
+    { id: 'education', label: 'Education' },
+    { id: 'employment', label: 'Employment' },
+    { id: 'financial', label: 'Financial Data' },
+    { id: 'health', label: 'Health Information' },
+    { id: 'preferences', label: 'Preferences & Lifestyle' },
+    { id: 'socialFamily', label: 'Social & Family Data' },
+  ];
+
+  const handleDataSelection = (dataId) => {
+    setSelectedData((prevSelected) =>
+      prevSelected.includes(dataId)
+        ? prevSelected.filter((id) => id !== dataId)
+        : [...prevSelected, dataId]
+    );
+  };
+
+  const handleDurationChange = (event) => {
+    setShareDuration(event.target.value);
+  };
+
+  const handleShareData = async () => {
     try {
-      if (!window.PublicKeyCredential) {
-        setMessage('WebAuthn is not supported on this device.');
-        return;
-      }
-
-      // Request a challenge from the backend (for security, not storing anything)
-      const challengeResponse = await fetch('https://login-9ebe.onrender.com/auth/getChallenge', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const { challenge } = await challengeResponse.json();
-
-      // Request fingerprint authentication
-      const assertion = await navigator.credentials.get({
-        publicKey: {
-          challenge: Uint8Array.from(atob(challenge), c => c.charCodeAt(0)),
-          userVerification: 'preferred'
-        }
+      const response = await axios.post('https://your-api-endpoint.com/api/share-data', {
+        data: selectedData,
+        duration: shareDuration,
       });
 
-      if (assertion) {
-        // Notify the backend that the fingerprint was successfully verified
-        const verificationResponse = await fetch('https://login-9ebe.onrender.com/auth/verifyFingerprint', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ success: true })
-        });
-
-        const result = await verificationResponse.json();
-
-        if (result.success) {
-          setMessage('Fingerprint authentication successful!');
-        } else {
-          setMessage('Authentication failed.');
-        }
-      }
+      // Assuming the response contains a share link
+      setShareLink(response.data.shareLink);
     } catch (error) {
-      console.error('Authentication error:', error);
-      setMessage('An error occurred during authentication.');
+      console.error('Error sharing data:', error);
     }
   };
 
   return (
-    <div style={{ padding: '20px', backgroundColor: '#f7f7f7', borderRadius: '10px', width: '300px', margin: 'auto', marginTop: '50px' }}>
-      <h2>Authenticate with Fingerprint</h2>
-      <p>{message}</p>
-      <button onClick={authenticateWithFingerprint} style={{ padding: '10px 20px', cursor: 'pointer' }}>
-        Use Fingerprint
-      </button>
+    <div className="data-share">
+      <h2>Share Your Data</h2>
+      <div>
+        <h3>Select Data to Share:</h3>
+        {dataOptions.map((option) => (
+          <div key={option.id}>
+            <label>
+              <input
+                type="checkbox"
+                checked={selectedData.includes(option.id)}
+                onChange={() => handleDataSelection(option.id)}
+              />
+              {option.label}
+            </label>
+          </div>
+        ))}
+      </div>
+      <div>
+        <h3>Duration (days):</h3>
+        <select value={shareDuration} onChange={handleDurationChange}>
+          <option value="1">1 day</option>
+          <option value="7">1 week</option>
+          <option value="30">1 month</option>
+        </select>
+      </div>
+      <button onClick={handleShareData}>Share Data</button>
+      {shareLink && (
+        <div>
+          <h3>Share Link:</h3>
+          <a href={shareLink} target="_blank" rel="noopener noreferrer">{shareLink}</a>
+        </div>
+      )}
     </div>
   );
 };
 
-export default FingerprintAuth;
+export default DataShare;

@@ -1,7 +1,7 @@
 import axios from 'axios'; // Import axios
 import { jwtDecode } from 'jwt-decode'; // Correctly import jwtDecode
 import React, { useEffect, useRef, useState } from 'react';
-import { FaBell, FaBriefcase, FaCogs, FaHeartbeat, FaMoneyBill, FaPhone, FaSignOutAlt, FaTimes, FaUniversity, FaUser, FaUsers } from 'react-icons/fa';
+import { FaBell, FaBriefcase, FaCogs, FaHeartbeat, FaMoneyBill, FaPhone, FaShareAlt, FaSignOutAlt, FaTimes, FaUniversity, FaUser, FaUsers } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../serviceWorkerRegistration';
 import './styles/gDashboard.css'; // Your prefixed CSS file
@@ -23,6 +23,9 @@ import DisplayHealth from './displayhealth';
 import DisplayPersonalInfo from './displaypersonaldata';
 import DisplayPreferencesAndLifestyle from './displaypreference';
 import DisplaySocialAndFamily from './displaysocialFamily';
+
+import DataShare from './DataShare';
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -63,7 +66,7 @@ const Dashboard = () => {
   const triggerPhoneNotification = (message) => {
     if ('serviceWorker' in navigator && 'Notification' in window && Notification.permission === 'granted') {
       navigator.serviceWorker.ready.then((registration) => {
-        registration.showNotification('New Notification', {
+        registration.showNotification('EiD', {
           body: message,
           icon: '../favicon.ico', // Path to notification icon
           vibrate: [100, 50, 100],
@@ -223,6 +226,8 @@ const Dashboard = () => {
     { icon: <FaMoneyBill />, form: 'financial', display: <DisplayFinancial />, formComponent: <FinancialForm />, label: 'Financial' },
     { icon: <FaUsers />, form: 'socialFamily', display: <DisplaySocialAndFamily />, formComponent: <SocialAndFamilyForm />, label: 'Social and Family' },
     { icon: <FaCogs />, form: 'preferences', display: <DisplayPreferencesAndLifestyle />, formComponent: <PreferencesAndLifestyleForm />, label: 'Preferences and Lifestyle' },
+    { form: 'preferences', display: <DisplayPreferencesAndLifestyle />, formComponent: <PreferencesAndLifestyleForm />, label: 'Preferences and Lifestyle' },
+    { icon: <FaShareAlt />, form: 'dataShare', display: <DataShare />, label: 'Share Data' },
   ];
 
   const renderContent = () => {

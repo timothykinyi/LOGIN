@@ -24,6 +24,7 @@ const doorManagmentRoutes = require('./routes/doormanagmentRoutes');
 const accessManagementRoutes = require('./routes/accessManagementRoutes');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const fingerprintRoutes = require('./routes/fingerprintRoutes');
+const shareRoutes = require('./routes/share');
 
 // Initialize the app
 const app = express();
@@ -51,6 +52,7 @@ app.use('/api/access', accessManagementRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api', subscriptionRoutes);
 app.use('/auth', fingerprintRoutes);
+app.use('/api/shared', shareRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
