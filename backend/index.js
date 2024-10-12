@@ -22,6 +22,7 @@ const DIDRoutes = require('./routes/dooridroutes');
 const houseRoutes = require('./routes/houseRoutes');
 const doorManagmentRoutes = require('./routes/doormanagmentRoutes');
 const accessManagementRoutes = require('./routes/accessManagementRoutes');
+const subscriptionRoutes = require('./routes/subscriptionRoutes');
 
 // Initialize the app
 const app = express();
@@ -47,6 +48,8 @@ app.use('/api/houses', houseRoutes);
 app.use('/api/doors', doorManagmentRoutes);
 app.use('/api/access', accessManagementRoutes);
 app.use('/api/notifications', notificationsRoutes);
+app.use('/api', subscriptionRoutes);
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {

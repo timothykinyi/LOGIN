@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import ContactForm from './components/ContactForm';
 import Dashboard from './components/Dashboard';
@@ -38,8 +38,47 @@ import Landing from './components/landing';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
 import useOnlineStatus from './hooks/useOnlineStatus'; // Import the hook
+import { urlBase64ToUint8Array } from './utils';
+
+const publicVapidKey = 'BHy-iFuUVJcGUNDPMC4LbU4-XF__xh_60-zl5c8nS4eOwY5bfcxjEmGBZ4JIfzwcDkuq7IttOv0_YRKo9qm_On8';
 
 function App() {
+  useEffect(() => {
+    // Register service worker and subscribe to push notifications
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      navigator.serviceWorker.register('/sw.js').then(function (registration) {
+        console.log('Service Worker registered with scope:', registration.scope);
+
+        return Notification.requestPermission().then(function (permission) {
+          if (permission === 'granted') {
+            subscribeUserToPush(registration);
+          }
+        });
+      });
+    }
+  }, []);
+
+  const subscribeUserToPush = async (registration) => {
+    try {
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+      });
+
+      console.log('User is subscribed:', subscription);
+
+      // Send subscription to your server
+      await fetch('/subscribe', {
+        method: 'POST',
+        body: JSON.stringify(subscription),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      console.error('Failed to subscribe the user:', error);
+    }
+  };
   return (
     <Router>
       <OnlineStatusChecker /> {/* This component will handle online status */}

@@ -3,8 +3,8 @@ import { jwtDecode } from 'jwt-decode'; // Correctly import jwtDecode
 import React, { useEffect, useRef, useState } from 'react';
 import { FaBell, FaBriefcase, FaCogs, FaHeartbeat, FaMoneyBill, FaPhone, FaSignOutAlt, FaTimes, FaUniversity, FaUser, FaUsers } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { register } from '../serviceWorkerRegistration';
 import './styles/gDashboard.css'; // Your prefixed CSS file
-
 // Import both display and form components
 import ContactForm from './ContactForm';
 import EducationForm from './EducationForm';
@@ -47,8 +47,31 @@ const Dashboard = () => {
 
     // Fetch notifications on load
     fetchNotifications();
+    register();
   }, [navigate]);
 
+  useEffect(() => {
+    if ('Notification' in window && navigator.serviceWorker) {
+      Notification.requestPermission().then((result) => {
+        if (result === 'granted') {
+          console.log('Notification permission granted.');
+        }
+      });
+    }
+  }, []);
+
+  const triggerPhoneNotification = (message) => {
+    if ('serviceWorker' in navigator && 'Notification' in window && Notification.permission === 'granted') {
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.showNotification('New Notification', {
+          body: message,
+          icon: './images/lg.png', // Path to notification icon
+          vibrate: [100, 50, 100],
+        });
+      });
+    }
+  };
+    
   // Function to fetch notifications
   const fetchNotifications = async () => {
     try {
@@ -56,6 +79,7 @@ const Dashboard = () => {
       const response = await axios.get(`https://login-9ebe.onrender.com/api/notifications/${userId}`);
       setNotifications(response.data);
       const unread = response.data.filter((n) => !n.isRead).length;
+      triggerPhoneNotification ('Notification');
       setUnreadCount(unread); // Set unread count
     } catch (error) {
       console.error('Error fetching notifications:', error);
