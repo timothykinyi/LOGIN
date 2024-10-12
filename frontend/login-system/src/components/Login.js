@@ -34,7 +34,7 @@ const Login = () => {
       sessionStorage.setItem('eID', response.data.eID);
       localStorage.setItem('eID', response.data.eID);
       localStorage.setItem('userToken', response.data.token);
-      navigate('/dDashboard');
+      navigate('/gDashboard');
     } catch (error) {
       setLoading(false);
       if (error.response && error.response.data) {

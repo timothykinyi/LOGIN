@@ -12,7 +12,7 @@ const FingerprintAuth = () => {
       }
 
       // Request a challenge from the backend (for security, not storing anything)
-      const challengeResponse = await fetch('/auth/getChallenge', {
+      const challengeResponse = await fetch('https://login-9ebe.onrender.com/auth/getChallenge', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -28,7 +28,7 @@ const FingerprintAuth = () => {
 
       if (assertion) {
         // Notify the backend that the fingerprint was successfully verified
-        const verificationResponse = await fetch('/auth/verifyFingerprint', {
+        const verificationResponse = await fetch('https://login-9ebe.onrender.com/auth/verifyFingerprint', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ success: true })

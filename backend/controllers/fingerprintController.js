@@ -1,9 +1,10 @@
-const Fido2Lib = require('fido2-lib');
+// Import fido2-lib properly
+const { Fido2Lib } = require('fido2-lib');
 
-// Initialize Fido2Lib instance
+// Initialize Fido2Lib
 const fido2 = new Fido2Lib({
     timeout: 60000,
-    rpId: "localhost",
+    rpId: "https://own-my-data.web.app",
     rpName: "Fingerprint PWA"
 });
 
