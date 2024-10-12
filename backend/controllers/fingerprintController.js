@@ -8,14 +8,16 @@ const fido2 = new Fido2Lib({
     rpName: "Fingerprint PWA"
 });
 
-// Controller to get fingerprint challenge
+/// Controller to get fingerprint challenge
 exports.getFingerprintChallenge = async (req, res) => {
     try {
-        const challenge = await fido2.assertionOptions();
-        challenge.challenge = fido2.generateChallenge();
+        // Generate the options, which includes the challenge
+        const options = await fido2.assertionOptions();
         
+        // Send the challenge and other options to the client
         res.json({
-            challenge: Buffer.from(challenge.challenge).toString('base64')
+            challenge: Buffer.from(options.challenge).toString('base64'),
+            ...options  // This spreads the rest of the options returned by fido2-lib
         });
     } catch (error) {
         console.error('Error generating challenge:', error);
@@ -26,7 +28,7 @@ exports.getFingerprintChallenge = async (req, res) => {
 // Controller to verify fingerprint authentication
 exports.verifyFingerprint = (req, res) => {
     const { success } = req.body;
-    
+
     if (success) {
         return res.json({ success: true });
     }
