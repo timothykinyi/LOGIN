@@ -234,7 +234,7 @@ const Dashboard = () => {
 
   const changeForm = (direction) => {
     const currentIndex = navItems.findIndex(item => item.form === activeForm);
-    const newIndex = (currentIndex + direction + navItems.length - 1) % (navItems.length - 1); // Exclude logout
+    const newIndex = (currentIndex + direction + navItems.length) % (navItems.length); // Exclude logout
     setActiveForm(navItems[newIndex].form);
   };
 
@@ -247,7 +247,6 @@ const Dashboard = () => {
     { icon: <FaMoneyBill />, form: 'financial', display: <DisplayFinancial />, formComponent: <FinancialForm />, label: 'Financial' },
     { icon: <FaUsers />, form: 'socialFamily', display: <DisplaySocialAndFamily />, formComponent: <SocialAndFamilyForm />, label: 'Social and Family' },
     { icon: <FaCogs />, form: 'preferences', display: <DisplayPreferencesAndLifestyle />, formComponent: <PreferencesAndLifestyleForm />, label: 'Preferences and Lifestyle' },
-    { form: 'preferences', display: <DisplayPreferencesAndLifestyle />, formComponent: <PreferencesAndLifestyleForm />, label: 'Preferences and Lifestyle' },
     { icon: <FaShareAlt />, form: 'dataShare', display: <DataShare />, label: 'Share Data' },
   ];
 
