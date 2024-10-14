@@ -3,6 +3,10 @@ const House = require('../models/House');
 const User = require('../models/User');
 const sendEmail = require('../services/emailService');
 const { generateAlphanumericVerificationCode } = require('../services/verificationcode');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const moment = require('moment');
+const crypto = require('crypto');
 
 // House registration handler
 const registerHouse = async (req, res) => {
@@ -10,8 +14,8 @@ const registerHouse = async (req, res) => {
 
   try {
     // EID validation
-    const user = await User.findOne({ eID: ownerEID });
-    if (!user) {
+    const users = await User.exists({ eID: ownerEID });
+    if (!users) {
       return res.status(400).json({ message: "The eID entered is not valid "+ ownerEID});
     }
 
@@ -59,7 +63,7 @@ const registerHouse = async (req, res) => {
     }
 
     await newHouse.save();
-
+    const user = await User.findOne({ eID: ownerEID });
     // Send email notification
 
 
