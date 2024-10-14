@@ -1,6 +1,7 @@
 // src/components/Register.js
 import axios from 'axios';
 import React, { useState } from 'react';
+import '../styles/RegisterForm.css';
 
 const Register = () => {
   const [ownerEID, setOwnerEID] = useState('');
@@ -26,13 +27,35 @@ const Register = () => {
   const handleUserAccessChange = (index, accessType) => {
     const newUserEIDs = [...userEIDs];
     newUserEIDs[index].access = accessType; // Set access type (all or specific doors)
+    // Initialize specificDoors array if accessing specific doors
+    newUserEIDs[index].specificDoors = accessType === 'specific' ? [] : undefined; 
+    setUserEIDs(newUserEIDs);
+  };
+
+  const handleDoorSelectionChange = (userIndex, doorIndex) => {
+    const newUserEIDs = [...userEIDs];
+    const selectedDoorId = doorNames[doorIndex]; // Get the door name as an identifier
+
+    // If specificDoors is not initialized, ensure it's an array
+    if (!newUserEIDs[userIndex].specificDoors) {
+      newUserEIDs[userIndex].specificDoors = [];
+    }
+
+    if (newUserEIDs[userIndex].specificDoors.includes(selectedDoorId)) {
+      // If already selected, remove it from the specific doors
+      newUserEIDs[userIndex].specificDoors = newUserEIDs[userIndex].specificDoors.filter(id => id !== selectedDoorId);
+    } else {
+      // Otherwise, add it to the specific doors
+      newUserEIDs[userIndex].specificDoors.push(selectedDoorId);
+    }
+
     setUserEIDs(newUserEIDs);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/users/register', {
+      await axios.post('https://login-9ebe.onrender.com/api/houses/register', {
         ownerEID,
         address,
         numberOfDoors,
@@ -42,6 +65,7 @@ const Register = () => {
         userEIDs: userEIDs.map(user => ({
           eid: user.eid,
           access: user.access,
+          specificDoors: user.specificDoors || [], // Ensure specificDoors is always an array
         })), // Pass user EIDs for access
       });
       alert('House registered successfully');
@@ -52,7 +76,7 @@ const Register = () => {
 
   // Add a new user access section
   const addUserAccess = () => {
-    setUserEIDs([...userEIDs, { eid: '', access: 'specific' }]); // Add a new entry for user access
+    setUserEIDs([...userEIDs, { eid: '', access: 'specific', specificDoors: [] }]); // Initialize specificDoors
   };
 
   return (
@@ -112,14 +136,14 @@ const Register = () => {
           {/* Show door options if specific doors are selected */}
           {user.access === 'specific' && (
             <div>
-              {Array.from({ length: numberOfDoors }, (_, i) => (
-                <label key={i}>
+              {doorNames.map((doorName, doorIndex) => (
+                <label key={doorIndex}>
                   <input
                     type="checkbox"
-                    // Here, you would need a way to track which doors this user has access to
-                    // For now, we are just rendering checkboxes without storing the state
+                    checked={user.specificDoors && user.specificDoors.includes(doorName)} // Check if this door is in the user's specific doors
+                    onChange={() => handleDoorSelectionChange(index, doorIndex)} // Track door selection
                   />
-                  {doorNames[i] || `Door ${i + 1}`}
+                  {doorName || `Door ${doorIndex + 1}`}
                 </label>
               ))}
             </div>

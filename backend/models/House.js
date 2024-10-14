@@ -15,10 +15,22 @@ const DoorSchema = new mongoose.Schema({
 });
 
 const HouseSchema = new mongoose.Schema({
-  ownerEID: { type: String, required: true, unique: true },
+  ownerEID: { type: Number, required: true, unique: true },
+  HID: { type: Number, required: true, unique: true },
   address: { type: String, required: true },
   numberOfDoors: { type: Number, required: true },
   doors: [DoorSchema],
+});
+
+DoorSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    return next(error);
+  }
 });
 
 module.exports = mongoose.model('House', HouseSchema);

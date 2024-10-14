@@ -1,6 +1,8 @@
 // controllers/houseController.js
 const House = require('../models/House');
-const sendEmail = require('../utils/sendEmail');
+const User = require('../models/User');
+const sendEmail = require('../services/emailService');
+const { generateAlphanumericVerificationCode } = require('../services/verificationcode');
 
 // House registration handler
 const registerHouse = async (req, res) => {
@@ -8,23 +10,57 @@ const registerHouse = async (req, res) => {
 
   try {
     // EID validation
-    const isValidEID = await validateEID(ownerEID); // Implement this function according to your requirements
-    if (!isValidEID) return res.status(400).json({ message: 'Invalid EID' });
+    let user = await User.findOne({ ownerEID })
+    if (!user) {
+      return res.status(400).json({ message: "The eID entered is not valid" });
+    }
 
-    const existingHouse = await House.findOne({ ownerEID });
-    if (existingHouse) return res.status(400).json({ message: 'EID already registered' });
+    const housepass = 0;
+    const housepasscheck = 0;
+    while (housepass == 0)
+      {
+        const generateHID = () => {
+          return Math.floor(100000 + Math.random() * 900000); // Generates a random 6-digit number
+        };
+    
+        const HID = generateHID();
+    
+        const existingHouse = await House.findOne({ HID });
+        if (!existingHouse) 
+          {
+            housepass = 1;
+          }else{
+            housepasscheck+=1;
+          }
+
+          if (housepasscheck == 20)
+            {
+              housepass = 1;
+              return res.status(400).json({ message: 'Failed to register house' });
+            }
+      }
 
     // Password validation
     if (password !== confirmPassword) {
       return res.status(400).json({ message: 'Passwords do not match' });
+    } else if (password.length < 8) {
+      return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
+    } else if (!/[A-Z]/.test(password)) {
+      return res.status(400).json({ message: 'Password must contain at least one uppercase letter.' });
+    } else if (!/[a-z]/.test(password)) {
+      return res.status(400).json({ message: 'Password must contain at least one lowercase letter.' });
+    } else if (!/\d/.test(password)) {
+      return res.status(400).json({ message: 'Password must contain at least one number.' });
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      return res.status(400).json({ message: 'Password must contain at least one special character.' });
     }
 
-    const newHouse = new House({ ownerEID, address, numberOfDoors });
+    const newHouse = new House({ ownerEID, HID, address, numberOfDoors });
 
     // Generate Door IDs and add door names, passwords, and allowed users
     for (let i = 0; i < numberOfDoors; i++) {
       const doorId = `door-${newHouse._id}-${i + 1}`; // Generate a unique Door ID
-      const doorPassword = Math.random().toString(36).slice(-8); // Generate a random password
+      const doorPassword = password
       const doorName = doorNames[i]; // Get the name from the input
       
       // Initialize door with allowed users
@@ -42,19 +78,39 @@ const registerHouse = async (req, res) => {
     await newHouse.save();
 
     // Send email notification
-    await sendEmail(ownerEID, 'House Registration', `Your house has been registered at ${address} with ${numberOfDoors} doors.`);
 
-    res.status(201).json({ message: 'House registered successfully' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
-  }
+
+      // Generate verification code
+      const alphanumericCode = generateAlphanumericVerificationCode(6);
+      const subject = "Verification - " + alphanumericCode;
+      const vermessage = `Dear ${user.username},
+
+  Thank you for registering your house with eID. Please use the following verification code to complete your registration:
+
+  Verification Code: ${alphanumericCode}
+
+  Follow this link https://own-my-data.web.app/verification to verify your account
+
+  Best regards,
+  eID`;
+
+      // Send verification email
+      try {
+        await sendEmail(user.email, subject, vermessage);
+        console.log('Email sent successfully');
+      } catch (error) {
+        console.error('Error sending email:', error);
+        return res.status(500).json({ message: 'Error sending verification email' });
+      }
+      res.status(201).json({ message: 'House registered successfully' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    }
+
+  
 };
 
-// Mock EID Validation (replace with your own logic)
-const validateEID = async (eid) => {
-  // Implement your EID validation logic here
-  return true; // Assume valid for this example
-};
+
 
 module.exports = { registerHouse };
