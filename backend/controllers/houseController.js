@@ -15,30 +15,13 @@ const registerHouse = async (req, res) => {
       return res.status(400).json({ message: "The eID entered is not valid "+ ownerEID});
     }
 
-    const housepass = 0;
-    const housepasscheck = 0;
-    while (housepass == 0)
-      {
-        const generateHID = () => {
-          return Math.floor(100000 + Math.random() * 900000); // Generates a random 6-digit number
-        };
-    
-        const HID = generateHID();
-    
-        const existingHouse = await House.findOne({ HID });
-        if (!existingHouse) 
-          {
-            housepass = 1;
-          }else{
-            housepasscheck+=1;
-          }
-
-          if (housepasscheck == 20)
-            {
-              housepass = 1;
-              return res.status(400).json({ message: 'Failed to register house' });
-            }
-      }
+    const generateHID = () => {
+      return Math.floor(100000 + Math.random() * 900000); // Generates a random 6-digit number
+    };
+    const HID = generateHID();
+    while (await House.exists({ HID })) {
+        HID = generateHID();
+    }
 
     // Password validation
     if (password !== confirmPassword) {

@@ -1,7 +1,7 @@
 // src/components/Register.js
 import axios from 'axios';
 import React, { useState } from 'react';
-import '../styles/RegisterForm.css';
+import '../styles/housereg.css';
 
 const Register = () => {
   const [ownerEID, setOwnerEID] = useState('');
@@ -80,18 +80,19 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" placeholder="House Owner EID" value={ownerEID} onChange={(e) => setOwnerEID(e.target.value)} required />
-      <input type="text" placeholder="House Address" value={address} onChange={(e) => setAddress(e.target.value)} required />
-      <input type="number" placeholder="Number of Doors" value={numberOfDoors} onChange={(e) => setNumberOfDoors(e.target.value)} min="1" required />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+    <form onSubmit={handleSubmit} className="hreg-form">
+      <input type="text" className="hreg-input" placeholder="House Owner EID" value={ownerEID} onChange={(e) => setOwnerEID(e.target.value)} required />
+      <input type="text" className="hreg-input" placeholder="House Address" value={address} onChange={(e) => setAddress(e.target.value)} required />
+      <input type="number" className="hreg-input" placeholder="Number of Doors" value={numberOfDoors} onChange={(e) => setNumberOfDoors(e.target.value)} min="1" required />
+      <input type="password" className="hreg-input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <input type="password" className="hreg-input" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
       
       {/* Render inputs for door names */}
       {Array.from({ length: numberOfDoors }, (_, i) => (
         <input
           key={i}
           type="text"
+          className="hreg-input"
           placeholder={`Name for Door ${i + 1}`}
           value={doorNames[i] || ''}
           onChange={(e) => handleDoorNameChange(i, e.target.value)}
@@ -100,17 +101,18 @@ const Register = () => {
       ))}
 
       {/* Section to manage user access */}
-      <h3>Access for Users</h3>
+      <h3 className="hreg-heading">Access for Users</h3>
       {userEIDs.map((user, index) => (
-        <div key={index}>
+        <div key={index} className="hreg-user-access">
           <input
             type="text"
+            className="hreg-input"
             placeholder="User EID"
             value={user.eid}
             onChange={(e) => handleUserEIDChange(index, e.target.value)}
             required
           />
-          <div>
+          <div className="hreg-access-options">
             <label>
               <input
                 type="radio"
@@ -135,9 +137,9 @@ const Register = () => {
 
           {/* Show door options if specific doors are selected */}
           {user.access === 'specific' && (
-            <div>
+            <div className="hreg-specific-doors">
               {doorNames.map((doorName, doorIndex) => (
-                <label key={doorIndex}>
+                <label key={doorIndex} className="hreg-door-option">
                   <input
                     type="checkbox"
                     checked={user.specificDoors && user.specificDoors.includes(doorName)} // Check if this door is in the user's specific doors
@@ -151,8 +153,8 @@ const Register = () => {
         </div>
       ))}
 
-      <button type="button" onClick={addUserAccess}>Add User Access</button>
-      <button type="submit">Register House</button>
+      <button type="button" className="hreg-button" onClick={addUserAccess}>Add User Access</button>
+      <button type="submit" className="hreg-button">Register House</button>
     </form>
   );
 };
