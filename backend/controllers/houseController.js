@@ -12,7 +12,7 @@ const registerHouse = async (req, res) => {
     // EID validation
     let user = await User.findOne({ ownerEID })
     if (!user) {
-      return res.status(400).json({ message: "The eID entered is not valid ", {ownerEID}});
+      return res.status(400).json({ message: "The eID entered is not valid ", ownerEID});
     }
 
     const housepass = 0;
