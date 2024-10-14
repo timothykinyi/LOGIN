@@ -1,5 +1,6 @@
 // models/House.js
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const AllowedUserSchema = new mongoose.Schema({
   eid: { type: String, required: true },

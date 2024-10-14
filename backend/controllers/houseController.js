@@ -51,7 +51,7 @@ const registerHouse = async (req, res) => {
     // Generate Door IDs and add door names, passwords, and allowed users
     for (let i = 0; i < numberOfDoors; i++) {
       const doorId = `door-${newHouse._id}-${i + 1}`; // Generate a unique Door ID
-      const doorPassword = hashedPassword; // Store the hashed password
+      const doorPassword = password; // Store the hashed password
       const doorName = doorNames[i]; // Get the name from the input
 
       // Initialize door with allowed users
