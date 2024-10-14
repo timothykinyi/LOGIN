@@ -1,0 +1,174 @@
+/* Notifications Container */
+.nav-notifications {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(13, 108, 140, 0.422);
+    border-radius: 12px;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.nav-notifications-header {
+    background-color: rgba(118, 207, 255, 0.573); /* Header background color */
+    color: rgb(78, 78, 78); /* Text color */
+    padding: 15px; /* Padding around the header */
+    display: flex; /* Flexbox layout */
+    justify-content: space-between; /* Space between elements */
+     /* Center elements vertically */
+    min-width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+
+.nav-notifications-header h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+    margin-right: 20px; /* Space between eID and notification button */
+
+}
+
+.nav-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.3s ease;
+    max-width: fit-content;
+    
+}
+
+.nav-close-btn:hover {
+    color: #27323e;
+}
+
+.nav-notification-p
+{
+    color: #333;
+}
+
+/* Notification List */
+.nav-notification-list {
+    max-height: 450px;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.nav-notification-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 12px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-notification-item.nav-unread {
+    background-color: #e6f0ff;
+    font-weight: 600;
+}
+
+.nav-notification-item.nav-read {
+    background-color: #fafafa;
+}
+
+.nav-notification-item:hover {
+    background-color: #f0f8ff;
+    transform: translateY(-2px);
+}
+
+/* Notification Date */
+.nav-notification-date {
+    font-size: 0.875rem;
+    color: #999;
+    margin-left: 10px;
+    align-self: flex-start;
+}
+
+/* Mark all as read button */
+.nav-mark-all-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-mark-all-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Scrollbar for notification list */
+.nav-notification-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.nav-notification-list::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .nav-notifications {
+        padding: 15px;
+        margin: 15px;
+        box-shadow: none;
+    }
+
+    .nav-notifications-header h2 {
+        font-size: 1.4rem;
+    }
+
+    .nav-notification-item {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+
+    .nav-mark-all-btn {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-notifications {
+        padding: 10px;
+    }
+
+    .nav-notifications-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .nav-close-btn {
+        font-size: 1.2rem;
+    }
+
+    .nav-notification-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .nav-notification-date {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+
+    .nav-mark-all-btn {
+        font-size: 0.875rem;
+        padding: 8px;
+    }
+}

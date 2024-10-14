@@ -76,7 +76,7 @@
 
   .notification-count {
     top: -4px; /* Adjust position for mobile */
-    right: -8px; /* Adjust position for mobile */
+    right: 5px; /* Adjust position for mobile */
   }
 }
 
@@ -89,10 +89,12 @@
   top: 40px; /* Adjust based on bell icon size */
   right: 0;
   width: 300px;
-  background-color: white;
+  background-color: rgba(13, 108, 140, 0.422);
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
+  max-height: 350px;
+  overflow-y: auto;
    /* Initially hidden */
 }
 
@@ -155,6 +157,7 @@ body {
   transition: all 0.3s ease;
   position: relative;
   max-width: 300px; /* Compact default width */
+  overflow-y: auto;
 }
 
 .dash-dashboard-nav:hover {

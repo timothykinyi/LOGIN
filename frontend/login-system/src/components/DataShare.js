@@ -99,7 +99,7 @@ const DataShareComponent = () => {
 
     try {
       const response = await axios.post('https://login-9ebe.onrender.com/api/shared/share', { selectedData, eID, deadlineDate });
-      setShareableLink(`https://login-9ebe.onrender.com/api/shared/shared-data/${response.data.id}`);
+      setShareableLink(`https://own-my-data.web.app/sharedlink/${response.data.id}`);
     } catch (error) {
       console.error('Error sharing data:', error);
       setError('Failed to share data. Please try again later.');
@@ -121,17 +121,18 @@ const DataShareComponent = () => {
   };
 
   return (
-    <div className="data-share-container" style={{ backgroundColor: 'blueviolet', padding: '20px', borderRadius: '8px' }}>
-      <h2 style={{ color: 'white' }}>Select Data to Share</h2>
+    <div className="data-share-container">
+      <h2 className="section-title">Select Data to Share</h2>
       
-      {loading && <p style={{ color: 'yellow' }}>Loading data...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {loading && <p className="loading-message">Loading data...</p>}
+      {error && <p className="error-message">{error}</p>}
       
       {!loading && (
         <>
-          <h3 style={{ color: 'lightgray' }}>Contact Information</h3>
+          
           {contacts.map(contact => (
-            <div key={contact._id}>
+            <div key={contact._id} className="data-item">
+              <h3 className="data-section-title">Contact Information</h3>
               <label>
                 <input
                   type="checkbox"
@@ -143,9 +144,10 @@ const DataShareComponent = () => {
             </div>
           ))}
           
-          <h3 style={{ color: 'lightgray' }}>Education Data</h3>
+          
           {educationData.map(education => (
-            <div key={education._id}>
+            <div key={education._id} className="data-item">
+              <h3 className="data-section-title">Education Data</h3>
               <label>
                 <input
                   type="checkbox"
@@ -157,9 +159,10 @@ const DataShareComponent = () => {
             </div>
           ))}
           
-          <h3 style={{ color: 'lightgray' }}>Employment Data</h3>
+          
           {employmentData.map(employment => (
-            <div key={employment._id}>
+            <div key={employment._id} className="data-item">
+              <h3 className="data-section-title">Employment Data</h3>
               <label>
                 <input
                   type="checkbox"
@@ -171,9 +174,10 @@ const DataShareComponent = () => {
             </div>
           ))}
           
-          <h3 style={{ color: 'lightgray' }}>Financial Data</h3>
+          
           {financialData.map(financial => (
-            <div key={financial._id}>
+            <div key={financial._id} className="data-item">
+              <h3 className="data-section-title">Financial Data</h3>
               <label>
                 <input
                   type="checkbox"
@@ -185,9 +189,10 @@ const DataShareComponent = () => {
             </div>
           ))}
           
-          <h3 style={{ color: 'lightgray' }}>Health Data</h3>
+          
           {healthData.map(health => (
-            <div key={health._id}>
+            <div key={health._id} className="data-item">
+              <h3 className="data-section-title">Health Data</h3>
               <label>
                 <input
                   type="checkbox"
@@ -199,9 +204,10 @@ const DataShareComponent = () => {
             </div>
           ))}
           
-          <h3 style={{ color: 'lightgray' }}>Personal Information</h3>
+          
           {personalInfoList.map(personal => (
-            <div key={personal._id}>
+            <div key={personal._id} className="data-item">
+              <h3 className="data-section-title">Personal Information</h3>
               <label>
                 <input
                   type="checkbox"
@@ -213,9 +219,10 @@ const DataShareComponent = () => {
             </div>
           ))}
           
-          <h3 style={{ color: 'lightgray' }}>Preferences</h3>
+          
           {preferences.map(preference => (
-            <div key={preference._id}>
+            <div key={preference._id} className="data-item">
+              <h3 className="data-section-title">Preferences</h3>
               <label>
                 <input
                   type="checkbox"
@@ -227,9 +234,10 @@ const DataShareComponent = () => {
             </div>
           ))}
           
-          <h3 style={{ color: 'lightgray' }}>Social Family Data</h3>
+          
           {socialFamilyData.map(family => (
-            <div key={family._id}>
+            <div key={family._id} className="data-item">
+              <h3 className="data-section-title">Social Family Data</h3>
               <label>
                 <input
                   type="checkbox"
@@ -240,33 +248,38 @@ const DataShareComponent = () => {
               </label>
             </div>
           ))}
-
+  
           {/* Date Picker for Deadline */}
-          <div style={{ margin: '10px 0' }}>
-            <label style={{ color: 'lightgray' }}>
+          <div className="deadline-picker">
+            <label>
               Deadline Date:
               <input
                 type="date"
                 value={deadlineDate}
                 onChange={e => setDeadlineDate(e.target.value)}
-                style={{ marginLeft: '10px' }}
               />
             </label>
           </div>
-
-          <button onClick={handleClearSelection} style={{ margin: '10px', padding: '10px', backgroundColor: 'red', color: 'white' }}>
-            Clear All Selections
-          </button>
-
-          <button onClick={handleSubmit} style={{ margin: '10px', padding: '10px', backgroundColor: 'green', color: 'white' }}>
-            Share Selected Data
-          </button>
-
-          {shareableLink && <p>Shareable Link: <a href={shareableLink}>{shareableLink}</a></p>}
+          
+          <div className="button-group">
+            <button className="sign-in-btn"onClick={handleClearSelection}>
+              Clear All Selections
+            </button>
+    
+            <button className="sign-in-btn" onClick={handleSubmit}>
+              Share Selected Data
+            </button>
+          </div>
+          {shareableLink && (
+            <p className="shareable-link">
+              Shareable Link: <a href={shareableLink}>{shareableLink}</a>
+            </p>
+          )}
         </>
       )}
     </div>
   );
+  
 };
 
 export default DataShareComponent;

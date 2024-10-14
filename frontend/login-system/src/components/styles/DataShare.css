@@ -1,83 +1,86 @@
-/* src/components/DataShare.css */
+.data-share-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: rgba(25, 69, 110, 0.451);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enables scrolling if content overflows */
+  height: 80vh;
+  width: 80vw; 
+}
 
-.share-data-share {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    background-color: #00357194;
-  }
-  
-  .share-h2 {
-    text-align: center;
-    color: #333;
-  }
-  
-  .share-h3 {
-    margin-top: 20px;
-    color: #555;
-  }
-  
-  .share-checkbox-container {
-    margin-bottom: 10px;
-  }
-  
-  .share-checkbox-container label {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  
-  .share-checkbox-container input {
-    margin-right: 10px;
-  }
-  
-  .share-select {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  .share-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50; /* Green */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .share-button:disabled {
-    background-color: #ccc;
-  }
-  
-  .share-button:hover:not(:disabled) {
-    background-color: #45a049; /* Darker green */
-  }
-  
-  .share-error {
-    color: red;
-    text-align: center;
-  }
-  
-  .share-share-link {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .share-share-link a {
-    color: #007BFF; /* Blue */
-    text-decoration: none;
-  }
-  
-  .share-share-link a:hover {
-    text-decoration: underline;
-  }
-  
+h2, h3 {
+  color: white;
+}
+
+p {
+  color: yellow;
+}
+
+.error-message {
+  color: red;
+}
+
+.data-section {
+  margin-top: 20px;
+}
+
+.data-section h3 {
+  color: lightgray;
+}
+.data-item
+{
+  background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(25, 69, 110, 0.451);
+  margin: 10px;
+}
+.data-item label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.deadline-picker {
+  margin: 10px 0;
+  color: lightgray;
+}
+
+.deadline-picker input {
+  margin-left: 10px;
+}
+
+button.clear-btn {
+  margin: 10px;
+  padding: 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button.clear-btn:hover {
+  background-color: darkred;
+}
+
+button.share-btn {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(4, 85, 135);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button.share-btn:hover {
+  background-color: rgb(0, 62, 100);
+}
+
+.shareable-link {
+  margin-top: 10px;
+  color: lightgreen;
+}

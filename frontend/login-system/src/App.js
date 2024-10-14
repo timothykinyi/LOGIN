@@ -4,9 +4,11 @@ import ContactForm from './components/ContactForm';
 import Dashboard from './components/Dashboard';
 import EducationForm from './components/EducationForm';
 import EmploymentForm from './components/EmploymentForm';
+import FetchSharedDataPage from './components/FetchSharedDataPage';
 import FinancialForm from './components/FinancialForm';
 import HealthForm from './components/HealthForm';
 import LoginForm from './components/Login';
+import Notifications from './components/Notifications';
 import OfflinePage from './components/OfflinePage';
 import PersonalInfoForm from './components/PersonalInfoForm';
 import PreferencesAndLifestyleForm from './components/PreferencesAndLifestyleForm';
@@ -34,6 +36,7 @@ import Doormanagment from './components/door/doormanagment';
 import Phonedoor from './components/door/phonedoor';
 import UserDoorDash from './components/door/userdoormanagmentsystemdash';
 import GDashboard from './components/gDashboard';
+import Housereg from './components/house/housereg';
 import Landing from './components/landing';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
@@ -124,6 +127,10 @@ function App() {
         <Route path="/m" element={<Mw />} />
         <Route path="/house" element={<HomePage />} />
         <Route path="/house/:houseId" element={<HousePage />} />
+        <Route path="/sharedlink/:eID" element={<FetchSharedDataPage />} />
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/house/housereg" element={<Housereg />} />
+        
       </Routes>
     </Router>
   );

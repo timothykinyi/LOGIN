@@ -1,0 +1,81 @@
+/* Container */
+.shr-container {
+    padding: 20px;
+    background-color: #0161a663;
+    font-family: Arial, sans-serif;
+    height: 80vh;
+    width: 80vw; 
+    overflow-y: auto;
+  }
+  
+  .shr-title {
+    font-size: 24px;
+    color: #c6c6c6;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  /* Loading & Error Messages */
+  .shr-loading {
+    color: #e0e0e0;
+    font-size: 16px;
+  }
+  
+  .shr-error {
+    color: red;
+    font-size: 16px;
+  }
+  
+  /* Data Card */
+  .shr-data-card {
+    background-color: #0161a663;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .shr-data-title {
+    font-size: 20px;
+    color: #d2d2d2;
+    margin-bottom: 15px;
+  }
+  
+  .shr-data-section {
+    margin-top: 20px;
+  }
+  
+  .shr-expired-message {
+    color: red;
+    font-weight: bold;
+  }
+  
+  /* Section Titles */
+  .shr-section-title {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+  }
+  
+  /* Lists */
+  .shr-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .shr-list-item {
+    background-color: #04579363;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    color: #d2d2d2;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .shr-list-item:hover {
+    background-color: #0071c263;
+  }
+  

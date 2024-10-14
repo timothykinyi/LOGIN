@@ -40,7 +40,9 @@ const Dashboard = () => {
   const [notifications, setNotifications] = useState([]); // Holds fetched notifications
   const [unreadCount, setUnreadCount] = useState(0); // Holds the count of unread notifications
   const [showNotifications, setShowNotifications] = useState(false); // Toggle notification dropdown
+  const [showAllNotifications, setShowAllNotifications] = useState(false); // State to toggle between all notifications and unread only
 
+  
   useEffect(() => {
     const token = sessionStorage.getItem('userToken');
     if (!eID || !token) {
@@ -63,17 +65,36 @@ const Dashboard = () => {
     }
   }, []);
 
+  
   const triggerPhoneNotification = (message) => {
     if ('serviceWorker' in navigator && 'Notification' in window && Notification.permission === 'granted') {
       navigator.serviceWorker.ready.then((registration) => {
-        registration.showNotification('EiD', {
+        registration.showNotification('EiD Notification', {
           body: message,
-          icon: '../favicon.ico', // Path to notification icon
-          vibrate: [100, 50, 100],
+          icon: '../favicon.ico', // Path to the notification icon
+          image: FaBell, // Optional image to display in notification
+          badge: '../favicon.ico', // Small icon for the notification
+          vibrate: [200, 100, 200], // Longer vibration pattern for emphasis
+          tag: 'eid-notification', // Unique tag to group notifications
+          renotify: true, // Replace previous notifications with the same tag
+  
+          actions: [
+            { action: 'view', title: 'View Details', icon: '../images/view-icon.png' },
+            { action: 'dismiss', title: 'Dismiss', icon: '../images/dismiss-icon.png' },
+          ],
+  
+          data: {
+            dateOfArrival: Date.now(),
+            primaryKey: 1,
+          },
+  
+          // Sound can be simulated with vibrate pattern; no direct sound support in web notifications
+          silent: false, // Set to true if you don't want a sound notification
         });
       });
     }
   };
+  
     
   // Function to fetch notifications
   const fetchNotifications = async () => {
@@ -170,7 +191,7 @@ const Dashboard = () => {
             behavior: 'smooth',
           });
         }
-      }, 2000); // Adjust time interval to control scrolling speed
+      }, 3000); // Adjust time interval to control scrolling speed
     }
   };
 
@@ -298,24 +319,23 @@ const Dashboard = () => {
           <div className="header-content">
             {eID && <div className="header-eid">eID: {eID}</div>}
             <div className="header-notifications">
-              <button className="notification-button" onClick={handleNotificationClick}>
+              <button className="notification-button" onClick={() => navigate('/notifications')}>
                 <FaBell />
                 {unreadCount > 0 && <span className="notification-count">{unreadCount}</span>}
               </button>
               {showNotifications && (
-                <div className="notification-dropdown">
-                  <ul>
-                    {notifications.length > 0 ? (
-                      notifications.map((notification, index) => (
-                        <li key={index} className={notification.isRead ? 'read' : 'unread'}>
-                          {notification.message}
-                        </li>
-                      ))
-                    ) : (
-                      <li>No new notifications</li>
-                    )}
-                  </ul>
-                </div>
+                  {/*<div className="notification-dropdown">
+                  <button onClick={() => setShowAllNotifications(!showAllNotifications)}>
+                    {showAllNotifications ? 'Show Unread' : 'Show All'}
+                  </button>
+                  {notifications
+                    .filter(notification => showAllNotifications || !notification.isRead)
+                    .map((notification, index) => (
+                      <div key={index} className={`notification-item ${notification.isRead ? 'read' : 'unread'}`}>
+                        {notification.message}
+                      </div>
+                  ))}
+                  </div> */}
               )}
               <button className="notification-button" onClick={performLogout}>
                 <FaSignOutAlt />
