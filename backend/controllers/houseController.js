@@ -4,9 +4,6 @@ const User = require('../models/User');
 const sendEmail = require('../services/emailService');
 const { generateAlphanumericVerificationCode } = require('../services/verificationcode');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const moment = require('moment');
-const crypto = require('crypto');
 
 // House registration handler
 const registerHouse = async (req, res) => {
@@ -14,17 +11,21 @@ const registerHouse = async (req, res) => {
 
   try {
     // EID validation
-    const userz = await User.exists({ eID: ownerEID });
-    if (!userz) {
-      return res.status(400).json({ message: "The eID entered is not valid "+ ownerEID});
+    const user = await User.findOne({ eID: ownerEID });
+    if (!user) {
+      return res.status(400).json({ message: "The eID entered is not valid " + ownerEID });
     }
 
+    // Generate unique HID
     const generateHID = () => {
       return Math.floor(100000 + Math.random() * 900000); // Generates a random 6-digit number
     };
-    const HID = generateHID();
-    while (await House.exists({ HID })) {
-        HID = generateHID();
+    
+    let HID;
+    let exists = true;
+    while (exists) {
+      HID = generateHID();
+      exists = await House.exists({ HID });
     }
 
     // Password validation
@@ -42,14 +43,17 @@ const registerHouse = async (req, res) => {
       return res.status(400).json({ message: 'Password must contain at least one special character.' });
     }
 
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10); // Hashing with a salt of 10 rounds
+
     const newHouse = new House({ ownerEID, HID, address, numberOfDoors });
 
     // Generate Door IDs and add door names, passwords, and allowed users
     for (let i = 0; i < numberOfDoors; i++) {
       const doorId = `door-${newHouse._id}-${i + 1}`; // Generate a unique Door ID
-      const doorPassword = password
+      const doorPassword = hashedPassword; // Store the hashed password
       const doorName = doorNames[i]; // Get the name from the input
-      
+
       // Initialize door with allowed users
       const allowedUsers = userEIDs.map(user => {
         return {
@@ -63,41 +67,36 @@ const registerHouse = async (req, res) => {
     }
 
     await newHouse.save();
-    const user = await User.findOne({ eID: ownerEID });
-    // Send email notification
 
+    // Generate verification code
+    const alphanumericCode = generateAlphanumericVerificationCode(6);
+    const subject = "Verification - " + alphanumericCode;
+    const vermessage = `Dear ${user.username},
 
-      // Generate verification code
-      const alphanumericCode = generateAlphanumericVerificationCode(6);
-      const subject = "Verification - " + alphanumericCode;
-      const vermessage = `Dear ${user.username},
+Thank you for registering your house with eID. Please use the following verification code to complete your registration:
 
-  Thank you for registering your house with eID. Please use the following verification code to complete your registration:
+Verification Code: ${alphanumericCode}
 
-  Verification Code: ${alphanumericCode}
+Follow this link https://own-my-data.web.app/verification to verify your account
 
-  Follow this link https://own-my-data.web.app/verification to verify your account
+Best regards,
+eID`;
 
-  Best regards,
-  eID`;
-
-      // Send verification email
-      try {
-        await sendEmail(user.email, subject, vermessage);
-        console.log('Email sent successfully');
-      } catch (error) {
-        console.error('Error sending email:', error);
-        return res.status(500).json({ message: 'Error sending verification email' });
-      }
-      res.status(201).json({ message: 'House registered successfully' });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Server error' });
+    // Send verification email
+    try {
+      await sendEmail(user.email, subject, vermessage);
+      console.log('Email sent successfully');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).json({ message: 'Error sending verification email' });
     }
 
-  
+    res.status(201).json({ message: 'House registered successfully' });
+    
+  } catch (err) {
+    console.error('Error in registerHouse:', err); // More detailed logging
+    res.status(500).json({ message: 'Server error' });
+  }
 };
-
-
 
 module.exports = { registerHouse };
