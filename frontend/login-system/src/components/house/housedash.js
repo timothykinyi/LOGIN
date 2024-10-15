@@ -9,13 +9,12 @@ const HouseDetails = () => {
   const userEID = sessionStorage.getItem('eID');  // Fetch the EID from session storage
 
   // Fetch houses owned by the user when the page loads
-  useEffect(() => {
+// Fetch houses owned by the user when the page loads
+useEffect(() => {
     const fetchUserHouses = async () => {
       try {
-        const response = await axios.get('https://login-9ebe.onrender.com/api/houses/owner', {
-          headers: {
-            'Authorization': `Bearer ${userEID}` // Assuming you have some form of auth token
-          }
+        const response = await axios.post('https://login-9ebe.onrender.com/api/houses/owner', {
+          eID: userEID // Sending EID in the request body
         });
         setHouses(response.data);
         setLoading(false);
@@ -24,9 +23,10 @@ const HouseDetails = () => {
         setLoading(false);
       }
     };
-
+  
     fetchUserHouses();
   }, [userEID]);
+  
 
   // Fetch house details when a house is selected
   const fetchHouseDetails = async (HID) => {
