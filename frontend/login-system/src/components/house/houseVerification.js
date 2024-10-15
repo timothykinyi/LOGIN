@@ -41,7 +41,7 @@ function Verification() {
       if (!HIDToUse) {
         setError('House ID not found. Please ensure it is set.');
       } else {
-        const response = await axios.post('https://login-9ebe.onrender.com/api/houses/resendcode', { HID: HIDToUse });
+        const response = await axios.post('https://login-9ebe.onrender.com/api/houses/resendemail', { HID: HIDToUse });
         if (response.status === 200) {
           setError('Verification code has been resent.');
         }

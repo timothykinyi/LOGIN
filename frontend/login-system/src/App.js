@@ -37,6 +37,7 @@ import Phonedoor from './components/door/phonedoor';
 import UserDoorDash from './components/door/userdoormanagmentsystemdash';
 import GDashboard from './components/gDashboard';
 import HouseVerification from './components/house/houseVerification';
+import Housedash from './components/house/housedash';
 import Housereg from './components/house/housereg';
 
 import Landing from './components/landing';
@@ -133,6 +134,7 @@ function App() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/house/housereg" element={<Housereg />} />
         <Route path="/house/verification" element={<HouseVerification />} />
+        <Route path="/house/housedash" element={<Housedash />} />
         
         
       </Routes>

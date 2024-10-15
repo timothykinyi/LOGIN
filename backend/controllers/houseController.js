@@ -167,6 +167,77 @@ eID`;
   }
 };
 
+const getHouseDetails = async (req, res) => {
+  const { HID } = req.params;
+
+  try {
+    const house = await House.findOne({ HID });
+
+    if (!house) {
+      return res.status(404).json({ message: 'House not found' });
+    }
+
+    res.status(200).json(house);
+  } catch (error) {
+    console.error('Error fetching house details:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const updateDoorAccess = async (req, res) => {
+  const { HID, doorId } = req.params;
+  const { allowedUsers } = req.body;
+
+  try {
+    const house = await House.findOne({ HID });
+
+    if (!house) {
+      return res.status(404).json({ message: 'House not found' });
+    }
+
+    const door = house.doors.find(door => door.doorId === doorId);
+    if (!door) {
+      return res.status(404).json({ message: 'Door not found' });
+    }
+
+    // Update allowedUsers for the door
+    door.allowedUsers = allowedUsers;
+
+    await house.save();
+
+    res.status(200).json({ message: 'Access updated successfully', door });
+  } catch (error) {
+    console.error('Error updating access:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const removeUserFromDoor = async (req, res) => {
+  const { HID, doorId, userEID } = req.params;
+
+  try {
+    const house = await House.findOne({ HID });
+
+    if (!house) {
+      return res.status(404).json({ message: 'House not found' });
+    }
+
+    const door = house.doors.find(door => door.doorId === doorId);
+    if (!door) {
+      return res.status(404).json({ message: 'Door not found' });
+    }
+
+    // Remove the user by filtering the allowedUsers array
+    door.allowedUsers = door.allowedUsers.filter(user => user.eid !== userEID);
+
+    await house.save();
+
+    res.status(200).json({ message: 'User removed successfully', door });
+  } catch (error) {
+    console.error('Error removing user from door access:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 
-module.exports = { registerHouse, verifyUser, resendVerificationCode };
+module.exports = { registerHouse, verifyUser, resendVerificationCode, getHouseDetails, updateDoorAccess, removeUserFromDoor};
