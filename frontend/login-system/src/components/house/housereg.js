@@ -13,7 +13,7 @@ const Register = () => {
   const [doorNames, setDoorNames] = useState(['']); // Array to hold door names
   const [userEIDs, setUserEIDs] = useState([]); // Array to hold user EIDs and access rights
   const navigate = useNavigate();
-  
+
   const handleDoorNameChange = (index, value) => {
     const newDoorNames = [...doorNames];
     newDoorNames[index] = value;
@@ -70,8 +70,8 @@ const Register = () => {
           specificDoors: user.specificDoors || [], // Ensure specificDoors is always an array
         })), // Pass user EIDs for access
       });
-      alert(response.message);
-      sessionStorage.setItem('HID', response.HID);
+      alert(response.data.message);
+      sessionStorage.setItem('HID', response.data.HID);
       navigate('/house/verification');
     } catch (error) {
       alert(error.response.data.message);

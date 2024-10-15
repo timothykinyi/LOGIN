@@ -22,7 +22,7 @@ function Verification() {
     e.preventDefault();
     try {
       const HIDToUse = HID;
-      const response = await axios.post('https://login-9ebe.onrender.com/api/auth/verify', { HID: HIDToUse, verificationCode });
+      const response = await axios.post('https://login-9ebe.onrender.com/api/houses/verify', { HID: HIDToUse, verificationCode });
       if (response.status === 200) {
         navigate('/success');
       }
@@ -41,7 +41,7 @@ function Verification() {
       if (!HIDToUse) {
         setError('House ID not found. Please ensure it is set.');
       } else {
-        const response = await axios.post('https://elosystemv1.onrender.com/api/auth/resendcode', { HID: HIDToUse });
+        const response = await axios.post('https://login-9ebe.onrender.com/api/houses/resendcode', { HID: HIDToUse });
         if (response.status === 200) {
           setError('Verification code has been resent.');
         }

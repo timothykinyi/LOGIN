@@ -4,6 +4,7 @@ const User = require('../models/User');
 const sendEmail = require('../services/emailService');
 const { generateAlphanumericVerificationCode } = require('../services/verificationcode');
 const bcrypt = require('bcryptjs');
+const { getDoorsByHouse } = require('./doorManagementController');
 
 // House registration handler
 const registerHouse = async (req, res) => {
@@ -73,6 +74,8 @@ const registerHouse = async (req, res) => {
 
 Thank you for registering your house with eID. Please use the following verification code to complete your registration:
 
+Your house ID (HID) is: ${HID}
+
 Verification Code: ${alphanumericCode}
 
 Follow this link https://own-my-data.web.app/verification to verify your account
@@ -124,5 +127,46 @@ const verifyUser = async (req, res) => {
   }
 };
 
+const resendVerificationCode = async (req, res) => {
+  const { HID } = req.body;
 
-module.exports = { registerHouse, verifyUser };
+  try {
+    const house = await House.findOne({ HID});
+    if (!house) {
+      return res.status(404).json({ message: 'House not found register first and try again.' });
+    }
+    const user = await User.findOne({ eID: house.ownerEID });
+    if (!user) {
+      return res.status(400).json({ message: "Can't resend try again later."});
+    }
+
+    const subject = "Verification - " + house.verificationCode;
+    const vermessage = `Dear ${user.username},
+
+Thank you for registering with eID. Please use the following verification code to complete your registration:
+
+Your house ID (HID) is: ${HID}
+
+Verification Code: ${house.verificationCode}
+
+Follow this link https://own-my-data.web.app/verification to verify your account
+
+Best regards,
+eID`;
+    try {
+      await sendEmail(user.email, subject, vermessage);
+      console.log('Email sent successfully');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).json({ message: 'Error sending verification email' });
+    }
+
+    res.status(200).json({ message: 'Verification code sent successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred while sending verification code.' });
+  }
+};
+
+
+
+module.exports = { registerHouse, verifyUser, resendVerificationCode };
