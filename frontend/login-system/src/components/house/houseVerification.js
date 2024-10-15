@@ -4,27 +4,25 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Verification.css';
 
 function Verification() {
-  const [email, setEmail] = useState('');
-  const [newEmail, setNewEmail] = useState('');
+  const [HID, setHID] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [error, setError] = useState(null);
-  const [emailPresent, setEmailPresent] = useState(false);
-  const [editingEmail, setEditingEmail] = useState(false);
+  const [HIDPresent, setHIDPresent] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedEmail = sessionStorage.getItem('HID');
-    if (storedEmail) {
-      setEmail(storedEmail);
-      setEmailPresent(true);
+    const storedHID = sessionStorage.getItem('HID');
+    if (storedHID) {
+      setHID(storedHID);
+      setHIDPresent(true);
     }
   }, []);
 
   const handleVerify = async (e) => {
     e.preventDefault();
     try {
-      const emailToUse = email || newEmail;
-      const response = await axios.post('https://login-9ebe.onrender.com/api/auth/verify', { email: emailToUse, verificationCode });
+      const HIDToUse = HID;
+      const response = await axios.post('https://login-9ebe.onrender.com/api/auth/verify', { HID: HIDToUse, verificationCode });
       if (response.status === 200) {
         navigate('/success');
       }
@@ -37,45 +35,13 @@ function Verification() {
     }
   };
 
-  const handleEditEmail = () => {
-    setEditingEmail(true);
-    setEmailPresent(false);
-  };
-
-  const handleSaveEmail = async () => {
-    if(!(/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(newEmail)))
-      {
-        setError('Please enter a valid gmail address (e.g., yourname@gmail.com).');
-      }
-    else
-    {
-      try {
-        const response = await axios.post('https://elosystemv1.onrender.com/api/auth/update-email', { oldEmail: email, newEmail });
-        if (response.status === 200) {
-          setEmail(newEmail);
-          sessionStorage.setItem('email', newEmail);
-          setEditingEmail(false);
-          setEmailPresent(true);
-          setError(null);
-        }
-      } catch (error) {
-        if (error.response && error.response.data) {
-          setError(error.response.data.message);
-        } else {
-          setError('An error occurred while updating the email.');
-        }
-      }
-    }
-
-  };
-
-  const handleresendEmail = async () => {
+  const handleresendCode = async () => {
     try {
-      const emailToUse = email || newEmail;
-      if (!emailToUse) {
-        setError('Enter your email.');
+      const HIDToUse = HID;
+      if (!HIDToUse) {
+        setError('House ID not found. Please ensure it is set.');
       } else {
-        const response = await axios.post('https://elosystemv1.onrender.com/api/auth/resendemail', { email: emailToUse });
+        const response = await axios.post('https://elosystemv1.onrender.com/api/auth/resendcode', { HID: HIDToUse });
         if (response.status === 200) {
           setError('Verification code has been resent.');
         }
@@ -91,42 +57,26 @@ function Verification() {
 
   return (
     <div className="container">
-      <h2>Verify Your Account</h2>
-      <h4 style={{color: 'white'}}>Check your email to get the verification code.</h4>
+      <h2>Verify Your House Registration</h2>
+      <h4 style={{ color: 'white' }}>Check your email to get the verification code associated with your house registration.</h4>
       <form onSubmit={handleVerify}>
-        {emailPresent && !editingEmail ? (
+        {HIDPresent ? (
           <div>
-            <label>Email:</label>
-            <p>{email}</p>
-            <button type="button" onClick={handleEditEmail}>Change Email</button>
-          </div>
-        ) : editingEmail ? (
-          <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              value={newEmail}
-              pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
-              onChange={(e) => setNewEmail(e.target.value)}
-              required
-            />
-            <button type="button" onClick={handleSaveEmail}>Save Email</button>
+            <label>House ID (HID):</label>
+            <p>{HID}</p>
           </div>
         ) : (
           <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={newEmail}
-            pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
-            onChange={(e) => setNewEmail(e.target.value)}
-            required
-          />
-          
-        </div>
-        ) }
+            <label>House ID (HID):</label>
+            <input
+              type="text"
+              value={HID}
+              onChange={(e) => setHID(e.target.value)}
+              required
+            />
+          </div>
+        )}
         <div>
-
           <label>Verification Code:</label>
           <input
             type="text"
@@ -135,9 +85,9 @@ function Verification() {
             required
           />
         </div>
-        <button className='sign-in-btn'  type="submit">Verify</button>
+        <button className="sign-in-btn" type="submit">Verify</button>
       </form>
-      <button type="button" className='sign-in-btn'  onClick={handleresendEmail}>Resend verification code</button>
+      <button type="button" className="sign-in-btn" onClick={handleresendCode}>Resend verification code</button>
       {error && <p className="error">{error}</p>}
     </div>
   );

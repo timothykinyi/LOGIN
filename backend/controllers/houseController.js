@@ -17,15 +17,12 @@ const registerHouse = async (req, res) => {
     }
 
     // Generate unique HID
-    const generateHID = () => {
-      return Math.floor(100000 + Math.random() * 900000); // Generates a random 6-digit number
-    };
-    
-    let HID;
-    let exists = true;
-    while (exists) {
+    const generateHID = () => Math.floor(100000 + Math.random() * 900000); // 6-digit random number
+    let HID = generateHID();
+
+    // Ensure HID is unique
+    while (await House.exists({ HID })) {
       HID = generateHID();
-      exists = await House.exists({ HID });
     }
 
     // Password validation
