@@ -16,7 +16,7 @@ const DoorSchema = new mongoose.Schema({
 });
 
 const HouseSchema = new mongoose.Schema({
-  ownerEID: { type: Number, required: true, unique: true },
+  ownerEID: { type: Number, required: true},
   HID: { type: Number, required: true, unique: true },
   address: { type: String, required: true },
   verificationCode: { type: String },
