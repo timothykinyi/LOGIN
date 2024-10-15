@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
  */
 function sendEmail(to, subject, text) {
   const mailOptions = {
-    from: 'EiD',
+    from: `"EiD" <${process.env.EMAIL_USER}>`, // Set display name as "EiD"
     to: to,
     subject: subject,
     text: text,

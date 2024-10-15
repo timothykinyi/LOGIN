@@ -1,0 +1,154 @@
+/* General Styles */
+
+  .hdash-container {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f8fb;
+    color: #2d3e50;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: 30px auto;
+    max-height: 80vh; /* Limit the height of the container to fit within the viewport */
+    overflow-y: auto;
+  }
+  
+  .hdash-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .hdash-no-houses {
+    color: #888;
+  }
+  
+  .hdash-house-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .hdash-house-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .hdash-house-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .hdash-house-details {
+    margin-top: 20px;
+  }
+  
+  .hdash-subtitle {
+    font-size: 1.5rem;
+    color: #444;
+  }
+  
+  .hdash-house-address {
+    margin-bottom: 20px;
+    color: #555;
+  }
+  
+  /* Doors List */
+  .hdash-doors-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .hdash-door-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .hdash-door-name {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* User List */
+  .hdash-users-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+  }
+  
+  .hdash-user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+  }
+  
+  .hdash-remove-user-btn {
+    background-color: #ff5f5f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .hdash-remove-user-btn:hover {
+    background-color: #ff4040;
+  }
+  
+  /* Add User Form */
+  .hdash-add-user-form {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+  
+  .hdash-input-label,
+  .hdash-checkbox-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #444;
+  }
+  
+  .hdash-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  
+  .hdash-submit-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .hdash-submit-btn:hover {
+    background-color: #43a047;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hdash-container {
+      padding: 10px;
+    }
+  
+    .hdash-title {
+      font-size: 1.5rem;
+    }
+  
+    .hdash-house-item,
+    .hdash-door-item {
+      font-size: 0.9rem;
+    }
+  }
+  
