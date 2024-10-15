@@ -240,12 +240,12 @@ const removeUserFromDoor = async (req, res) => {
 };
 
 const getHousesByOwnerEID = async (req, res) => {
-  const { ownerEID } = req.body; // Fetch from request body
+  const { eID } = req.body;
 
   try {
-    const houses = await House.find({ ownerEID });
+    const houses = await House.find({ ownerEID: eID });
     if (houses.length === 0) {
-      return res.status(404).json({ message: 'No houses found for this EID' });
+      return res.status(404).json({ message: 'No houses found for this EID '+ownerEID });
     }
     res.status(200).json(houses);
   } catch (err) {
@@ -253,9 +253,5 @@ const getHousesByOwnerEID = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-
-
-
 
 module.exports = { registerHouse, verifyUser, resendVerificationCode, getHouseDetails, updateDoorAccess, removeUserFromDoor, getHousesByOwnerEID};
