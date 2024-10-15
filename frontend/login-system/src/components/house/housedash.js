@@ -12,7 +12,8 @@ const HouseDetails = () => {
   useEffect(() => {
     const fetchUserHouses = async () => {
       try {
-        const response = await axios.get(`https://login-9ebe.onrender.com/api/houses/owner/${userEID}`);
+        
+        const response = await axios.get(`https://login-9ebe.onrender.com/api/houses/owner`, { userEID });
         setHouses(response.data);
         setLoading(false);
       } catch (err) {

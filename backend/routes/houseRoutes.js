@@ -10,6 +10,6 @@ router.post('/resendemail', resendVerificationCode);
 router.get('/:HID', getHouseDetails);
 router.put('/:HID/doors/:doorId', updateDoorAccess);
 router.delete('/:HID/doors/:doorId/users/:userEID', removeUserFromDoor);
-router.get('/owner/:userEID', getHousesByOwnerEID);
+router.get('/owner', getHousesByOwnerEID);
 
 module.exports = router;

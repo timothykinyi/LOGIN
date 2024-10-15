@@ -240,7 +240,7 @@ const removeUserFromDoor = async (req, res) => {
 };
 
 const getHousesByOwnerEID = async (req, res) => {
-  const { ownerEID } = req.params;
+  const { ownerEID } = req.body;
 
   try {
     const houses = await House.find({ ownerEID });
