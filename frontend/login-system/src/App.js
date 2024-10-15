@@ -36,7 +36,9 @@ import Doormanagment from './components/door/doormanagment';
 import Phonedoor from './components/door/phonedoor';
 import UserDoorDash from './components/door/userdoormanagmentsystemdash';
 import GDashboard from './components/gDashboard';
+import HouseVerification from './components/house/houseVerification';
 import Housereg from './components/house/housereg';
+
 import Landing from './components/landing';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
@@ -130,6 +132,8 @@ function App() {
         <Route path="/sharedlink/:eID" element={<FetchSharedDataPage />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/house/housereg" element={<Housereg />} />
+        <Route path="/house/verification" element={<HouseVerification />} />
+        
         
       </Routes>
     </Router>

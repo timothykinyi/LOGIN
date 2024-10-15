@@ -1,6 +1,7 @@
 // src/components/Register.js
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/housereg.css';
 
 const Register = () => {
@@ -11,7 +12,8 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [doorNames, setDoorNames] = useState(['']); // Array to hold door names
   const [userEIDs, setUserEIDs] = useState([]); // Array to hold user EIDs and access rights
-
+  const navigate = useNavigate();
+  
   const handleDoorNameChange = (index, value) => {
     const newDoorNames = [...doorNames];
     newDoorNames[index] = value;
@@ -55,7 +57,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://login-9ebe.onrender.com/api/houses/register', {
+        const response = await axios.post('https://login-9ebe.onrender.com/api/houses/register', {
         ownerEID,
         address,
         numberOfDoors,
@@ -68,7 +70,9 @@ const Register = () => {
           specificDoors: user.specificDoors || [], // Ensure specificDoors is always an array
         })), // Pass user EIDs for access
       });
-      alert('House registered successfully');
+      alert(response.message);
+      sessionStorage.setItem('HID', response.HID);
+      navigate('/house/verification');
     } catch (error) {
       alert(error.response.data.message);
     }

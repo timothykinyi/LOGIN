@@ -45,8 +45,10 @@ const registerHouse = async (req, res) => {
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10); // Hashing with a salt of 10 rounds
+    // Generate verification code
+    const alphanumericCode = generateAlphanumericVerificationCode(6);
 
-    const newHouse = new House({ ownerEID, HID, address, numberOfDoors });
+    const newHouse = new House({ ownerEID, verificationCode: alphanumericCode, HID, address, numberOfDoors });
 
     // Generate Door IDs and add door names, passwords, and allowed users
     for (let i = 0; i < numberOfDoors; i++) {
@@ -68,8 +70,7 @@ const registerHouse = async (req, res) => {
 
     await newHouse.save();
 
-    // Generate verification code
-    const alphanumericCode = generateAlphanumericVerificationCode(6);
+
     const subject = "Verification - " + alphanumericCode;
     const vermessage = `Dear ${user.username},
 
@@ -91,12 +92,40 @@ eID`;
       return res.status(500).json({ message: 'Error sending verification email' });
     }
 
-    res.status(201).json({ message: 'House registered successfully' });
+    res.status(201).json({ message: 'House registered successfully' , HID });
     
   } catch (err) {
     console.error('Error in registerHouse:', err); // More detailed logging
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+const verifyUser = async (req, res) => {
+  const { email, verificationCode } = req.body;
+
+  try {
+    const user = await House.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ message: 'User already verified' });
+    }
+
+    if (user.verificationCode !== verificationCode) {
+      return res.status(400).json({ message: 'Invalid verification code' });
+    }
+
+    user.isVerified = true;
+    await user.save();
+
+    res.status(200).json({ message: 'Account verified successfully' });
+  } catch (error) {
+    console.error('Server error during verification:', error);
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
 
 module.exports = { registerHouse };
