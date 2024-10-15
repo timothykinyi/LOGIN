@@ -78,7 +78,7 @@ Your house ID (HID) is: ${HID}
 
 Verification Code: ${alphanumericCode}
 
-Follow this link https://own-my-data.web.app/verification to verify your account
+Follow this link https://own-my-data.web.app/house/verification to verify your account
 
 Best regards,
 eID`;
@@ -104,7 +104,7 @@ const verifyUser = async (req, res) => {
   const { HID, verificationCode } = req.body;
 
   try {
-    const house = await House.findOne({ email });
+    const house = await House.findOne({ HID });
     if (!house) {
       return res.status(404).json({ message: 'House not found' });
     }
@@ -149,7 +149,7 @@ Your house ID (HID) is: ${HID}
 
 Verification Code: ${house.verificationCode}
 
-Follow this link https://own-my-data.web.app/verification to verify your account
+Follow this link https://own-my-data.web.app/house/verification to verify your account
 
 Best regards,
 eID`;
