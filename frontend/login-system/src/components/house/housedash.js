@@ -12,8 +12,11 @@ const HouseDetails = () => {
   useEffect(() => {
     const fetchUserHouses = async () => {
       try {
-        
-        const response = await axios.get(`https://login-9ebe.onrender.com/api/houses/owner`, { userEID });
+        const response = await axios.get('https://login-9ebe.onrender.com/api/houses/owner', {
+          headers: {
+            'Authorization': `Bearer ${userEID}` // Assuming you have some form of auth token
+          }
+        });
         setHouses(response.data);
         setLoading(false);
       } catch (err) {
@@ -38,7 +41,7 @@ const HouseDetails = () => {
 
   const handleRemoveUser = async (doorId, userEID) => {
     try {
-      await axios.delete(`/api/houses/${selectedHouse.HID}/doors/${doorId}/users/${userEID}`);
+      await axios.delete(`https://login-9ebe.onrender.com/api/houses/${selectedHouse.HID}/doors/${doorId}/users/${userEID}`);
       // Refetch house details after removing user
       fetchHouseDetails(selectedHouse.HID);
     } catch (err) {
@@ -91,7 +94,10 @@ const HouseDetails = () => {
                     </li>
                   ))}
                 </ul>
-                <button onClick={() => handleUpdateAccess(door.doorId, /* new allowedUsers here */)}>
+                <button onClick={() => {
+                  const newAllowedUsers = prompt('Enter new allowed users (comma-separated EIDs):').split(',').map(eid => ({ eid: eid.trim(), access: 'specific' })); // Update as needed
+                  handleUpdateAccess(door.doorId, newAllowedUsers);
+                }}>
                   Edit Access
                 </button>
               </li>

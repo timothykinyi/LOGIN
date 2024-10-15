@@ -240,7 +240,7 @@ const removeUserFromDoor = async (req, res) => {
 };
 
 const getHousesByOwnerEID = async (req, res) => {
-  const { ownerEID } = req.body;
+  const { ownerEID } = req.body; // Fetch from request body
 
   try {
     const houses = await House.find({ ownerEID });
@@ -253,6 +253,8 @@ const getHousesByOwnerEID = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
 
 
 
