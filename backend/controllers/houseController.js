@@ -98,26 +98,26 @@ eID`;
 };
 
 const verifyUser = async (req, res) => {
-  const { email, verificationCode } = req.body;
+  const { HID, verificationCode } = req.body;
 
   try {
-    const user = await House.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    const house = await House.findOne({ email });
+    if (!house) {
+      return res.status(404).json({ message: 'House not found' });
     }
 
-    if (user.isVerified) {
-      return res.status(400).json({ message: 'User already verified' });
+    if (house.isVerified) {
+      return res.status(400).json({ message: 'House already verified' });
     }
 
-    if (user.verificationCode !== verificationCode) {
+    if (house.verificationCode !== verificationCode) {
       return res.status(400).json({ message: 'Invalid verification code' });
     }
 
-    user.isVerified = true;
-    await user.save();
+    house.isVerified = true;
+    await house.save();
 
-    res.status(200).json({ message: 'Account verified successfully' });
+    res.status(200).json({ message: 'House verified successfully' });
   } catch (error) {
     console.error('Server error during verification:', error);
     res.status(500).json({ message: 'Server error', error });
@@ -125,4 +125,4 @@ const verifyUser = async (req, res) => {
 };
 
 
-module.exports = { registerHouse };
+module.exports = { registerHouse, verifyUser };
