@@ -241,11 +241,16 @@ const removeUserFromDoor = async (req, res) => {
 
 const getHousesByOwnerEID = async (req, res) => {
   const { eID } = req.body;
+  if (!eID)
+    {
+      console.error(" EID doesn't exist");
+      return res.status(404).json({ message: " EID doesn't exist"});
+    }
 
   try {
     const houses = await House.find({ ownerEID: eID });
     if (houses.length === 0) {
-      return res.status(404).json({ message: 'No houses found for this EID '+ownerEID });
+      return res.status(404).json({ message: 'No houses found for this EID '+ ownerEID });
     }
     res.status(200).json(houses);
   } catch (err) {

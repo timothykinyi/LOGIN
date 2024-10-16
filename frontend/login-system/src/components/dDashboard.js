@@ -1,7 +1,7 @@
 import axios from 'axios'; // Import axios
 import { jwtDecode } from 'jwt-decode'; // Correctly import jwtDecode
 import React, { useEffect, useRef, useState } from 'react';
-import { FaBell, FaBriefcase, FaCogs, FaHeartbeat, FaMoneyBill, FaPhone, FaShareAlt, FaSignOutAlt, FaTimes, FaUniversity, FaUser, FaUsers } from 'react-icons/fa';
+import { FaBell, FaBriefcase, FaCogs, FaHeartbeat, FaMoneyBill, FaPhone, FaShareAlt, FaTimes, FaUniversity, FaUser, FaUsers } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../serviceWorkerRegistration';
 import './styles/gDashboard.css'; // Your prefixed CSS file
@@ -23,6 +23,7 @@ import DisplayHealth from './displayhealth';
 import DisplayPersonalInfo from './displaypersonaldata';
 import DisplayPreferencesAndLifestyle from './displaypreference';
 import DisplaySocialAndFamily from './displaysocialFamily';
+import Header from './header';
 
 import DataShare from './DataShare';
 
@@ -297,9 +298,7 @@ const Dashboard = () => {
                 <li key={index} className="dash-nav-item">
                   <button
                     onClick={() => {
-                      if (item.isLogout) {
-                        performLogout(); // Trigger the logout function directly
-                      } else {
+                      {
                         setActiveForm(item.form);
                         setIsAddingNew(false);
                       }
@@ -314,34 +313,7 @@ const Dashboard = () => {
       </div>
 
       <main className="dash-dashboard-content">
-        <header className="dash-dashboard-header">
-          <div className="header-content">
-            {eID && <div className="header-eid">EiD: {eID}</div>}
-            <div className="header-notifications">
-              <button className="notification-button" onClick={() => navigate('/notifications')}>
-                <FaBell />
-                {unreadCount > 0 && <span className="notification-count">{unreadCount}</span>}
-              </button>
-              {showNotifications && (
-                  {/*<div className="notification-dropdown">
-                  <button onClick={() => setShowAllNotifications(!showAllNotifications)}>
-                    {showAllNotifications ? 'Show Unread' : 'Show All'}
-                  </button>
-                  {notifications
-                    .filter(notification => showAllNotifications || !notification.isRead)
-                    .map((notification, index) => (
-                      <div key={index} className={`notification-item ${notification.isRead ? 'read' : 'unread'}`}>
-                        {notification.message}
-                      </div>
-                  ))}
-                  </div> */}
-              )}
-              <button className="notification-button" onClick={performLogout}>
-                <FaSignOutAlt />
-              </button>
-            </div>
-          </div>
-        </header>
+        <Header/>
         <section className="mainsection">
         {renderContent()}
         </section>

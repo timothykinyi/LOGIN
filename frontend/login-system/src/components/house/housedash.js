@@ -17,11 +17,21 @@ const HouseDetails = () => {
         const response = await axios.post('https://login-9ebe.onrender.com/api/houses/owner', {
           eID: userEID,
         });
-        setHouses(response.data);
+
+        if (response.data.length === null) {
+          // No houses found, but this is not an error, just display a message
+          setHouses([]);
+        } else {
+          // Houses found, set the houses state
+          setHouses(response.data);
+        }
+
         setLoading(false);
       } catch (err) {
-        setError('Error fetching houses');
+        // Handle actual errors like network issues
+        setError('Error fetching house');
         setLoading(false);
+        console.log(err);
       }
     };
 
@@ -84,7 +94,7 @@ const HouseDetails = () => {
     <div className="hdash-container">
       <h1 className="hdash-title">My Houses</h1>
       {houses.length === 0 ? (
-        <p className="hdash-no-houses">You don't own any houses.</p>
+        <p className="hdash-no-houses">There is no house under your EID. Please register a house first.</p>
       ) : (
         <ul className="hdash-house-list">
           {houses.map((house) => (

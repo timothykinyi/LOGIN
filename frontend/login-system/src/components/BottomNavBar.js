@@ -1,5 +1,6 @@
 import React from 'react';
-import { FaBell, FaCogs, FaHome, FaUsers } from 'react-icons/fa';
+import { BsFillPersonFill } from 'react-icons/bs';
+import { FaBell, FaCogs, FaHome } from 'react-icons/fa';
 import './styles/Navbar.css';
 
 const BottomNavbar = () => {
@@ -9,25 +10,17 @@ const BottomNavbar = () => {
         <ul className="nav-links">
           {/* Home Icon */}
           <li className="nav-item">
-            <a href="#home" className="nav-link">
-              <FaHome />
-              <span>Home</span>
+            <a href="/dDashboard" className="nav-link">
+              <BsFillPersonFill />
+              <span>Profile</span>
             </a>
           </li>
 
           {/* Users Icon */}
           <li className="nav-item">
-            <a href="#users" className="nav-link">
-              <FaUsers />
-              <span>Users</span>
-            </a>
-          </li>
-
-          {/* Settings Icon */}
-          <li className="nav-item">
-            <a href="#settings" className="nav-link">
-              <FaCogs />
-              <span>Settings</span>
+            <a href="/house/homedash" className="nav-link">
+              <FaHome />
+              <span>Houses</span>
             </a>
           </li>
 
@@ -36,6 +29,14 @@ const BottomNavbar = () => {
             <a href="#notifications" className="nav-link">
               <FaBell />
               <span>Notifications</span>
+            </a>
+          </li>
+
+                    {/* Settings Icon */}
+                    <li className="nav-item">
+            <a href="/settings" className="nav-link">
+              <FaCogs />
+              <span>Settings</span>
             </a>
           </li>
         </ul>

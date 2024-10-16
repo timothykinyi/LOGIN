@@ -112,7 +112,7 @@ const Notifications = () => {
         <div className="nav-notificationsdiv">
           <h2>Notifications ({unreadCount})</h2>
         </div>
-        <button className="nav-close-btn" onClick={() => navigate('/dashboard')}>
+        <button className="nav-close-btn" onClick={() => navigate('/dDashboard')}>
           <FaTimes />
         </button>
       </header>

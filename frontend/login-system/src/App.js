@@ -36,6 +36,7 @@ import Doormanagment from './components/door/doormanagment';
 import Phonedoor from './components/door/phonedoor';
 import UserDoorDash from './components/door/userdoormanagmentsystemdash';
 import GDashboard from './components/gDashboard';
+import Homedash from './components/house/homedash';
 import HouseVerification from './components/house/houseVerification';
 import Housedash from './components/house/housedash';
 import Housereg from './components/house/housereg';
@@ -43,6 +44,7 @@ import Housereg from './components/house/housereg';
 import Landing from './components/landing';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
+import Settings from './components/settings';
 import useOnlineStatus from './hooks/useOnlineStatus'; // Import the hook
 import { urlBase64ToUint8Array } from './utils';
 
@@ -128,6 +130,7 @@ function App() {
         <Route path="/userDoorDash/doormanagment" element={<Doormanagment />} /> 
         <Route path="/userDoorDash/phonedoor" element={<Phonedoor />} />
         <Route path="/m" element={<Mw />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/house" element={<HomePage />} />
         <Route path="/house/:houseId" element={<HousePage />} />
         <Route path="/sharedlink/:eID" element={<FetchSharedDataPage />} />
@@ -135,7 +138,7 @@ function App() {
         <Route path="/house/housereg" element={<Housereg />} />
         <Route path="/house/verification" element={<HouseVerification />} />
         <Route path="/house/housedash" element={<Housedash />} />
-        
+        <Route path="/house/homedash" element={<Homedash />} />
         
       </Routes>
     </Router>
