@@ -77,7 +77,7 @@ function App() {
       console.log('User is subscribed:', subscription);
 
       // Send subscription and user ID to your server
-      await fetch('/subscribe', {
+      await fetch('https://login-9ebe.onrender.com/api/subs/subscribe', {
         method: 'POST',
         body: JSON.stringify({ userId, subscription }),
         headers: {

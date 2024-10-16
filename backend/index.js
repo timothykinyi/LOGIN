@@ -50,10 +50,9 @@ app.use('/api/houses', houseRoutes);
 app.use('/api/doors', doorManagmentRoutes);
 app.use('/api/access', accessManagementRoutes);
 app.use('/api/notifications', notificationsRoutes);
-app.use('/api', subscriptionRoutes);
+app.use('/api/subs', subscriptionRoutes);
 app.use('/auth', fingerprintRoutes);
 app.use('/api/shared', shareRoutes);
-
 // Error handling middleware
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {

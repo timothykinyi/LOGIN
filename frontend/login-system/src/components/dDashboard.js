@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { register } from '../serviceWorkerRegistration';
 import './styles/gDashboard.css'; // Your prefixed CSS file
 // Import both display and form components
+import Bottomnav from './BottomNavBar';
 import ContactForm from './ContactForm';
 import EducationForm from './EducationForm';
 import EmploymentForm from './EmploymentForm';
@@ -14,7 +15,6 @@ import HealthForm from './HealthForm';
 import PersonalInfoForm from './PersonalInfoForm';
 import PreferencesAndLifestyleForm from './PreferencesAndLifestyleForm';
 import SocialAndFamilyForm from './SocialAndFamilyForm';
-
 import DisplayContact from './displaycontact';
 import DisplayEducation from './displayeducation';
 import DisplayEmployment from './displayemployment';
@@ -316,7 +316,7 @@ const Dashboard = () => {
       <main className="dash-dashboard-content">
         <header className="dash-dashboard-header">
           <div className="header-content">
-            {eID && <div className="header-eid">eID: {eID}</div>}
+            {eID && <div className="header-eid">EiD: {eID}</div>}
             <div className="header-notifications">
               <button className="notification-button" onClick={() => navigate('/notifications')}>
                 <FaBell />
@@ -342,8 +342,12 @@ const Dashboard = () => {
             </div>
           </div>
         </header>
+        <section className="mainsection">
         {renderContent()}
+        </section>
+        <Bottomnav/>
       </main>
+      
     </div>
   );
 };
