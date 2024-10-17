@@ -116,7 +116,7 @@ const Register = () => {
       const response = await axios.post('https://login-9ebe.onrender.com/api/auth/companyregister', formData);
       setMessage(response.data.message);
       sessionStorage.setItem('email', formData.email);
-      navigate('/verification');
+      navigate('/companyVerification');
     } catch (error) {
       setMessage(
         error.response && error.response.data

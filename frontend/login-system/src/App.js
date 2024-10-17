@@ -18,13 +18,14 @@ import SocialAndFamilyForm from './components/SocialAndFamilyForm';
 import Success from './components/Success';
 import Verification from './components/Verification';
 import Biometrics from './components/biometrics';
+import CompanyVerification from './components/companyVerification';
+import Companyreg from './components/companyreg';
 import DDashboard from './components/dDashboard';
 import Displaycontact from './components/displaycontact';
 import Displayeducation from './components/displayeducation';
 import Displayemployment from './components/displayemployment';
 import Displayfinaces from './components/displayfinaces';
 import Displayhealth from './components/displayhealth';
-import Companyreg from './components/companyreg';
 
 import Displaypersonaldata from './components/displaypersonaldata';
 import Displaypreference from './components/displaypreference';
@@ -115,6 +116,7 @@ function App() {
         <Route path="/gDashboard/preferencesAndLifestyleForm" element={<PreferencesAndLifestyleForm />} />
         <Route path="/gDashboard" element={<GDashboard />} />
         <Route path="/dDashboard" element={<DDashboard />} />
+        <Route path="/companyVerification" element={<CompanyVerification />} />
         <Route path="/showcontact" element={<Displaycontact />} />
         <Route path="/dDashboard/displayeducation" element={<Displayeducation />} />
         <Route path="/dDashboard/displayemployment" element={<Displayemployment />} />

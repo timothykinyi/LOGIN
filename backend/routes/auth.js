@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, companyregisterUser, login, verifyUser, updateEmail, resendVerificationCode, newrecoverPassword, resetPassword, changeusername, changepassword, changephonenumber, changeemail, logout, getUser, getWebAuthnOptions, handleWebAuthnRegistration } = require('../controllers/authController');
+const { registerUser, companyregisterUser, login, verifyUser, verifyComp, updateEmail, resendVerificationCode,   resendcompanyVerificationCode, updatecompanEmail, newrecoverPassword, resetPassword, changeusername, changepassword, changephonenumber, changeemail, logout, getUser, getWebAuthnOptions, handleWebAuthnRegistration } = require('../controllers/authController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
@@ -8,8 +8,11 @@ router.post('/register', registerUser);
 router.post('/companyregister', companyregisterUser);
 router.post('/login', login);
 router.post('/verify', verifyUser);
+router.post('/verifycompany', verifyComp);
 router.post('/update-email', updateEmail);
 router.post('/resendemail', resendVerificationCode);
+router.post('/updatecompemail', updatecompanEmail);
+router.post('/resendcompemail', resendcompanyVerificationCode);
 router.post('/recoverpassword', newrecoverPassword);
 router.post('/reset-password', resetPassword);
 router.post('/changeusername', changeusername);

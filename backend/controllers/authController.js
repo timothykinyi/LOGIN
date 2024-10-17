@@ -377,6 +377,33 @@ const verifyUser = async (req, res) => {
   }
 };
 
+const verifyComp = async (req, res) => {
+  const { email, verificationCode } = req.body;
+
+  try {
+    const user = await Camp.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ message: 'User already verified' });
+    }
+
+    if (user.verificationCode !== verificationCode) {
+      return res.status(400).json({ message: 'Invalid verification code' });
+    }
+
+    user.isVerified = true;
+    await user.save();
+
+    res.status(200).json({ message: 'Account verified successfully' });
+  } catch (error) {
+    console.error('Server error during verification:', error);
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
 const updateEmail = async (req, res) => {
   const { oldEmail, newEmail } = req.body;
 
@@ -433,6 +460,85 @@ const resendVerificationCode = async (req, res) => {
 
     const subject = "Verification - " + user.verificationCode;
     const vermessage = `Dear ${user.username},
+
+Thank you for registering with eID. Please use the following verification code to complete your registration:
+
+Verification Code: ${user.verificationCode}
+
+Follow this link https://own-my-data.web.app/verification to verify your account
+
+Best regards,
+eID`;
+    try {
+      await sendEmail(user.email, subject, vermessage);
+      console.log('Email sent successfully');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).json({ message: 'Error sending verification email' });
+    }
+
+    res.status(200).json({ message: 'Verification code sent successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred while sending verification code.' });
+  }
+};
+
+const updatecompanEmail = async (req, res) => {
+  const { oldEmail, newEmail } = req.body;
+
+  try {
+    const user = await Camp.findOne({ email: oldEmail });
+    if (!user) {
+      return res.status(404).json({ message: 'Company email not found' });
+    }
+
+    user.email = newEmail;
+    await user.save();
+    const subject = "Verification - " + user.verificationCode;
+    const vermessage = `Dear ${user.fullName},
+
+Thank you for registering with eID. Please use the following verification code to complete your registration:
+
+Verification Code: ${user.verificationCode}
+
+Follow this link https://own-my-data.web.app/verification to verify your account
+
+Best regards,
+eID`;
+    try {
+      await sendEmail(email, subject, vermessage);
+      console.log('Email sent successfully');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).json({ message: 'Error sending verification email' });
+    }
+    try {
+      const token = jwt.sign({ id: user._id, username: user.fullname, email: user.email, category: user.category }, process.env.JWT_SECRET, {
+        expiresIn: '1h',
+      });
+  
+      res.status(200).json({ message: 'Email updated successfully', token });
+    } catch (error) {
+      res.status(500).json({ message: 'An error occurred token' });
+    }
+
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred while updating email' });
+  }
+};
+
+const resendcompanyVerificationCode = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await Camp.findOne({ email});
+    if (!user) {
+      return res.status(404).json({ message: 'Company not found register first and try again.' });
+    }
+
+
+    const subject = "Verification - " + user.verificationCode;
+    const vermessage = `Dear ${user.fullname},
 
 Thank you for registering with eID. Please use the following verification code to complete your registration:
 
@@ -664,12 +770,15 @@ module.exports = {
   login,
   verifyUser,
   updateEmail,
+  verifyComp,
   resendVerificationCode,
   newrecoverPassword,
   resetPassword,
   changeusername,
   changepassword,
   changephonenumber,
+  resendcompanyVerificationCode,
+  updatecompanEmail,
   changeemail,
   logout,
   getUser,
