@@ -489,7 +489,7 @@ const updatecompanEmail = async (req, res) => {
   try {
     const user = await Camp.findOne({ email: oldEmail });
     if (!user) {
-      return res.status(404).json({ message: 'Company email not found' });
+      return res.status(404).json({ message: 'Company email not found'+oldEmail });
     }
 
     user.email = newEmail;
@@ -506,7 +506,7 @@ Follow this link https://own-my-data.web.app/companyVerification to verify your 
 Best regards,
 eID`;
     try {
-      await sendEmail(email, subject, vermessage);
+      await sendEmail(newEmail, subject, vermessage);
       console.log('Email sent successfully');
     } catch (error) {
       console.error('Error sending email:', error);
@@ -563,6 +563,7 @@ eID`;
 };
 
 const newrecoverPassword = async (req, res) => {
+
   try {
     const { username } = req.body;
     const user = await User.findOne({ username });
