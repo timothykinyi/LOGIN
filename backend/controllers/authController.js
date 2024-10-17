@@ -450,7 +450,7 @@ const login = async (req, res) => {
     await user.save();
 
     if (!user.dataMigrated) {
-      await migrateData(user);  // Migrate data if not done
+      await migrateData(user.eID);  // Migrate data if not done
     }
 
 
