@@ -135,3 +135,122 @@
     at process.processTimers (node:internal/timers:512:7)
 [error] 
 [error] Error: An unexpected error has occurred.
+[debug] [2024-10-17T15:42:38.319Z] ----------------------------------------------------------------------
+[debug] [2024-10-17T15:42:38.330Z] Command:       /usr/bin/node /usr/local/bin/firebase deploy
+[debug] [2024-10-17T15:42:38.333Z] CLI Version:   13.22.1
+[debug] [2024-10-17T15:42:38.335Z] Platform:      linux
+[debug] [2024-10-17T15:42:38.335Z] Node Version:  v18.19.1
+[debug] [2024-10-17T15:42:38.336Z] Time:          Thu Oct 17 2024 18:42:38 GMT+0300 (East Africa Time)
+[debug] [2024-10-17T15:42:38.338Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-10-17T15:42:38.725Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-10-17T15:42:38.727Z] > authorizing via signed-in user (techhiracontact@gmail.com)
+[debug] [2024-10-17T15:42:38.728Z] [iam] checking project own-my-data for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-10-17T15:42:38.738Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:42:38.739Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:42:38.746Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions [none]
+[debug] [2024-10-17T15:42:38.747Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions x-goog-quota-user=projects/own-my-data
+[debug] [2024-10-17T15:42:38.749Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-10-17T15:42:40.874Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions 200
+[debug] [2024-10-17T15:42:40.875Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-10-17T15:42:40.881Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:42:40.882Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:42:40.889Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data [none]
+[debug] [2024-10-17T15:43:10.901Z] *** [apiv2] error from fetch(https://firebase.googleapis.com/v1beta1/projects/own-my-data, {"headers":{},"method":"GET","signal":{}}): AbortError: The user aborted a request.
+[debug] [2024-10-17T15:43:10.904Z] Timeout reached making request to https://firebase.googleapis.com/v1beta1/projects/own-my-data (original: The user aborted a request.)
+[debug] [2024-10-17T15:43:15.943Z] Error: Timed out.
+    at Timeout._onTimeout (/usr/local/lib/node_modules/firebase-tools/lib/utils.js:268:49)
+    at listOnTimeout (node:internal/timers:569:17)
+    at process.processTimers (node:internal/timers:512:7)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2024-10-17T16:11:39.138Z] ----------------------------------------------------------------------
+[debug] [2024-10-17T16:11:39.147Z] Command:       /usr/bin/node /usr/local/bin/firebase deploy
+[debug] [2024-10-17T16:11:39.149Z] CLI Version:   13.22.1
+[debug] [2024-10-17T16:11:39.150Z] Platform:      linux
+[debug] [2024-10-17T16:11:39.151Z] Node Version:  v18.19.1
+[debug] [2024-10-17T16:11:39.152Z] Time:          Thu Oct 17 2024 19:11:39 GMT+0300 (East Africa Time)
+[debug] [2024-10-17T16:11:39.153Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-10-17T16:11:39.445Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-10-17T16:11:39.447Z] > authorizing via signed-in user (techhiracontact@gmail.com)
+[debug] [2024-10-17T16:11:39.448Z] [iam] checking project own-my-data for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-10-17T16:11:39.454Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:39.455Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:39.460Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions [none]
+[debug] [2024-10-17T16:11:39.461Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions x-goog-quota-user=projects/own-my-data
+[debug] [2024-10-17T16:11:39.462Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-10-17T16:11:41.307Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions 200
+[debug] [2024-10-17T16:11:41.308Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-10-17T16:11:41.311Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:41.312Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:41.315Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data [none]
+[debug] [2024-10-17T16:11:42.332Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data 200
+[debug] [2024-10-17T16:11:42.333Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data {"projectId":"own-my-data","projectNumber":"1762464221","displayName":"own-my-data","name":"projects/own-my-data","resources":{"hostingSite":"own-my-data"},"state":"ACTIVE","etag":"1_56afa69a-a121-49a6-976c-56f54ccd9d2f"}
+[info] 
+[info] === Deploying to 'own-my-data'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2024-10-17T16:11:42.359Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:42.360Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:42.360Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions [none]
+[debug] [2024-10-17T16:11:42.361Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2024-10-17T16:11:45.169Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions 200
+[debug] [2024-10-17T16:11:45.170Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions {"name":"projects/1762464221/sites/own-my-data/versions/0b8b2523eceab1e5","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[own-my-data]: beginning deploy... 
+[info] i  hosting[own-my-data]: found 19 files in build 
+[debug] [2024-10-17T16:11:45.269Z] [hosting] uploading with 200 concurrency
+[debug] [2024-10-17T16:11:46.791Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:46.792Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:46.795Z] [hosting] hash cache [YnVpbGQ] stored for 19 files
+[debug] [2024-10-17T16:11:46.796Z] [hosting][hash queue][FINAL] {"max":1478,"min":72,"avg":168.6315789473684,"active":0,"complete":19,"success":19,"errored":0,"retried":0,"total":19,"elapsed":1511}
+[debug] [2024-10-17T16:11:46.798Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/1762464221/sites/own-my-data/versions/0b8b2523eceab1e5:populateFiles [none]
+[debug] [2024-10-17T16:11:46.798Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/1762464221/sites/own-my-data/versions/0b8b2523eceab1e5:populateFiles {"files":{"/sw.js":"627c06a68c717de8632206225e3f4ed9d534c7ec48ad30e56efda768e325d6cd","/robots.txt":"2544ca049f223a42bff01f72ad930a5edba75bbb7199d0f8430a02ff5aca16ec","/manifest.json":"8e256338d07c2adcf878a1fee3229edfe209f721f876b854ca71aa83d55cd211","/index.html":"05e46b47a83ac5ea1004e360d1feb23e7f0b7360fae9e6c686535a415635e0dc","/asset-manifest.json":"537a815a014df042476cc96900e3e6972cea134ca7f8c6397b584d0140286b3a","/404.html":"b7bab6b83fa074653ff28c8d2a64135d3434575f70a12ab3d3ba8080461b9537","/static/js/main.1e86b72a.js.LICENSE.txt":"f341ad4939b92890a2fcab5b82250ac8cfda6e0aa629e564e476e935351ef69a","/static/js/453.7c3fe9e5.chunk.js.map":"a9c12ef9780278972293bf7e907b67290fd111527817f60b68929f04b406cdc4","/static/js/453.7c3fe9e5.chunk.js":"c51cca1092b3ca4f0a40fe7a18c12c822a6336e7fce3989170401b25c16bf767","/static/css/main.3c5836d0.css":"987f6e06999a540d1fd0a2f6592346d919becb6ceb7f9bf962e18040a73584b9","/static/media/bg3.95a5edac30c345a9d545.jpeg":"2530d30883fbb19370435730a6c8d3ab119b3a95904769e39aea54ffcfef62d3","/static/media/offline.ddf84930e67916895bbe.jpeg":"3d921985a15fed1a0f0cf52e7935e1e7f5c0234c11e57b94acdefb27e2240cf2","/logo512.png":"7274d9af6c9b8556495eb9630a8527cad2d800daaca81940df5c53bcf7170bed","/logo192.png":"7274d9af6c9b8556495eb9630a8527cad2d800daaca81940df5c53bcf7170bed","/static/media/lg.ded831d138b925db4ee4.png":"88b0c627fc2d15c349909287bed35fefef4d8afec38dd544de8d2857d63e1632","/static/css/main.3c5836d0.css.map":"05437b313ed5b80d05a409db824c3e3ed02c7777fd39b5643268f74e0f2872ee","/static/js/main.1e86b72a.js":"a6a78b34d3de2315ea38f0941c09515fbe677aec252b9ded663c6289cb5ca97d","/favicon.ico":"6a6962c38bc54da956e2a1271be5709cb4e6b4ebefe82fd466a2c18baa8018e6","/static/js/main.1e86b72a.js.map":"1d8dc899fb6c002241d12e29327592e1ee628862cae7443280f7ff032a2c22d6"}}
+[debug] [2024-10-17T16:11:48.466Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/1762464221/sites/own-my-data/versions/0b8b2523eceab1e5:populateFiles 200
+[debug] [2024-10-17T16:11:48.467Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/1762464221/sites/own-my-data/versions/0b8b2523eceab1e5:populateFiles {"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/0b8b2523eceab1e5/files"}
+[debug] [2024-10-17T16:11:48.470Z] [hosting][populate queue][FINAL] {"max":1679,"min":1679,"avg":1679,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1679}
+[debug] [2024-10-17T16:11:48.470Z] [hosting] uploads queued: 0
+[debug] [2024-10-17T16:11:48.471Z] [hosting][upload queue][FINAL] {"max":0,"min":9999999999,"avg":0,"active":0,"complete":0,"success":0,"errored":0,"retried":0,"total":0,"elapsed":1729181508471}
+[info] ✔  hosting[own-my-data]: file upload complete 
+[debug] [2024-10-17T16:11:48.476Z] [hosting] deploy completed after 3291ms
+[debug] [2024-10-17T16:11:48.478Z] [
+  {
+    "config": {
+      "public": "build",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "site": "own-my-data"
+    },
+    "version": "projects/1762464221/sites/own-my-data/versions/0b8b2523eceab1e5"
+  }
+]
+[info] i  hosting[own-my-data]: finalizing version... 
+[debug] [2024-10-17T16:11:48.495Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:48.495Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:48.499Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions/0b8b2523eceab1e5 updateMask=status%2Cconfig
+[debug] [2024-10-17T16:11:48.499Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions/0b8b2523eceab1e5 {"status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]}}
+[debug] [2024-10-17T16:11:50.557Z] <<< [apiv2][status] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions/0b8b2523eceab1e5 200
+[debug] [2024-10-17T16:11:50.558Z] <<< [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions/0b8b2523eceab1e5 {"name":"projects/1762464221/sites/own-my-data/versions/0b8b2523eceab1e5","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2024-10-17T16:11:44.280615Z","createUser":{"email":"techhiracontact@gmail.com"},"finalizeTime":"2024-10-17T16:11:50.346961Z","finalizeUser":{"email":"techhiracontact@gmail.com"}}
+[debug] [2024-10-17T16:11:50.559Z] [hosting] finalized version for own-my-data:[object Object]
+[info] ✔  hosting[own-my-data]: version finalized 
+[info] i  hosting[own-my-data]: releasing new version... 
+[debug] [2024-10-17T16:11:50.565Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:50.566Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T16:11:50.569Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/channels/live/releases versionName=projects%2F1762464221%2Fsites%2Fown-my-data%2Fversions%2F0b8b2523eceab1e5
+[debug] [2024-10-17T16:11:50.569Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/channels/live/releases {}
+[debug] [2024-10-17T16:14:01.435Z] *** [apiv2] error from fetch(https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/channels/live/releases?versionName=projects%2F1762464221%2Fsites%2Fown-my-data%2Fversions%2F0b8b2523eceab1e5, {"headers":{},"method":"POST","body":"{}"}): FetchError: request to https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/channels/live/releases?versionName=projects%2F1762464221%2Fsites%2Fown-my-data%2Fversions%2F0b8b2523eceab1e5 failed, reason: connect ETIMEDOUT 172.217.170.170:443
+[debug] [2024-10-17T16:14:06.454Z] Error: Timed out.
+    at Timeout._onTimeout (/usr/local/lib/node_modules/firebase-tools/lib/utils.js:268:49)
+    at listOnTimeout (node:internal/timers:569:17)
+    at process.processTimers (node:internal/timers:512:7)
+[error] 
+[error] Error: An unexpected error has occurred.

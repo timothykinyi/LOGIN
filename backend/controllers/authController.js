@@ -533,7 +533,7 @@ const resendcompanyVerificationCode = async (req, res) => {
   try {
     const user = await Camp.findOne({ email});
     if (!user) {
-      return res.status(404).json({ message: 'Company not found register first and try again.' });
+      return res.status(404).json({ message: 'Company not found register first and try again.'+email });
     }
 
 
