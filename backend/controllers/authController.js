@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Camp = require('../models/camp');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
@@ -188,6 +189,84 @@ eID`;
     await user.save();
 
     res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error('Server error during registration:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const companyregisterUser = async (req, res) => {
+  const { fullName, email, password, confirmPassword, username, category } = req.body;
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: 'Passwords do not match' });
+  } else if (password.length < 8) {
+    return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
+  } else if (!/[A-Z]/.test(password)) {
+    return res.status(400).json({ message: 'Password must contain at least one uppercase letter.' });
+  } else if (!/[a-z]/.test(password)) {
+    return res.status(400).json({ message: 'Password must contain at least one lowercase letter.' });
+  } else if (!/\d/.test(password)) {
+    return res.status(400).json({ message: 'Password must contain at least one number.' });
+  } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    return res.status(400).json({ message: 'Password must contain at least one special character.' });
+  }
+
+  try {
+    // Check if user already exists
+    let user = await Camp.findOne({ $or: [{ email }, { username }] });
+    if (user) {
+      return res.status(400).json({ message: 'Company already exists' });
+    }
+
+    // Generate verification code
+    const alphanumericCode = generateAlphanumericVerificationCode(6);
+    const subject = "Verification - " + alphanumericCode;
+    const vermessage = `Dear ${fullName},
+
+Thank you for registering your company with eID. Please use the following verification code to complete your registration:
+
+Verification Code: ${alphanumericCode}
+
+Follow this link https://own-my-data.web.app/verification to verify your account
+
+Best regards,
+eID`;
+
+    // Send verification email
+    try {
+      await sendEmail(email, subject, vermessage);
+      console.log('Email sent successfully');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).json({ message: 'Error sending verification email' });
+    }
+
+    // Generate E ID (minimum 6-digit number)
+    const generateEID = () => {
+      return Math.floor(100000 + Math.random() * 900000); // Generates a random 6-digit number
+    };
+
+    const cID = generateEID();
+
+    // Format the date of birth using moment
+    // Create new user
+    user = new Camp({
+      fullName,
+      email,
+      password,
+      username,
+      category,
+      cID,
+      verificationCode: alphanumericCode,
+      isVerified: false,
+      active: false,
+      resetPasswordToken: "undefined",
+      resetPasswordExpires: "undefined",
+    });
+    await user.save();
+
+    res.status(201).json({ message: 'Company registered successfully' });
   } catch (error) {
     console.error('Server error during registration:', error);
     res.status(500).json({ message: 'Server error' });
@@ -581,6 +660,7 @@ const getUser = async (req, res) => {
 
 module.exports = {
   registerUser,
+  companyregisterUser,
   login,
   verifyUser,
   updateEmail,

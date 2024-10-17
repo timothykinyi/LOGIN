@@ -1,8 +1,8 @@
 /* Container Styling */
 .edu-container {
   font-family: 'Montserrat', sans-serif;
-  background-color: #f8f8fb;
-  color: #2d3e50;
+  background-color: rgba(16, 23, 30, 0.374);
+  color: #ffffff;
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -15,10 +15,10 @@
   .edu-container h2 {
     font-size: 30px;
     font-weight: 700;
-    color: #2c3e50;
+    color: #ffffff;
     text-align: center;
     margin-bottom: 30px;
-    border-bottom: 3px solid #2c3e50;
+    border-bottom: 3px solid #002346;
     padding-bottom: 10px;
   }
   
@@ -29,7 +29,7 @@
   }
   
   .edu-item {
-    background-color: #ffffff;
+    background-color: rgba(16, 23, 30, 0.374);
     padding: 25px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -43,12 +43,12 @@
   
   .edu-item p {
     font-size: 16px;
-    color: #2c3e50;
+    color: #ffffff;
     margin: 12px 0;
   }
   
   .edu-item p strong {
-    color: #2980b9;
+    color: #9a9a9a;
     font-weight: 600;
   }
   

@@ -1,8 +1,8 @@
 /* General Styles */
 .hel-container {
   font-family: 'Montserrat', sans-serif;
-  background-color: #f8f8fb;
-  color: #2d3e50;
+  background-color: rgba(16, 23, 30, 0.374);
+  color: #ffffff;
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -15,10 +15,10 @@
   .hel-container h2 {
     font-size: 28px;
     font-weight: 600;
-    color: #2c3e50;
+    color: #ffffff;
     margin-bottom: 20px;
     text-align: center;
-    border-bottom: 2px solid #27ae60;
+    border-bottom: 2px solid #002346;
     padding-bottom: 10px;
   }
   
@@ -28,7 +28,7 @@
   }
   
   .hel-health-item {
-    background-color: #ffffff;
+    background-color: rgba(16, 23, 30, 0.374);
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
@@ -42,14 +42,14 @@
   
   .hel-health-item p {
     font-size: 16px;
-    color: #4f4f4f;
+    color: #ffffff;
     margin-bottom: 10px;
   }
   
   .hel-health-item p span,
   .hel-health-item p strong {
     font-weight: 600;
-    color: #27ae60;
+    color: #9a9a9a;
   }
   
   .hel-medical-history {
@@ -59,10 +59,10 @@
   }
   
   .hel-medical-history li {
-    background-color: #f9f9f9;
+    background-color: rgba(16, 23, 30, 0.374);
     padding: 10px;
     margin-bottom: 10px;
-    border-left: 4px solid #27ae60;
+    border-left: 4px solid #002346;
     border-radius: 4px;
   }
   

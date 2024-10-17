@@ -24,6 +24,8 @@ import Displayeducation from './components/displayeducation';
 import Displayemployment from './components/displayemployment';
 import Displayfinaces from './components/displayfinaces';
 import Displayhealth from './components/displayhealth';
+import Companyreg from './components/companyreg';
+
 import Displaypersonaldata from './components/displaypersonaldata';
 import Displaypreference from './components/displaypreference';
 import DisplaysocialFamily from './components/displaysocialFamily';
@@ -124,6 +126,7 @@ function App() {
         <Route path="/biometrics" element={<Biometrics />} />
         <Route path="/userDoorDash" element={<UserDoorDash />} />
         <Route path="/doordash" element={<DD />} />
+        <Route path="/companyreg" element={<Companyreg />} />
         <Route path="/offline" element={<OfflinePage />} />
         <Route path="/doorManagement" element={<DoorManagement />} />
         <Route path="/houseRegistration" element={<HouseRegistration />} />

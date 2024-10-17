@@ -1,10 +1,11 @@
 const express = require('express');
-const { registerUser, login, verifyUser, updateEmail, resendVerificationCode, newrecoverPassword, resetPassword, changeusername, changepassword, changephonenumber, changeemail, logout, getUser, getWebAuthnOptions, handleWebAuthnRegistration } = require('../controllers/authController');
+const { registerUser, companyregisterUser, login, verifyUser, updateEmail, resendVerificationCode, newrecoverPassword, resetPassword, changeusername, changepassword, changephonenumber, changeemail, logout, getUser, getWebAuthnOptions, handleWebAuthnRegistration } = require('../controllers/authController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
 router.post('/register', registerUser);
+router.post('/companyregister', companyregisterUser);
 router.post('/login', login);
 router.post('/verify', verifyUser);
 router.post('/update-email', updateEmail);

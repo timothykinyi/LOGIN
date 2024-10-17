@@ -1,8 +1,8 @@
 /* General Styles */
 .pref-container {
   font-family: 'Montserrat', sans-serif;
-  background-color: #f8f8fb;
-  color: #2d3e50;
+  background-color: rgba(16, 23, 30, 0.374);
+  color: #ffffff;
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -15,10 +15,10 @@
   .pref-container h2 {
     font-size: 28px;
     font-weight: 600;
-    color: #34495e;
+    color: #ffffff;
     margin-bottom: 25px;
     text-align: center;
-    border-bottom: 2px solid #1abc9c;
+    border-bottom: 2px solid #002346;
     padding-bottom: 10px;
   }
   
@@ -28,7 +28,7 @@
   }
   
   .pref-item {
-    background-color: #ffffff;
+    background-color: rgba(16, 23, 30, 0.374);
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -42,14 +42,14 @@
   
   .pref-item p {
     font-size: 16px;
-    color: #4f4f4f;
+    color: #ffffff;
     margin-bottom: 12px;
   }
   
   .pref-item p span,
   .pref-item p strong {
     font-weight: 600;
-    color: #1abc9c;
+    color: #9a9a9a;
   }
   
   /* Responsive Design */
