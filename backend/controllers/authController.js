@@ -9,13 +9,6 @@ const { generateRegistrationOptions, verifyRegistrationResponse } = require('@si
 const sendEmail = require('../services/emailService');
 require('dotenv').config();
 const notificationController = require('../controllers/notificationController');
-const SocialFamily = require('../models/SocialFamily');
-const PersonalInfo = require('../models/PersonalInfo');
-const HealthData = require('../models/HealthData');
-const Financial = require('../models/Financial');
-const Employment = require('../models/Employment');
-const Education = require('../models/Education');
-const Contact = require('../models/Contact');
 
 // Example: Function that sends a message and posts a notification
 
@@ -280,132 +273,6 @@ eID`;
   }
 };
 
-async function migrateData(loggedInEID) {
-  try {
-    // Fetch the personal info for the logged-in user
-    const personalInfo = await PersonalInfo.findOne({ eID: loggedInEID });
-    if (!personalInfo) {
-      console.log('No personal info found for this user.');
-      return;
-    }
-
-    // Try to find an existing user by eID, or create a new one if none exists
-    let user = await User.findOne({ eID: loggedInEID });
-    if (!user) {
-      user = new User({
-        fullName: `${personalInfo.firstName} ${personalInfo.lastName}`,
-        eID: personalInfo.eID,
-        gender: personalInfo.gender,
-        dateOfBirth: personalInfo.dateOfBirth,
-        category: 'individual', // Or adjust based on your requirements
-      });
-    }
-
-    // Update user's personal info
-    user.personalInfo = {
-      firstName: personalInfo.firstName,
-      lastName: personalInfo.lastName,
-      dateOfBirth: personalInfo.dateOfBirth,
-      gender: personalInfo.gender,
-      maritalStatus: personalInfo.maritalStatus,
-      nationality: personalInfo.nationality,
-      streetAddress1: personalInfo.streetAddress1,
-      streetAddress2: personalInfo.streetAddress2,
-      city: personalInfo.city,
-      state: personalInfo.state,
-      postalCode: personalInfo.postalCode,
-      country: personalInfo.country,
-    };
-
-    // Fetch and update user's social family info if it exists
-    const socialFamily = await SocialFamily.findOne({ eID: loggedInEID });
-    if (socialFamily) {
-      user.socialFamily = {
-        maritalStatus: socialFamily.maritalStatus,
-        familyMembers: socialFamily.familyMembers,
-        dependents: socialFamily.dependents,
-        socialAffiliations: socialFamily.socialAffiliations,
-      };
-    }
-
-    // Fetch and update user's health data if it exists
-    const healthData = await HealthData.findOne({ eID: loggedInEID });
-    if (healthData) {
-      user.healthData = {
-        bloodType: healthData.bloodType,
-        allergies: healthData.allergies,
-        medicalHistory: healthData.medicalHistory,
-        insuranceProvider: healthData.insuranceProvider,
-        policyNumber: healthData.policyNumber,
-        coverageDetails: healthData.coverageDetails,
-        conditions: healthData.conditions,
-        disabilities: healthData.disabilities,
-        additionalInfo: healthData.additionalInfo,
-      };
-    }
-
-    // Fetch and update user's financial info if it exists
-    const financial = await Financial.findOne({ eID: loggedInEID });
-    if (financial) {
-      user.financial = {
-        bankAccountNumber: financial.bankAccountNumber,
-        bankName: financial.bankName,
-        income: financial.income,
-        creditScore: financial.creditScore,
-        taxId: financial.taxId,
-        mobileNumber: financial.mobileNumber,
-      };
-    }
-
-    // Fetch and update user's employment info if it exists
-    const employment = await Employment.findOne({ eID: loggedInEID });
-    if (employment) {
-      user.employment = {
-        jobTitle: employment.jobTitle,
-        employer: employment.employer,
-        jobCategory: employment.jobCategory,
-        startDate: employment.startDate,
-        endDate: employment.endDate,
-        skills: employment.skills,
-      };
-    }
-
-    // Fetch and update user's education info if it exists
-    const education = await Education.findOne({ eID: loggedInEID });
-    if (education) {
-      user.education = {
-        educationLevel: education.educationLevel,
-        institutionName: education.institutionName,
-        degreeType: education.degreeType,
-        degree: education.degree,
-        fieldOfStudy: education.fieldOfStudy,
-        startDate: education.startDate,
-        endDate: education.endDate,
-        country: education.country,
-        transferDetails: education.transferDetails,
-      };
-    }
-
-    // Fetch and update user's contact info if it exists
-    const contact = await Contact.findOne({ eID: loggedInEID });
-    if (contact) {
-      user.contact = {
-        phoneNumbers: contact.phoneNumbers,
-        emails: contact.emails,
-        emergencyContacts: contact.emergencyContacts,
-        socialMedia: contact.socialMedia,
-        address: contact.address,
-      };
-    }
-
-    // Save the updated user
-    await user.save();
-    console.log('Data migration for logged-in user completed successfully');
-  } catch (error) {
-    console.error('Error during data migration:', error);
-  }
-}
-
 const login = async (req, res) => {
   const { username, password } = req.body;
   
@@ -449,11 +316,7 @@ const login = async (req, res) => {
     user.active = true;
     await user.save();
 
-    if (!user.dataMigrated) {
-      await migrateData(user.eID);  // Migrate data if not done
-    }
-
-
+    
     // Generate JWT token
     const token = jwt.sign(
       { id: user._id, eID: user.eID, username: user.username, email: user.email, category: user.category },
