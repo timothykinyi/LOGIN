@@ -501,7 +501,7 @@ Thank you for registering with eID. Please use the following verification code t
 
 Verification Code: ${user.verificationCode}
 
-Follow this link https://own-my-data.web.app/verification to verify your account
+Follow this link https://own-my-data.web.app/companyVerification to verify your account
 
 Best regards,
 eID`;
@@ -513,7 +513,7 @@ eID`;
       return res.status(500).json({ message: 'Error sending verification email' });
     }
     try {
-      const token = jwt.sign({ id: user._id, username: user.fullname, email: user.email, category: user.category }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ id: user._id, username: user.fullName, email: user.email, category: user.category }, process.env.JWT_SECRET, {
         expiresIn: '1h',
       });
   
@@ -538,13 +538,13 @@ const resendcompanyVerificationCode = async (req, res) => {
 
 
     const subject = "Verification - " + user.verificationCode;
-    const vermessage = `Dear ${user.fullname},
+    const vermessage = `Dear ${user.fullName},
 
 Thank you for registering with eID. Please use the following verification code to complete your registration:
 
 Verification Code: ${user.verificationCode}
 
-Follow this link https://own-my-data.web.app/verification to verify your account
+Follow this link https://own-my-data.web.app/companyVerification to verify your account
 
 Best regards,
 eID`;

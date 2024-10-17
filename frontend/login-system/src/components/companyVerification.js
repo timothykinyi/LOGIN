@@ -50,7 +50,7 @@ function Verification() {
     else
     {
       try {
-        const response = await axios.post('https://login-9ebe.onrender.com/api/auth/update-email', { oldEmail: email, newEmail });
+        const response = await axios.post('https://login-9ebe.onrender.com/api/auth/updatecompemail', { oldEmail: email, newEmail });
         if (response.status === 200) {
           setEmail(newEmail);
           sessionStorage.setItem('email', newEmail);
@@ -75,7 +75,7 @@ function Verification() {
       if (!emailToUse) {
         setError('Enter your email.');
       } else {
-        const response = await axios.post('https://login-9ebe.onrender.com/api/auth/resendemail', { email: emailToUse });
+        const response = await axios.post('https://login-9ebe.onrender.com/api/auth/resendcompemail', { email: emailToUse });
         if (response.status === 200) {
           setError('Verification code has been resent.');
         }

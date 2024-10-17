@@ -1,0 +1,137 @@
+[debug] [2024-10-17T15:34:32.823Z] ----------------------------------------------------------------------
+[debug] [2024-10-17T15:34:32.834Z] Command:       /usr/bin/node /usr/local/bin/firebase deploy
+[debug] [2024-10-17T15:34:32.836Z] CLI Version:   13.22.0
+[debug] [2024-10-17T15:34:32.837Z] Platform:      linux
+[debug] [2024-10-17T15:34:32.838Z] Node Version:  v18.19.1
+[debug] [2024-10-17T15:34:32.839Z] Time:          Thu Oct 17 2024 18:34:32 GMT+0300 (East Africa Time)
+[debug] [2024-10-17T15:34:32.840Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-10-17T15:34:33.129Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-10-17T15:34:33.131Z] > authorizing via signed-in user (techhiracontact@gmail.com)
+[debug] [2024-10-17T15:34:33.132Z] [iam] checking project own-my-data for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-10-17T15:34:33.138Z] Checked if tokens are valid: false, expires at: 1729170825483
+[debug] [2024-10-17T15:34:33.138Z] Checked if tokens are valid: false, expires at: 1729170825483
+[debug] [2024-10-17T15:34:33.140Z] > refreshing access token with scopes: []
+[debug] [2024-10-17T15:34:33.148Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-10-17T15:34:33.149Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-10-17T15:34:34.100Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-10-17T15:34:34.101Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-10-17T15:34:34.130Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions [none]
+[debug] [2024-10-17T15:34:34.131Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions x-goog-quota-user=projects/own-my-data
+[debug] [2024-10-17T15:34:34.131Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-10-17T15:34:35.888Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions 200
+[debug] [2024-10-17T15:34:35.889Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-10-17T15:34:35.892Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:35.892Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:35.896Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data [none]
+[debug] [2024-10-17T15:34:36.587Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data 200
+[debug] [2024-10-17T15:34:36.587Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data {"projectId":"own-my-data","projectNumber":"1762464221","displayName":"own-my-data","name":"projects/own-my-data","resources":{"hostingSite":"own-my-data"},"state":"ACTIVE","etag":"1_56afa69a-a121-49a6-976c-56f54ccd9d2f"}
+[info] 
+[info] === Deploying to 'own-my-data'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2024-10-17T15:34:36.613Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:36.614Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:36.614Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions [none]
+[debug] [2024-10-17T15:34:36.614Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2024-10-17T15:34:38.696Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions 200
+[debug] [2024-10-17T15:34:38.697Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions {"name":"projects/1762464221/sites/own-my-data/versions/fee25eb8d28b3f42","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[own-my-data]: beginning deploy... 
+[info] i  hosting[own-my-data]: found 19 files in build 
+[debug] [2024-10-17T15:34:50.441Z] [hosting] uploading with 200 concurrency
+[debug] [2024-10-17T15:34:51.959Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:51.959Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:51.962Z] [hosting] hash cache [YnVpbGQ] stored for 19 files
+[debug] [2024-10-17T15:34:51.963Z] [hosting][hash queue][FINAL] {"max":1481,"min":90,"avg":186.73684210526315,"active":0,"complete":19,"success":19,"errored":0,"retried":0,"total":19,"elapsed":1504}
+[debug] [2024-10-17T15:34:51.964Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/1762464221/sites/own-my-data/versions/fee25eb8d28b3f42:populateFiles [none]
+[debug] [2024-10-17T15:34:51.965Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/1762464221/sites/own-my-data/versions/fee25eb8d28b3f42:populateFiles {"files":{"/sw.js":"627c06a68c717de8632206225e3f4ed9d534c7ec48ad30e56efda768e325d6cd","/robots.txt":"2544ca049f223a42bff01f72ad930a5edba75bbb7199d0f8430a02ff5aca16ec","/manifest.json":"8e256338d07c2adcf878a1fee3229edfe209f721f876b854ca71aa83d55cd211","/asset-manifest.json":"537a815a014df042476cc96900e3e6972cea134ca7f8c6397b584d0140286b3a","/index.html":"05e46b47a83ac5ea1004e360d1feb23e7f0b7360fae9e6c686535a415635e0dc","/404.html":"b7bab6b83fa074653ff28c8d2a64135d3434575f70a12ab3d3ba8080461b9537","/static/js/main.1e86b72a.js.LICENSE.txt":"f341ad4939b92890a2fcab5b82250ac8cfda6e0aa629e564e476e935351ef69a","/static/js/453.7c3fe9e5.chunk.js.map":"a9c12ef9780278972293bf7e907b67290fd111527817f60b68929f04b406cdc4","/static/js/453.7c3fe9e5.chunk.js":"c51cca1092b3ca4f0a40fe7a18c12c822a6336e7fce3989170401b25c16bf767","/static/media/bg3.95a5edac30c345a9d545.jpeg":"2530d30883fbb19370435730a6c8d3ab119b3a95904769e39aea54ffcfef62d3","/static/media/offline.ddf84930e67916895bbe.jpeg":"3d921985a15fed1a0f0cf52e7935e1e7f5c0234c11e57b94acdefb27e2240cf2","/static/css/main.3c5836d0.css.map":"05437b313ed5b80d05a409db824c3e3ed02c7777fd39b5643268f74e0f2872ee","/logo512.png":"7274d9af6c9b8556495eb9630a8527cad2d800daaca81940df5c53bcf7170bed","/static/css/main.3c5836d0.css":"987f6e06999a540d1fd0a2f6592346d919becb6ceb7f9bf962e18040a73584b9","/static/media/lg.ded831d138b925db4ee4.png":"88b0c627fc2d15c349909287bed35fefef4d8afec38dd544de8d2857d63e1632","/logo192.png":"7274d9af6c9b8556495eb9630a8527cad2d800daaca81940df5c53bcf7170bed","/static/js/main.1e86b72a.js":"a6a78b34d3de2315ea38f0941c09515fbe677aec252b9ded663c6289cb5ca97d","/favicon.ico":"6a6962c38bc54da956e2a1271be5709cb4e6b4ebefe82fd466a2c18baa8018e6","/static/js/main.1e86b72a.js.map":"1d8dc899fb6c002241d12e29327592e1ee628862cae7443280f7ff032a2c22d6"}}
+[debug] [2024-10-17T15:34:53.835Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/1762464221/sites/own-my-data/versions/fee25eb8d28b3f42:populateFiles 200
+[debug] [2024-10-17T15:34:53.836Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/1762464221/sites/own-my-data/versions/fee25eb8d28b3f42:populateFiles {"uploadRequiredHashes":["a6a78b34d3de2315ea38f0941c09515fbe677aec252b9ded663c6289cb5ca97d","1d8dc899fb6c002241d12e29327592e1ee628862cae7443280f7ff032a2c22d6","537a815a014df042476cc96900e3e6972cea134ca7f8c6397b584d0140286b3a","05e46b47a83ac5ea1004e360d1feb23e7f0b7360fae9e6c686535a415635e0dc"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files"}
+[debug] [2024-10-17T15:34:53.839Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:53.839Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:53.840Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:53.840Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:53.841Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:53.841Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:53.842Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:53.842Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:34:53.843Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/a6a78b34d3de2315ea38f0941c09515fbe677aec252b9ded663c6289cb5ca97d [none]
+[debug] [2024-10-17T15:34:53.843Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/a6a78b34d3de2315ea38f0941c09515fbe677aec252b9ded663c6289cb5ca97d [stream]
+[debug] [2024-10-17T15:34:53.848Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/1d8dc899fb6c002241d12e29327592e1ee628862cae7443280f7ff032a2c22d6 [none]
+[debug] [2024-10-17T15:34:53.848Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/1d8dc899fb6c002241d12e29327592e1ee628862cae7443280f7ff032a2c22d6 [stream]
+[debug] [2024-10-17T15:34:53.852Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/537a815a014df042476cc96900e3e6972cea134ca7f8c6397b584d0140286b3a [none]
+[debug] [2024-10-17T15:34:53.853Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/537a815a014df042476cc96900e3e6972cea134ca7f8c6397b584d0140286b3a [stream]
+[debug] [2024-10-17T15:34:53.857Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/05e46b47a83ac5ea1004e360d1feb23e7f0b7360fae9e6c686535a415635e0dc [none]
+[debug] [2024-10-17T15:34:53.858Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/05e46b47a83ac5ea1004e360d1feb23e7f0b7360fae9e6c686535a415635e0dc [stream]
+[debug] [2024-10-17T15:34:53.863Z] [hosting][populate queue][FINAL] {"max":1885,"min":1885,"avg":1885,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1905}
+[debug] [2024-10-17T15:34:53.863Z] [hosting] uploads queued: 4
+[debug] [2024-10-17T15:34:56.094Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/537a815a014df042476cc96900e3e6972cea134ca7f8c6397b584d0140286b3a 200
+[debug] [2024-10-17T15:34:56.095Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/537a815a014df042476cc96900e3e6972cea134ca7f8c6397b584d0140286b3a [stream]
+[debug] [2024-10-17T15:34:56.274Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/1d8dc899fb6c002241d12e29327592e1ee628862cae7443280f7ff032a2c22d6 200
+[debug] [2024-10-17T15:34:56.275Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/1d8dc899fb6c002241d12e29327592e1ee628862cae7443280f7ff032a2c22d6 [stream]
+[debug] [2024-10-17T15:35:24.269Z] [uploadQueue] Retrying task a6a78b34d3de2315ea38f0941c09515fbe677aec252b9ded663c6289cb5ca97d
+[debug] [2024-10-17T15:35:24.272Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:35:24.272Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:35:24.273Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/a6a78b34d3de2315ea38f0941c09515fbe677aec252b9ded663c6289cb5ca97d [none]
+[debug] [2024-10-17T15:35:24.274Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/a6a78b34d3de2315ea38f0941c09515fbe677aec252b9ded663c6289cb5ca97d [stream]
+[debug] [2024-10-17T15:35:24.283Z] [uploadQueue] Retrying task 05e46b47a83ac5ea1004e360d1feb23e7f0b7360fae9e6c686535a415635e0dc
+[debug] [2024-10-17T15:35:24.285Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:35:24.285Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:35:24.286Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/05e46b47a83ac5ea1004e360d1feb23e7f0b7360fae9e6c686535a415635e0dc [none]
+[debug] [2024-10-17T15:35:24.286Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/05e46b47a83ac5ea1004e360d1feb23e7f0b7360fae9e6c686535a415635e0dc [stream]
+[debug] [2024-10-17T15:35:25.633Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/05e46b47a83ac5ea1004e360d1feb23e7f0b7360fae9e6c686535a415635e0dc 200
+[debug] [2024-10-17T15:35:25.634Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/05e46b47a83ac5ea1004e360d1feb23e7f0b7360fae9e6c686535a415635e0dc [stream]
+[debug] [2024-10-17T15:35:25.907Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/a6a78b34d3de2315ea38f0941c09515fbe677aec252b9ded663c6289cb5ca97d 200
+[debug] [2024-10-17T15:35:25.908Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/own-my-data/versions/fee25eb8d28b3f42/files/a6a78b34d3de2315ea38f0941c09515fbe677aec252b9ded663c6289cb5ca97d [stream]
+[debug] [2024-10-17T15:35:25.909Z] [hosting][upload queue][FINAL] {"max":2436,"min":1353,"avg":1920.5,"active":0,"complete":4,"success":4,"errored":0,"retried":2,"total":4,"elapsed":32072}
+[info] ✔  hosting[own-my-data]: file upload complete 
+[debug] [2024-10-17T15:35:25.914Z] [hosting] deploy completed after 35551ms
+[debug] [2024-10-17T15:35:25.915Z] [
+  {
+    "config": {
+      "public": "build",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "site": "own-my-data"
+    },
+    "version": "projects/1762464221/sites/own-my-data/versions/fee25eb8d28b3f42"
+  }
+]
+[info] i  hosting[own-my-data]: finalizing version... 
+[debug] [2024-10-17T15:35:25.928Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:35:25.928Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:35:25.935Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions/fee25eb8d28b3f42 updateMask=status%2Cconfig
+[debug] [2024-10-17T15:35:25.936Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions/fee25eb8d28b3f42 {"status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]}}
+[debug] [2024-10-17T15:35:27.593Z] <<< [apiv2][status] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions/fee25eb8d28b3f42 200
+[debug] [2024-10-17T15:35:27.594Z] <<< [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/versions/fee25eb8d28b3f42 {"name":"projects/1762464221/sites/own-my-data/versions/fee25eb8d28b3f42","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2024-10-17T15:34:38.325204Z","createUser":{"email":"techhiracontact@gmail.com"},"finalizeTime":"2024-10-17T15:35:27.442985Z","finalizeUser":{"email":"techhiracontact@gmail.com"}}
+[debug] [2024-10-17T15:35:27.594Z] [hosting] finalized version for own-my-data:[object Object]
+[info] ✔  hosting[own-my-data]: version finalized 
+[info] i  hosting[own-my-data]: releasing new version... 
+[debug] [2024-10-17T15:35:27.597Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:35:27.597Z] Checked if tokens are valid: true, expires at: 1729182873103
+[debug] [2024-10-17T15:35:27.598Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/channels/live/releases versionName=projects%2F1762464221%2Fsites%2Fown-my-data%2Fversions%2Ffee25eb8d28b3f42
+[debug] [2024-10-17T15:35:27.598Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/channels/live/releases {}
+[debug] [2024-10-17T15:35:29.633Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/channels/live/releases 200
+[debug] [2024-10-17T15:35:29.634Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/own-my-data/channels/live/releases {"name":"projects/1762464221/sites/own-my-data/channels/live/releases/1729179328757000","version":{"name":"projects/1762464221/sites/own-my-data/versions/fee25eb8d28b3f42","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2024-10-17T15:34:38.325204Z","createUser":{"email":"techhiracontact@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocItGf548JYgAcEmktwkklVUZxi3XHcK4uD-2MCaTN8xmOjNtyY"},"finalizeTime":"2024-10-17T15:35:27.442985Z","finalizeUser":{"email":"techhiracontact@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocItGf548JYgAcEmktwkklVUZxi3XHcK4uD-2MCaTN8xmOjNtyY"}},"type":"DEPLOY","releaseTime":"2024-10-17T15:35:28.757Z","releaseUser":{"email":"techhiracontact@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocItGf548JYgAcEmktwkklVUZxi3XHcK4uD-2MCaTN8xmOjNtyY"}}
+[debug] [2024-10-17T15:35:29.635Z] [hosting] release: {"name":"projects/1762464221/sites/own-my-data/channels/live/releases/1729179328757000","version":{"name":"projects/1762464221/sites/own-my-data/versions/fee25eb8d28b3f42","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2024-10-17T15:34:38.325204Z","createUser":{"email":"techhiracontact@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocItGf548JYgAcEmktwkklVUZxi3XHcK4uD-2MCaTN8xmOjNtyY"},"finalizeTime":"2024-10-17T15:35:27.442985Z","finalizeUser":{"email":"techhiracontact@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocItGf548JYgAcEmktwkklVUZxi3XHcK4uD-2MCaTN8xmOjNtyY"}},"type":"DEPLOY","releaseTime":"2024-10-17T15:35:28.757Z","releaseUser":{"email":"techhiracontact@gmail.com","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocItGf548JYgAcEmktwkklVUZxi3XHcK4uD-2MCaTN8xmOjNtyY"}}
+[info] ✔  hosting[own-my-data]: release complete 
+[info] 
+[info] ✔  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/own-my-data/overview
+[info] Hosting URL: https://own-my-data.web.app
+[debug] [2024-10-17T15:35:45.112Z] Error: Timed out.
+    at Timeout._onTimeout (/usr/local/lib/node_modules/firebase-tools/lib/utils.js:268:49)
+    at listOnTimeout (node:internal/timers:569:17)
+    at process.processTimers (node:internal/timers:512:7)
+[error] 
+[error] Error: An unexpected error has occurred.
