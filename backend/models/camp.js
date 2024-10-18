@@ -16,7 +16,7 @@ const CompSchema = new mongoose.Schema({
   active: { type: Boolean, default: false },
   passwordRecoveryToken: { type: String, default: undefined },
   tokenExpiry: { type: Date, default: undefined },
-  
+
   // WebAuthn fields for fingerprint auth
   credentialID: { type: String },   // ID of the WebAuthn credential
   publicKey: { type: String },      // Public key from the fingerprint credential
@@ -24,7 +24,7 @@ const CompSchema = new mongoose.Schema({
   transports: { type: [String] },   // Methods of transport (e.g., 'usb', 'nfc')
 
   // New field for storing selected data
-  selectedData: { type: Map, default: undefined }  // Store selected data as key-value pairs
+selectedData: { type: Map, default: {} }  // Store selected data as key-value pairs
 
 }, { timestamps: true });
 

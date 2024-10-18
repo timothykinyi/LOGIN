@@ -989,7 +989,8 @@ const getUser = async (req, res) => {
 const storeSelectedData = async (req, res) => {
   try {
     const { selectedFields, compId } = req.body;
-
+    console.log(compId);
+    console.log(selectedFields);
     // Validate selected fields
     if (!selectedFields || selectedFields.length === 0) {
       return res.status(400).json({ message: 'No valid fields selected' });
@@ -1001,8 +1002,14 @@ const storeSelectedData = async (req, res) => {
       return res.status(404).json({ message: 'Comp model not found' });
     }
 
+    // Transform selectedFields array into key-value pairs for storing in a Map
+    const selectedData = selectedFields.reduce((acc, field) => {
+      acc[field] = true;  // Set each field to true or a relevant value
+      return acc;
+    }, {});
+
     // Store selected data in the Comp model
-    comp.selectedData = selectedFields;
+    comp.selectedData = selectedData;
     await comp.save();
 
     res.json({ message: 'Selected data stored successfully' });
@@ -1011,6 +1018,7 @@ const storeSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error storing selected data', error });
   }
 };
+
 
 
 module.exports = {

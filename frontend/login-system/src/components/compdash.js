@@ -5,7 +5,7 @@ import './styles/DataStoreForm.css'; // Import the CSS file for styling
 const DataStoreForm = () => {
   const [selectedFields, setSelectedFields] = useState([]);
 
-  const compId = '12345'
+  const compId = '852966'
   const availableFields = [
     { label: 'Full Name', value: 'fullName' },
     { label: 'Email', value: 'email' },
