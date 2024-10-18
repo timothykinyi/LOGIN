@@ -406,7 +406,7 @@ const complogin = async (req, res) => {
   const { username, password, cid } = req.body;
 
   if (!cid) {
-    return res.status(401).json({ message: 'System error' });
+    return res.status(401).json({ message: 'Invalid or missing CID' });
   }
 
   try {
@@ -422,7 +422,7 @@ const complogin = async (req, res) => {
       return res.status(401).json({ message: 'Please verify your account first' });
     }
 
-    // Age verification if the user is categorized as a "Child"
+    // Age verification for users categorized as "Child"
     if (user.category === 'Child') {
       const isDate18Valid = (date) => {
         const today = new Date();
@@ -458,15 +458,14 @@ const complogin = async (req, res) => {
 
     // Send login success notification
     const messageContent = 'You are now logged in';
-    await sendMessage(user.eID, messageContent); // Make sure to await this to handle it asynchronously
+    await sendMessage(user.eID, messageContent); // Await to ensure message sending
 
     // Retrieve the selected data for the associated company
-    const selectedDataKeys = await retrieveStoredData(cid); // Use cid to get company data
+    const selectedDataKeys = await retrieveStoredData(cid);
 
     // Construct user-specific data based on selected keys
     const userSpecificData = {};
     selectedDataKeys.forEach((key) => {
-      // Check if the key exists in the user object and add it to the userSpecificData
       if (user[key] !== undefined) {
         userSpecificData[key] = user[key];
       }
@@ -478,7 +477,7 @@ const complogin = async (req, res) => {
       token, 
       eID: user.eID, 
       category: user.category,
-      userSpecificData  // Include the user-specific data in the response
+      userSpecificData
     });
 
   } catch (error) {

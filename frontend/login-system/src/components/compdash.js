@@ -5,7 +5,9 @@ import './styles/DataStoreForm.css'; // Import the CSS file for styling
 const DataStoreForm = () => {
   const [selectedFields, setSelectedFields] = useState([]);
 
-  const compId = '852966'
+  // Fetch compId from session storage or define dynamically
+  const compId = sessionStorage.getItem('cID');  // Make sure it's stored in sessionStorage
+
   const availableFields = [
     { label: 'Full Name', value: 'fullName' },
     { label: 'Email', value: 'email' },
@@ -32,7 +34,7 @@ const DataStoreForm = () => {
     try {
       const response = await axios.post('https://login-9ebe.onrender.com/api/auth/store-selected-data', {
         selectedFields,
-        compId
+        compId,
       });
 
       if (response.status === 200) {
