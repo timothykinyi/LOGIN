@@ -38,7 +38,6 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Include cid in the login request payload
       const response = await axios.post('https://login-9ebe.onrender.com/api/auth/complogin', { 
         username, 
         password, 
@@ -48,15 +47,14 @@ const Login = () => {
       setMessage(response.data.message);
       sessionStorage.setItem('userToken', response.data.token);
       sessionStorage.setItem('eID', response.data.eID);
-      sessionStorage.setItem('data', response.data.userSpecificData);
-      localStorage.setItem('data', response.data.userSpecificData);
+      sessionStorage.setItem('data', JSON.stringify(response.data.userSpecificData));
+      localStorage.setItem('data', JSON.stringify(response.data.userSpecificData));
       localStorage.setItem('eID', response.data.eID);
       localStorage.setItem('userToken', response.data.token);
 
       const datasent = response.data.userSpecificData;
       // Post login success message to parent window for redirection
-      window.parent.postMessage({ loggedIn: true, data: datasent}, 'https://own-my-data.web.app');
-
+      window.parent.postMessage({ loggedIn: true, data: datasent }, 'https://own-my-data.web.app');
     } catch (error) {
       setLoading(false);
       if (error.response && error.response.data) {

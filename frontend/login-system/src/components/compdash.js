@@ -50,7 +50,7 @@ const DataStoreForm = () => {
 
   return (
     <div className="cnd-form-container">
-      <h2 className="cnd-heading">Select User Data to Store</h2>
+      <h2 className="cnd-heading">Select user data you want to get</h2>
       <form className="cnd-form" onSubmit={handleSubmit}>
         <h3 className="cnd-subheading">Select Fields:</h3>
         {availableFields.map((field) => (
