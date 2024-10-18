@@ -392,7 +392,8 @@ const companyactuallogin = async (req, res) => {
 
 const retrieveStoredData = async (compId) => {
   try {
-    const comp = await Comp.findById(compId);
+    // Fetch the Comp model using the custom cID field, not the _id
+    const comp = await Comp.findOne({ cID: compId }); // Use findOne with cID field
     if (!comp || !comp.selectedData) {
       throw new Error('No data found for this compId');
     }
