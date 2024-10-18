@@ -278,7 +278,7 @@ const login = async (req, res) => {
   const { username, password } = req.body;
   
   try {
-    const user = await User.findOne({ $or: [{ email }, { username }] });
+    const user = await User.findOne({ username });
     
     // Check if the user exists
     if (!user) {
