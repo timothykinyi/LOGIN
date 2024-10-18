@@ -1,21 +1,6 @@
 /* styles/Verification.css */
 
 /* Container styling */
-.container {
-  padding: 1.5rem;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  border-radius: 12px;
-  max-width: 480px;
-  width: 100%;
-  margin: 2rem auto;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.container:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  transform: scale(1.02);
-}
 
 /* Headings */
 h2 {

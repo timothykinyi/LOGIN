@@ -991,9 +991,7 @@ const storeSelectedData = async (req, res) => {
     const { selectedFields, compId } = req.body;
 
     // Fetch selected fields from User
-    const allowedFields = ['fullName', 'email', 'phoneNumber', 'username', 'dateOfBirth', 'gender', 'category', 'eID', 'isVerified', 'createdAt', 'active', 'credentialID', 'publicKey', 'counter', 'transports'];
-    const fieldsToSelect = selectedFields.filter(field => allowedFields.includes(field));
-
+    const fieldsToSelect = selectedFields;
     if (fieldsToSelect.length === 0) {
       return res.status(400).json({ message: 'No valid fields selected' });
     }

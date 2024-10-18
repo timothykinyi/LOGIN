@@ -1,21 +1,4 @@
-/* styles/RegisterForm.css */
 
-/* Container for the form */
-.container {
-  padding: 1.2rem; /* Reduced padding */
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* Slightly smaller shadow */
-  border-radius: 10px; /* Slightly smaller border radius */
-  max-width: 440px; /* Reduced max-width */
-  width: 100%;
-  text-align: center;
-  margin-top: 1.8rem; /* Reduced margin-top */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.container:hover {
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18); /* Slightly smaller hover shadow */
-  transform: scale(1.02);
-}
 
 /* Headings */
 h2 {

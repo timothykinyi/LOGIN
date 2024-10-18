@@ -5,7 +5,7 @@ import './styles/DataStoreForm.css'; // Import the CSS file for styling
 const DataStoreForm = () => {
   const [selectedFields, setSelectedFields] = useState([]);
 
-  const compId = sessionStorage.getItem('cID');
+  const compId = '12345'
   const availableFields = [
     { label: 'Full Name', value: 'fullName' },
     { label: 'Email', value: 'email' },
@@ -30,15 +30,19 @@ const DataStoreForm = () => {
     e.preventDefault();
 
     try {
-        const response  =await axios.post('https://login-9ebe.onrender.com/api/auth/store-selected-data', {
+      const response = await axios.post('https://login-9ebe.onrender.com/api/auth/store-selected-data', {
         selectedFields,
         compId
       });
 
-      alert('Data stored successfully!');
+      if (response.status === 200) {
+        alert('Data stored successfully!');
+      } else {
+        alert('Failed to store data.');
+      }
     } catch (error) {
       console.error('Error storing user data:', error);
-      alert(response.data.message);
+      alert('Failed to store data.');
     }
   };
 
