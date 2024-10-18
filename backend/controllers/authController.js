@@ -1007,6 +1007,7 @@ const storeSelectedData = async (req, res) => {
 
     res.json({ message: 'Selected data stored successfully' });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Error storing selected data', error });
   }
 };
