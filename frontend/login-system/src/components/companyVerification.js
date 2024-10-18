@@ -26,7 +26,7 @@ function Verification() {
       const emailToUse = email || newEmail;
       const response = await axios.post('https://login-9ebe.onrender.com/api/auth/verifycompany', { email: emailToUse, verificationCode });
       if (response.status === 200) {
-        navigate('/success');
+        navigate('/compLogin');
       }
     } catch (error) {
       if (error.response && error.response.data) {

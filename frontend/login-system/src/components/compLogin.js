@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './styles/landingPage.css';
 import './styles/login.css';
 
@@ -11,24 +11,14 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [recoverpassword, setRecoverPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [cid, setCid] = useState('');
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-
-  // Extract the cid from URL on component mount
-  useEffect(() => {
-    const companyId = searchParams.get('cid');
-    if (companyId) {
-      setCid(companyId);
-    }
-  }, [searchParams]);
 
   // Check if user is already logged in
   useEffect(() => {
     const eID = sessionStorage.getItem('eID');
     const token = sessionStorage.getItem('userToken');
     if (eID && token) {
-      window.parent.postMessage({ loggedIn: true }, 'https://own-my-data.web.app');
+      navigate('/dDashboard'); // Redirect to dashboard if logged in
     }
   }, [navigate]);
 
@@ -38,25 +28,13 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Include cid in the login request payload
-      const response = await axios.post('https://login-9ebe.onrender.com/api/auth/complogin', { 
-        username, 
-        password, 
-        cid // Send the cid to the backend
-      });
-
+      const response = await axios.post('https://login-9ebe.onrender.com/api/auth/companylogin', { username, password });
       setMessage(response.data.message);
       sessionStorage.setItem('userToken', response.data.token);
-      sessionStorage.setItem('eID', response.data.eID);
-      sessionStorage.setItem('data', response.data.userSpecificData);
-      localStorage.setItem('data', response.data.userSpecificData);
-      localStorage.setItem('eID', response.data.eID);
+      sessionStorage.setItem('cID', response.data.cID);
+      localStorage.setItem('cID', response.data.cID);
       localStorage.setItem('userToken', response.data.token);
-
-      const datasent = response.data.userSpecificData;
-      // Post login success message to parent window for redirection
-      window.parent.postMessage({ loggedIn: true, data: datasent}, 'https://own-my-data.web.app');
-
+      navigate('/compdash');
     } catch (error) {
       setLoading(false);
       if (error.response && error.response.data) {
@@ -76,9 +54,9 @@ const Login = () => {
     setMessage('');
 
     try {
-      const response = await axios.post('https://login-9ebe.onrender.com/api/auth/recoverpassword', { username });
+      const response = await axios.post('https://login-9ebe.onrender.com/api/auth/compnewrecoverPassword', { username });
       setMessage(response.data.message);
-      navigate('/reset-password');
+      navigate('/compreset-password');
     } catch (error) {
       if (error.response && error.response.data) {
         setMessage(error.response.data.message);
@@ -96,9 +74,9 @@ const Login = () => {
             <h2>Login</h2>
             <label>Username:</label>
             <input
-              type="text"
+              type="email"
               value={username}
-              placeholder="Enter your username"
+              placeholder="Enter your company email"
               onChange={(e) => setUsername(e.target.value)}
               required
             />
@@ -132,17 +110,10 @@ const Login = () => {
             </div>
 
             <p style={{ color: 'white' }}>
-              Verify your account <Link to="/embedVerification">Verify Account</Link>
+              Verify your account <Link to="/verification">Verify Account</Link>
             </p>
             <p style={{ color: 'white' }}>
-              If you don't have an account{' '}
-              <a
-                href="https://own-my-data.web.app/register"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Register
-              </a>
+              If you don't have an account <Link to="/register">Register</Link>
             </p>
           </div>
         ) : (
@@ -150,9 +121,9 @@ const Login = () => {
             <h2>Recover password</h2>
             <label>Enter your username:</label>
             <input
-              type="text"
+              type="email"
               value={username}
-              placeholder="Enter your username"
+              placeholder="Enter your company email"
               onChange={(e) => setUsername(e.target.value)}
               required
             />

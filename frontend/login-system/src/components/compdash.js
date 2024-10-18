@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import './styles/DataStoreForm.css'; // Import the CSS file for styling
 
-const UserDataSelector = () => {
+const DataStoreForm = () => {
   const [selectedFields, setSelectedFields] = useState([]);
-  const [userId, setUserId] = useState('');
-  const [userData, setUserData] = useState(null);
 
+  const compId = sessionStorage.getItem('cID');
   const availableFields = [
     { label: 'Full Name', value: 'fullName' },
     { label: 'Email', value: 'email' },
@@ -30,55 +30,40 @@ const UserDataSelector = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/get-user-data', {
-        userId, // Add userId for the backend to retrieve the specific user's data
-        selectedFields
+      await axios.post('https://login-9ebe.onrender.com/api/auth/store-selected-data', {
+        selectedFields,
+        compId
       });
 
-      setUserData(response.data);
+      alert('Data stored successfully!');
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('Error storing user data:', error);
+      alert('Failed to store data.');
     }
   };
 
   return (
-    <div>
-      <h2>Select User Data</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="userId">Enter User ID:</label>
-        <input
-          type="text"
-          id="userId"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          required
-        />
-
-        <h3>Select Fields:</h3>
+    <div className="cnd-form-container">
+      <h2 className="cnd-heading">Select User Data to Store</h2>
+      <form className="cnd-form" onSubmit={handleSubmit}>
+        <h3 className="cnd-subheading">Select Fields:</h3>
         {availableFields.map((field) => (
-          <div key={field.value}>
-            <label>
+          <div className="cnd-checkbox-container" key={field.value}>
+            <label className="cnd-checkbox-label">
               <input
                 type="checkbox"
                 value={field.value}
                 onChange={handleFieldChange}
+                className="cnd-checkbox-input"
               />
               {field.label}
             </label>
           </div>
         ))}
-
-        <button type="submit">Get Selected Data</button>
+        <button type="submit" className="cnd-submit-button">Store Selected Data</button>
       </form>
-
-      {userData && (
-        <div>
-          <h3>Retrieved User Data:</h3>
-          <pre>{JSON.stringify(userData, null, 2)}</pre>
-        </div>
-      )}
     </div>
   );
 };
 
-export default UserDataSelector;
+export default DataStoreForm;

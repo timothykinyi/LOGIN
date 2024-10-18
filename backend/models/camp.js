@@ -14,7 +14,9 @@ const CompSchema = new mongoose.Schema({
   tokenExpiry: { type: Date, default: undefined },
   createdAt: { type: Date, default: Date.now },
   active: { type: Boolean, default: false },
-
+  passwordRecoveryToken: { type: String, default: undefined },
+  tokenExpiry: { type: Date, default: undefined },
+  
   // WebAuthn fields for fingerprint auth
   credentialID: { type: String },   // ID of the WebAuthn credential
   publicKey: { type: String },      // Public key from the fingerprint credential

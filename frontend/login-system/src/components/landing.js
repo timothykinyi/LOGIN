@@ -81,6 +81,14 @@ const LandingPage = () => {
                   Sign Up
                 </button>
               </div>
+              <div className="button-group">
+                <button className="sign-in-btn" onClick={() => navigate('/compLogin')}>
+                  Log Into company
+                </button>
+                <button className="sign-up-btn" onClick={() => navigate('/companyreg')}>
+                  Sign Up for companies
+                </button>
+              </div>
             </>
           )}
         </div>

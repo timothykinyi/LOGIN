@@ -30,6 +30,8 @@ import Displayemployment from './components/displayemployment';
 import Displayfinaces from './components/displayfinaces';
 import Displayhealth from './components/displayhealth';
 
+import CompLogin from './components/compLogin';
+import Comppasswordreset from './components/comppasswordreset';
 import Displaypersonaldata from './components/displaypersonaldata';
 import Displaypreference from './components/displaypreference';
 import DisplaysocialFamily from './components/displaysocialFamily';
@@ -46,7 +48,6 @@ import Homedash from './components/house/homedash';
 import HouseVerification from './components/house/houseVerification';
 import Housedash from './components/house/housedash';
 import Housereg from './components/house/housereg';
-
 import Landing from './components/landing';
 import Mw from './components/m';
 import Passwordrecovery from './components/passwordreset';
@@ -109,8 +110,9 @@ function App() {
         <Route path="/verification" element={<Verification />} />
         <Route path="/embedVerification" element={<EmbedVerification />} />
         <Route path="/reset-password" element={<Passwordrecovery />} />
+        <Route path="/compreset-password" element={<Comppasswordreset />} />
         <Route path="/success" element={<Success />} />
-        
+        <Route path="/compLogin" element={<CompLogin />} />
         <Route path="/compdash" element={<Compdash />} />
         <Route path="/profileForm" element={<ProfileForm />} />
         <Route path="/gDashboard/personalinfoForm" element={<PersonalInfoForm />} />

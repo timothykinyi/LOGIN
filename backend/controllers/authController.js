@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Camp = require('../models/camp');
+const Comp = require('../models/camp');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
@@ -277,7 +278,7 @@ const login = async (req, res) => {
   const { username, password } = req.body;
   
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ $or: [{ email }, { username }] });
     
     // Check if the user exists
     if (!user) {
@@ -333,6 +334,56 @@ const login = async (req, res) => {
 
     // Respond to the client
     res.json({ message: 'Login successful', token, eID: user.eID, category: user.category });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    res.status(500).json({ message: 'Error logging in', error });
+  }
+};
+
+const companyactuallogin = async (req, res) => {
+  const { username, password } = req.body;
+  
+  try {
+    const user = await Camp.findOne({ email: username });
+    
+    // Check if the user exists
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid Email' });
+    }
+
+    // Check if the user is verified
+    if (!user.isVerified) {
+      return res.status(401).json({ message: 'Please verify your account first' });
+    }
+
+
+    // Check if the password matches
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid password' });
+    }
+
+    // Set user as active upon successful login
+    user.active = true;
+    await user.save();
+
+    
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, cID: user.cID, username: user.username, email: user.email, category: user.category },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    // Function to send a message and create a notification
+
+
+    // Send login success notification
+    const messageContent = 'You are now logged in';
+    await sendMessage(user.cID, messageContent);  // Make sure to await this to handle it asynchronously
+
+    // Respond to the client
+    res.json({ message: 'Login successful', token, cID: user.cID, category: user.category });
   } catch (error) {
     console.error('Error logging in:', error);
     res.status(500).json({ message: 'Error logging in', error });
@@ -731,6 +782,78 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const compnewrecoverPassword = async (req, res) => {
+
+  try {
+    const { username } = req.body;
+    const user = await Comp.findOne({ email: username });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+    user.passwordRecoveryToken = token;
+    user.tokenExpiry = moment().add(1, 'hour').toDate();
+    
+
+    // Send the recovery email
+    const subject = 'Password Reset Request';
+    const message = `Dear ${user.username},
+
+You have requested to reset your password. Please use the following token to reset your password:
+
+Password Reset Token: ${user.passwordRecoveryToken}
+
+Follow this link https://own-my-data.web.app/compreset-password to reset your password.
+
+This token is valid for 1 hour. 
+
+Best regards,
+eID`;
+
+    try {
+      await sendEmail(user.email, subject, message);
+      await user.save();
+      res.status(200).json({ message: 'Password recovery email sent successfully.' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error sending password recovery email' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred during password recovery.' });
+  }
+};
+
+const compresetPassword = async (req, res) => {
+  const { email, verificationCode, newPassword } = req.body;
+
+  try {
+    const user = await Comp.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (user.passwordRecoveryToken !== verificationCode) {
+      return res.status(400).json({ message: 'Invalid token' });
+    }
+
+    if (moment().isAfter(user.tokenExpiry)) {
+      return res.status(400).json({ message: 'Token has expired' });
+    }
+
+    user.password = newPassword;
+    user.passwordRecoveryToken = undefined;
+    user.tokenExpiry = undefined;
+    await user.save();
+
+    res.status(200).json({ message: 'Password has been reset successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred during password reset.' });
+  }
+};
+
+
 const logout = async (req, res) => {
   const { username } = req.body;
 
@@ -894,17 +1017,20 @@ module.exports = {
   registerUser,
   companyregisterUser,
   login,
+  companyactuallogin,
   complogin,
   verifyUser,
   updateEmail,
   verifyComp,
   resendVerificationCode,
   newrecoverPassword,
+  compresetPassword,
   resetPassword,
   changeusername,
   changepassword,
   changephonenumber,
   resendcompanyVerificationCode,
+  compnewrecoverPassword,
   updatecompanEmail,
   changeemail,
   logout,
