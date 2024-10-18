@@ -3,6 +3,8 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import ContactForm from './components/ContactForm';
 import Dashboard from './components/Dashboard';
 import EducationForm from './components/EducationForm';
+import EmbedVerification from './components/EmbedVerification';
+import Embedlogin from './components/Embedlogin';
 import EmploymentForm from './components/EmploymentForm';
 import FetchSharedDataPage from './components/FetchSharedDataPage';
 import FinancialForm from './components/FinancialForm';
@@ -20,6 +22,7 @@ import Verification from './components/Verification';
 import Biometrics from './components/biometrics';
 import CompanyVerification from './components/companyVerification';
 import Companyreg from './components/companyreg';
+import Compdash from './components/compdash';
 import DDashboard from './components/dDashboard';
 import Displaycontact from './components/displaycontact';
 import Displayeducation from './components/displayeducation';
@@ -100,11 +103,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/embedlogin" element={<Embedlogin />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/verification" element={<Verification />} />
+        <Route path="/embedVerification" element={<EmbedVerification />} />
         <Route path="/reset-password" element={<Passwordrecovery />} />
         <Route path="/success" element={<Success />} />
+        
+        <Route path="/compdash" element={<Compdash />} />
         <Route path="/profileForm" element={<ProfileForm />} />
         <Route path="/gDashboard/personalinfoForm" element={<PersonalInfoForm />} />
         <Route path="/gDashboard/educationForm" element={<EducationForm />} />

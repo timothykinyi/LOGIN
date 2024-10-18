@@ -7,7 +7,7 @@ const CompSchema = new mongoose.Schema({
   password: { type: String, required: true },
   username: { type: Number, required: true, unique: true },
   category: { type: String, required: true },
-  cID: { type: Number, required: true, unique: true }, // New E ID field
+  cID: { type: Number, required: true, unique: true }, // New cID field
   verificationCode: { type: String },
   isVerified: { type: Boolean, default: false },
   passwordRecoveryToken: { type: String, default: undefined },
@@ -21,8 +21,12 @@ const CompSchema = new mongoose.Schema({
   counter: { type: Number },        // Replay counter to prevent credential reuse
   transports: { type: [String] },   // Methods of transport (e.g., 'usb', 'nfc')
 
+  // New field for storing selected data
+  selectedData: { type: Map, default: undefined }  // Store selected data as key-value pairs
+
 }, { timestamps: true });
 
+// Hash password before saving
 CompSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   try {

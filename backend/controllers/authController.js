@@ -339,6 +339,103 @@ const login = async (req, res) => {
   }
 };
 
+const retrieveStoredData = async (compId) => {
+  try {
+    const comp = await Comp.findById(compId);
+    if (!comp || !comp.selectedData) {
+      throw new Error('No data found for this compId');
+    }
+    return comp.selectedData;
+  } catch (error) {
+    throw new Error(`Error retrieving data: ${error.message}`);
+  }
+};
+
+const complogin = async (req, res) => {
+  const { username, password, cid } = req.body;
+
+  if (!cid) {
+    return res.status(401).json({ message: 'System error' });
+  }
+
+  try {
+    const user = await User.findOne({ username });
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid username' });
+    }
+
+    // Check if the user is verified
+    if (!user.isVerified) {
+      return res.status(401).json({ message: 'Please verify your account first' });
+    }
+
+    // Age verification if the user is categorized as a "Child"
+    if (user.category === 'Child') {
+      const isDate18Valid = (date) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset hours to avoid time comparison issues
+        const enteredDate = new Date(date);
+        const minAgeDate = new Date(today.setFullYear(today.getFullYear() - 18));
+        return enteredDate < minAgeDate;
+      };
+
+      // Update user category to "Self" if the user is over 18
+      if (!isDate18Valid(user.dateOfBirth)) {
+        user.category = 'Self';
+        await user.save();
+      }
+    }
+
+    // Check if the password matches
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid password' });
+    }
+
+    // Set user as active upon successful login
+    user.active = true;
+    await user.save();
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, eID: user.eID, username: user.username, email: user.email, category: user.category },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    // Send login success notification
+    const messageContent = 'You are now logged in';
+    await sendMessage(user.eID, messageContent); // Make sure to await this to handle it asynchronously
+
+    // Retrieve the selected data for the associated company
+    const selectedDataKeys = await retrieveStoredData(cid); // Use cid to get company data
+
+    // Construct user-specific data based on selected keys
+    const userSpecificData = {};
+    selectedDataKeys.forEach((key) => {
+      // Check if the key exists in the user object and add it to the userSpecificData
+      if (user[key] !== undefined) {
+        userSpecificData[key] = user[key];
+      }
+    });
+
+    // Respond to the client with user and company data
+    res.json({ 
+      message: 'Login successful', 
+      token, 
+      eID: user.eID, 
+      category: user.category,
+      userSpecificData  // Include the user-specific data in the response
+    });
+
+  } catch (error) {
+    console.error('Error logging in:', error);
+    res.status(500).json({ message: 'Error logging in', error: error.message });
+  }
+};
+
 const sendMessage = async (nuserId, messageContent) => {
   try {
     // Now create a notification
@@ -766,10 +863,38 @@ const getUser = async (req, res) => {
   }
 };
 
+const storeSelectedData = async (req, res) => {
+  try {
+    const { selectedFields, compId } = req.body;
+
+    // Fetch selected fields from User
+    const allowedFields = ['fullName', 'email', 'phoneNumber', 'username', 'dateOfBirth', 'gender', 'category', 'eID', 'isVerified', 'createdAt', 'active', 'credentialID', 'publicKey', 'counter', 'transports'];
+    const fieldsToSelect = selectedFields.filter(field => allowedFields.includes(field));
+
+    if (fieldsToSelect.length === 0) {
+      return res.status(400).json({ message: 'No valid fields selected' });
+    }
+
+    const comp = await Comp.findById(compId);
+    if (!comp) {
+      return res.status(404).json({ message: 'Comp model not found' });
+    }
+
+    // Store selected data in the Comp model
+    comp.selectedData = selectedFields;
+    await comp.save();
+
+    res.json({ message: 'Selected data stored successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error storing selected data', error });
+  }
+};
+
 module.exports = {
   registerUser,
   companyregisterUser,
   login,
+  complogin,
   verifyUser,
   updateEmail,
   verifyComp,
@@ -786,4 +911,5 @@ module.exports = {
   getUser,
   getWebAuthnOptions,
   handleWebAuthnRegistration,
+  storeSelectedData,
 };
