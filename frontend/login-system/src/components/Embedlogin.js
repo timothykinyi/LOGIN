@@ -12,14 +12,19 @@ const Login = () => {
   const [recoverpassword, setRecoverPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [cid, setCid] = useState('');
+  const [url, seturl] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  // Extract the cid from URL on component mount
+  // Extract the cid and url from URL on component mount
   useEffect(() => {
     const companyId = searchParams.get('cid');
+    const originurl = searchParams.get('url');
     if (companyId) {
       setCid(companyId);
+    }
+    if (originurl) {
+      seturl(originurl);
     }
   }, [searchParams]);
 
@@ -53,8 +58,10 @@ const Login = () => {
       localStorage.setItem('userToken', response.data.token);
 
       const datasent = response.data.userSpecificData;
-      // Post login success message to parent window for redirection
-      window.parent.postMessage({ loggedIn: true, data: datasent }, 'https://own-my-data.web.app');
+      setLoading(false);
+
+      // Ensure the correct URL (use window.location.origin as the default)
+      window.parent.postMessage({ loggedIn: true, data: datasent }, url || window.location.origin);
     } catch (error) {
       setLoading(false);
       if (error.response && error.response.data) {
