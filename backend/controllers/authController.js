@@ -998,7 +998,7 @@ const storeSelectedData = async (req, res) => {
       return res.status(400).json({ message: 'No valid fields selected' });
     }
 
-    const comp = await Comp.findById(compId);
+    const comp = await Comp.findById({ cID: compId });
     if (!comp) {
       return res.status(404).json({ message: 'Comp model not found' });
     }

@@ -30,7 +30,7 @@ const DataStoreForm = () => {
     e.preventDefault();
 
     try {
-      await axios.post('https://login-9ebe.onrender.com/api/auth/store-selected-data', {
+        const response  =await axios.post('https://login-9ebe.onrender.com/api/auth/store-selected-data', {
         selectedFields,
         compId
       });
@@ -38,7 +38,7 @@ const DataStoreForm = () => {
       alert('Data stored successfully!');
     } catch (error) {
       console.error('Error storing user data:', error);
-      alert('Failed to store data.');
+      alert(response.data.message);
     }
   };
 
