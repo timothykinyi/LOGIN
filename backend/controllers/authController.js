@@ -990,13 +990,13 @@ const storeSelectedData = async (req, res) => {
   try {
     const { selectedFields, compId } = req.body;
 
-    // Fetch selected fields from User
-    const fieldsToSelect = selectedFields;
-    if (fieldsToSelect.length === 0) {
+    // Validate selected fields
+    if (!selectedFields || selectedFields.length === 0) {
       return res.status(400).json({ message: 'No valid fields selected' });
     }
 
-    const comp = await Comp.findById({ cID: compId });
+    // Fetch the Comp model using compId (cID)
+    const comp = await Comp.findOne({ cID: compId }); // Use findOne with the cID field
     if (!comp) {
       return res.status(404).json({ message: 'Comp model not found' });
     }
@@ -1007,10 +1007,11 @@ const storeSelectedData = async (req, res) => {
 
     res.json({ message: 'Selected data stored successfully' });
   } catch (error) {
-    console.log(error);
+    console.error('Error storing selected data:', error);
     res.status(500).json({ message: 'Error storing selected data', error });
   }
 };
+
 
 module.exports = {
   registerUser,
