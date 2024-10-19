@@ -392,23 +392,21 @@ const companyactuallogin = async (req, res) => {
 
 const retrieveStoredData = async (compId) => {
   try {
-    // Fetch the Comp model using the custom cID field
-    const comp = await Comp.findOne({ cID: compId }); 
+    const comp = await Comp.findOne({ cID: compId });
+    
+    // Log the comp object
+    console.log('Comp object:', comp);
+    
     if (!comp || !comp.selectedData) {
-      console.log('No company or selected data found');
       throw new Error('No data found for this compId');
     }
 
-    // Filter selected keys (where value is true)
-    const selectedKeys = Object.keys(comp.selectedData).filter(key => comp.selectedData[key] === true);
-
-    console.log('Selected data keys from company:', selectedKeys);
-    return selectedKeys;
+    return comp.selectedData;
   } catch (error) {
-    console.error(`Error retrieving data for compId ${compId}:`, error.message);
     throw new Error(`Error retrieving data: ${error.message}`);
   }
 };
+
 
 const complogin = async (req, res) => {
   const { username, password, cid } = req.body;
