@@ -392,16 +392,18 @@ const companyactuallogin = async (req, res) => {
 
 const retrieveStoredData = async (compId) => {
   try {
-    // Fetch the Comp model using the custom cID field, not the _id
-    const comp = await Comp.findOne({ cID: compId }); // Use findOne with cID field
+    // Fetch the Comp model using the custom cID field
+    const comp = await Comp.findOne({ cID: compId }); 
     if (!comp || !comp.selectedData) {
       throw new Error('No data found for this compId');
     }
-    return comp.selectedData;
+    // Return the selected keys that are true (like { fullName: true, email: true })
+    return Object.keys(comp.selectedData).filter(key => comp.selectedData[key] === true);
   } catch (error) {
     throw new Error(`Error retrieving data: ${error.message}`);
   }
 };
+
 
 const complogin = async (req, res) => {
   const { username, password, cid } = req.body;
@@ -486,6 +488,7 @@ const complogin = async (req, res) => {
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
 };
+
 
 const sendMessage = async (nuserId, messageContent) => {
   try {
