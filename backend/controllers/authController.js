@@ -390,24 +390,23 @@ const companyactuallogin = async (req, res) => {
   }
 };
 
+// Function to retrieve selected data from the Comp model
 const retrieveStoredData = async (compId) => {
   try {
-    const comp = await Comp.findOne({ cID: compId });
-    
-    // Log the comp object
-    console.log('Comp object:', comp);
-    
+    // Fetch the Comp model using the custom cID field, not the _id
+    const comp = await Comp.findOne({ cID: compId }); // Use findOne with cID field
     if (!comp || !comp.selectedData) {
       throw new Error('No data found for this compId');
     }
-
-    return comp.selectedData;
+    
+    // Return the keys from the selectedData Map
+    return [...comp.selectedData.keys()];
   } catch (error) {
     throw new Error(`Error retrieving data: ${error.message}`);
   }
 };
 
-
+// Login function for handling company login and sending user-specific data
 const complogin = async (req, res) => {
   const { username, password, cid } = req.body;
 
@@ -418,61 +417,72 @@ const complogin = async (req, res) => {
   try {
     const user = await User.findOne({ username });
 
-    // Log the user object for debugging
-    console.log('User object:', user);
-
+    // Check if the user exists
     if (!user) {
       return res.status(401).json({ message: 'Invalid username' });
     }
 
+    // Check if the user is verified
     if (!user.isVerified) {
       return res.status(401).json({ message: 'Please verify your account first' });
     }
 
+    // Age verification for users categorized as "Child"
+    if (user.category === 'Child') {
+      const isDate18Valid = (date) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset hours to avoid time comparison issues
+        const enteredDate = new Date(date);
+        const minAgeDate = new Date(today.setFullYear(today.getFullYear() - 18));
+        return enteredDate < minAgeDate;
+      };
+
+      // Update user category to "Self" if the user is over 18
+      if (!isDate18Valid(user.dateOfBirth)) {
+        user.category = 'Self';
+        await user.save();
+      }
+    }
+
+    // Check if the password matches
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid password' });
     }
 
+    // Set user as active upon successful login
     user.active = true;
     await user.save();
 
+    // Generate JWT token
     const token = jwt.sign(
       { id: user._id, eID: user.eID, username: user.username, email: user.email, category: user.category },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
+    // Send login success notification
     const messageContent = 'You are now logged in';
-    await sendMessage(user.eID, messageContent);
+    await sendMessage(user.eID, messageContent); // Await to ensure message sending
 
-    // Fetch selected data keys from the company
+    // Retrieve the selected data for the associated company
     const selectedDataKeys = await retrieveStoredData(cid);
-
-    // Log the selected data keys for debugging
-    console.log('Selected data keys:', selectedDataKeys);
 
     // Construct user-specific data based on selected keys
     const userSpecificData = {};
-    selectedDataKeys.forEach((key) => {
-      console.log(`Checking user for key: ${key}`);
+    selectedDataKeys.forEach((value) => {
       if (user[key] !== undefined) {
-        console.log(`Adding key ${key} with value ${user[key]}`);
-        userSpecificData[key] = user[key];
-      } else {
-        console.log(`Key ${key} not found in user object`);
+        userSpecificData[key] = user[key]; // Assign the value from the user object based on the selected data key
       }
     });
 
-    // Log the final user-specific data
-    console.log('Final user-specific data:', userSpecificData);
-
+    // Respond to the client with the user and company data
     res.json({ 
       message: 'Login successful', 
       token, 
       eID: user.eID, 
       category: user.category,
-      userSpecificData
+      userSpecificData // Send the user-specific data to the frontend
     });
 
   } catch (error) {
@@ -480,6 +490,7 @@ const complogin = async (req, res) => {
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
 };
+
 
 const sendMessage = async (nuserId, messageContent) => {
   try {
