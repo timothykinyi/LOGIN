@@ -1,0 +1,29 @@
+nav{
+    width: 100%;
+    /*background: #e3e9e7;*/
+    color: #030c24;
+    padding: 4px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+}
+.logo{
+    width: 50px;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    margin-left: 20px;
+}
+
+.logo:hover{
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    transform: scale(1.5);
+}
+nav ul li{
+    display: inline-block;
+    list-style: none;
+    margin: 5px 20px;
+    font-size: 16px;
+}

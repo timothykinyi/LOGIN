@@ -1,0 +1,91 @@
+.herocontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background-color: #f9f9f9; /* Light background color */
+    min-height: 100vh; /* Full height */
+  }
+  
+  .maindiv {
+    display: flex;
+    align-items: center;
+    max-width: 1200px; /* Limit width for better readability */
+    margin: 0 auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 15px; /* Rounded corners */
+    overflow: hidden; /* Clip any overflowing content */
+  }
+  
+  .hero-text {
+    text-align: center;
+    padding: 20px;
+    background-color: #ffffff; /* White background for text section */
+    border-radius: 15px 15px 0 0; /* Rounded top corners */
+  }
+  
+  .hero-text h1 {
+    font-size: 2.5rem; /* Larger font size for the heading */
+    color: #333; /* Darker text color */
+    margin-bottom: 20px; /* Space below the heading */
+  }
+  
+  .hero-text p {
+    font-size: 1.1rem; /* Slightly larger than normal text */
+    color: #555; /* Medium gray text */
+    line-height: 1.6; /* Increased line height for readability */
+    margin-bottom: 20px; /* Space below the paragraph */
+  }
+  
+  .btn {
+    padding: 10px 20px; /* Padding for button */
+    font-size: 1rem; /* Button text size */
+    color: #ffffff; /* White text color */
+    background-color: #007bff; /* Bootstrap primary blue */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background change */
+  }
+  
+  .btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .leftdiv {
+    display: flex; /* Flexbox for alignment */
+    justify-content: center; /* Center the iframe */
+    margin-top: 20px; /* Space above iframe */
+  }
+  
+  .leftdiv iframe {
+    border: none; /* No border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for the iframe */
+    border-radius: 10px; /* Rounded corners for the iframe */
+    max-width: 100%; /* Responsive width */
+    height: 500px; /* Fixed height */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero-text h1 {
+      font-size: 2rem; /* Adjust heading size for smaller screens */
+    }
+  
+    .hero-text p {
+      font-size: 1rem; /* Adjust paragraph size for smaller screens */
+    }
+  
+    .btn {
+      padding: 8px 16px; /* Smaller button padding */
+    }
+  
+    .leftdiv {
+      margin-top: 15px; /* Less margin for smaller screens */
+    }
+  
+    .leftdiv iframe {
+      height: 400px; /* Smaller iframe height */
+    }
+  }
+  
