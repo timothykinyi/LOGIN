@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Section</title>
+  <style>
+    .herocontainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .maindiv {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .hero-text {
+      max-width: 600px;
+    }
+
+    .hero-text h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .leftdiv iframe {
+      border: none;
+      overflow-y: scroll;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      max-width: 400px;
+      min-height: 400px;
+      width: 300px;
+      height: 500px;
+    }
+
+    .leftdiv {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="herocontainer">
+    <div class="maindiv">
+      <div class="hero-text">
+        <h1>Ensuring quality care for everyone</h1>
+        <p>
+          Empowering Abilities, Breaking Barriers – Welcome to Ability Allies, your ultimate platform designed to inspire and uplift persons with disabilities (PWD).
+          Discover a world of opportunities, resources, and community support tailored just for you.
+          Whether you’re seeking accessible services, educational tools, employment guidance, 
+          or a vibrant network of like-minded individuals, we are here to ensure that every ability shines.
+          Together, let’s build a more inclusive, accessible, and empowered future!
+        </p>
+        <button class="btn" onclick="handleExploreMoreClick()">Explore More</button>
+      </div>
+
+      <div id="iframe-container" class="leftdiv" style="display: none;">
+        <iframe
+          id="login-iframe"
+          src=""
+          width="300px"
+          height="500"
+          title="Login Iframe">
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function handleExploreMoreClick() {
+      var iframeContainer = document.getElementById('iframe-container');
+      var iframe = document.getElementById('login-iframe');
+      iframe.src = 'https://own-my-data.web.app/embedlogin?cid=852966&url=' + window.location.href;
+      iframeContainer.style.display = 'block';
+    }
+
+    window.addEventListener('message', function(event) {
+      if (event.origin === 'https://own-my-data.web.app') {
+        if (event.data.loggedIn) {
+          alert('Logged in successfully! Data received: ' + JSON.stringify(event.data.data)); 
+          window.location.href = 'https://globalmethodistchurches.org/business-directory/victorious-gospel/';
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
