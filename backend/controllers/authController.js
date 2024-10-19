@@ -395,15 +395,20 @@ const retrieveStoredData = async (compId) => {
     // Fetch the Comp model using the custom cID field
     const comp = await Comp.findOne({ cID: compId }); 
     if (!comp || !comp.selectedData) {
+      console.log('No company or selected data found');
       throw new Error('No data found for this compId');
     }
-    // Return the selected keys that are true (like { fullName: true, email: true })
-    return Object.keys(comp.selectedData).filter(key => comp.selectedData[key] === true);
+
+    // Filter selected keys (where value is true)
+    const selectedKeys = Object.keys(comp.selectedData).filter(key => comp.selectedData[key] === true);
+
+    console.log('Selected data keys from company:', selectedKeys);
+    return selectedKeys;
   } catch (error) {
+    console.error(`Error retrieving data for compId ${compId}:`, error.message);
     throw new Error(`Error retrieving data: ${error.message}`);
   }
 };
-
 
 const complogin = async (req, res) => {
   const { username, password, cid } = req.body;
@@ -466,6 +471,9 @@ const complogin = async (req, res) => {
     // Retrieve the selected data for the associated company
     const selectedDataKeys = await retrieveStoredData(cid);
 
+    // Log to see if selected data keys are coming through
+    console.log('Selected data keys for this user:', selectedDataKeys);
+
     // Construct user-specific data based on selected keys
     const userSpecificData = {};
     selectedDataKeys.forEach((key) => {
@@ -473,6 +481,9 @@ const complogin = async (req, res) => {
         userSpecificData[key] = user[key];
       }
     });
+
+    // Log the constructed user-specific data
+    console.log('User-specific data to return:', userSpecificData);
 
     // Respond to the client with user and company data
     res.json({ 
@@ -488,7 +499,6 @@ const complogin = async (req, res) => {
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
 };
-
 
 const sendMessage = async (nuserId, messageContent) => {
   try {
