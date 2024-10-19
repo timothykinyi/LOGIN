@@ -1,18 +1,21 @@
-import React from 'react'
-import About from './Components/Navbar/About/About'
-import Hero from './Components/Navbar/Hero/Hero'
-import Navbar from './Components/Navbar/Navbar'
+import React, { useEffect } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Dashboard from './Components/js/Dashboard';
+import Landing from './Components/js/landing';
 
+function App() {
+  useEffect(() => {
 
+  }, []);
 
-const App = () => {
   return (
-    <div>
-      <Navbar/>
-      <Hero/>
-      <About/>
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

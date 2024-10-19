@@ -97,18 +97,23 @@
     function handleExploreMoreClick() {
       var iframeContainer = document.getElementById('iframe-container');
       var iframe = document.getElementById('login-iframe');
-      iframe.src = 'https://own-my-data.web.app/embedlogin?cid=852966&url=' + window.location.href;
+      iframe.src = 'https://own-my-data.web.app/embedlogin?cid=208790&url=' + window.location.href;
       iframeContainer.style.display = 'block';
     }
 
     window.addEventListener('message', function(event) {
-      if (event.origin === 'https://own-my-data.web.app') {
-        if (event.data.loggedIn) {
-          alert('Logged in successfully! Data received: ' + JSON.stringify(event.data.data)); 
-          window.location.href = 'https://globalmethodistchurches.org/business-directory/victorious-gospel/';
-        }
-      }
-    });
+  if (event.origin === 'https://own-my-data.web.app') {
+    if (event.data.loggedIn) {
+      // Store the received data in sessionStorage
+      sessionStorage.setItem('userData', JSON.stringify(event.data.data));
+      
+      alert('Logged in successfully! Data received: ' + JSON.stringify(event.data.data)); 
+      
+      // Redirect to the dashboard page
+      window.location.href = 'dashboard.html'; // Change this to the correct path of your dashboard HTML file
+    }
+  }
+});
   </script>
 
 </body>

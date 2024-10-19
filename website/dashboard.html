@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .user-info {
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 5px;
+      max-width: 600px;
+    }
+
+    .user-info p {
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+
+    .user-info strong {
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Welcome to Your Dashboard</h1>
+
+    <div id="user-data" class="user-info">
+      <p><strong>Full Name:</strong> <span id="fullName"></span></p>
+      <p><strong>Email:</strong> <span id="email"></span></p>
+      <p><strong>Username:</strong> <span id="username"></span></p>
+      <p><strong>Phone Number:</strong> <span id="phoneNumber"></span></p>
+      <p><strong>Category:</strong> <span id="category"></span></p>
+      <p><strong>Date of Birth:</strong> <span id="dateOfBirth"></span></p>
+    </div>
+  </div>
+
+  <script>
+    // Retrieve user data from sessionStorage (or localStorage)
+    const userData = JSON.parse(sessionStorage.getItem('userData'));
+
+    if (userData) {
+      // Populate the dashboard with the received data
+      document.getElementById('fullName').textContent = userData.fullName || 'N/A';
+      document.getElementById('email').textContent = userData.email || 'N/A';
+      document.getElementById('username').textContent = userData.username || 'N/A';
+      document.getElementById('phoneNumber').textContent = userData.phoneNumber || 'N/A';
+      document.getElementById('category').textContent = userData.category || 'N/A';
+      document.getElementById('dateOfBirth').textContent = userData.dateOfBirth ? new Date(userData.dateOfBirth).toLocaleDateString() : 'N/A';
+    } else {
+      alert('No user data found.');
+    }
+  </script>
+
+</body>
+</html>
