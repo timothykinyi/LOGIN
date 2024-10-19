@@ -405,21 +405,31 @@ const availableFields = {
 const retrieveStoredData = async (compId) => {
   try {
     // Fetch the Comp model using the custom cID field, not the _id
-    const comp = await Comp.findOne({ cID: compId });
+    const comp = await Comp.findOne({ cID: compId }).lean(); // Use .lean() to get a plain JS object
     if (!comp || !comp.selectedData) {
       throw new Error('No selected data found for this company');
     }
 
+    console.log("Comp object:", comp); // Debugging - check full comp object
+
+    // Convert the Map to an object if it's stored as a Map
+    const selectedData = comp.selectedData instanceof Map ? Object.fromEntries(comp.selectedData) : comp.selectedData;
+
+    console.log("Selected data after conversion:", selectedData); // Debugging
+
     // Return only the valid fields selected by the company
     const selectedFields = [];
-    for (const [key, value] of Object.entries(comp.selectedData)) {
+    for (const [key, value] of Object.entries(selectedData)) {
       if (value === true && availableFields[key]) {
         selectedFields.push(availableFields[key]);
       }
     }
 
+    console.log("Selected fields:", selectedFields); // Debugging
+
     return selectedFields;
   } catch (error) {
+    console.error("Error retrieving selected data:", error.message);
     throw new Error(`Error retrieving selected data: ${error.message}`);
   }
 };
@@ -434,6 +444,8 @@ const complogin = async (req, res) => {
 
   try {
     const user = await User.findOne({ username });
+
+    console.log("User object:", user); // Debugging - check the user object
 
     // Check if the user exists and is verified
     if (!user || !user.isVerified) {
@@ -460,13 +472,19 @@ const complogin = async (req, res) => {
     // Retrieve the selected data for the associated company
     const selectedDataKeys = await retrieveStoredData(cid);
 
+    console.log("Selected data keys:", selectedDataKeys); // Debugging - check selected data keys
+
     // Build the user-specific data object based on selected data
     const userSpecificData = selectedDataKeys.reduce((acc, field) => {
       if (user[field] !== undefined) {
         acc[field] = user[field]; // Add valid data to the response object
+      } else {
+        console.log(`Field ${field} not found in user object`); // Debugging - check missing fields
       }
       return acc;
     }, {});
+
+    console.log("Final user-specific data:", userSpecificData); // Debugging - final output data
 
     // Send success response with the token and user-specific data
     res.json({
