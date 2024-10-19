@@ -390,23 +390,41 @@ const companyactuallogin = async (req, res) => {
   }
 };
 
+// Create a predefined mapping of possible data fields
+const availableFields = {
+  fullName: 'fullName',
+  email: 'email',
+  phoneNumber: 'phoneNumber',
+  dateOfBirth: 'dateOfBirth',
+  gender: 'gender',
+  category: 'category',
+  eID: 'eID',
+};
+
 // Function to retrieve selected data from the Comp model
 const retrieveStoredData = async (compId) => {
   try {
     // Fetch the Comp model using the custom cID field, not the _id
-    const comp = await Comp.findOne({ cID: compId }); // Use findOne with cID field
+    const comp = await Comp.findOne({ cID: compId });
     if (!comp || !comp.selectedData) {
-      throw new Error('No data found for this compId');
+      throw new Error('No selected data found for this company');
     }
-    
-    // Return the keys from the selectedData Map
-    return [...comp.selectedData.keys()];
+
+    // Return only the valid fields selected by the company
+    const selectedFields = [];
+    for (const [key, value] of Object.entries(comp.selectedData)) {
+      if (value === true && availableFields[key]) {
+        selectedFields.push(availableFields[key]);
+      }
+    }
+
+    return selectedFields;
   } catch (error) {
-    throw new Error(`Error retrieving data: ${error.message}`);
+    throw new Error(`Error retrieving selected data: ${error.message}`);
   }
 };
 
-// Login function for handling company login and sending user-specific data
+// Main login function
 const complogin = async (req, res) => {
   const { username, password, cid } = req.body;
 
@@ -417,34 +435,12 @@ const complogin = async (req, res) => {
   try {
     const user = await User.findOne({ username });
 
-    // Check if the user exists
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid username' });
+    // Check if the user exists and is verified
+    if (!user || !user.isVerified) {
+      return res.status(401).json({ message: 'Invalid username or account not verified' });
     }
 
-    // Check if the user is verified
-    if (!user.isVerified) {
-      return res.status(401).json({ message: 'Please verify your account first' });
-    }
-
-    // Age verification for users categorized as "Child"
-    if (user.category === 'Child') {
-      const isDate18Valid = (date) => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset hours to avoid time comparison issues
-        const enteredDate = new Date(date);
-        const minAgeDate = new Date(today.setFullYear(today.getFullYear() - 18));
-        return enteredDate < minAgeDate;
-      };
-
-      // Update user category to "Self" if the user is over 18
-      if (!isDate18Valid(user.dateOfBirth)) {
-        user.category = 'Self';
-        await user.save();
-      }
-    }
-
-    // Check if the password matches
+    // Check password match
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid password' });
@@ -461,35 +457,32 @@ const complogin = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    // Send login success notification
-    const messageContent = 'You are now logged in';
-    await sendMessage(user.eID, messageContent); // Await to ensure message sending
-
     // Retrieve the selected data for the associated company
     const selectedDataKeys = await retrieveStoredData(cid);
 
-    // Construct user-specific data based on selected keys
-    const userSpecificData = {};
-    selectedDataKeys.forEach((value) => {
-      if (user[key] !== undefined) {
-        userSpecificData[key] = user[key]; // Assign the value from the user object based on the selected data key
+    // Build the user-specific data object based on selected data
+    const userSpecificData = selectedDataKeys.reduce((acc, field) => {
+      if (user[field] !== undefined) {
+        acc[field] = user[field]; // Add valid data to the response object
       }
-    });
+      return acc;
+    }, {});
 
-    // Respond to the client with the user and company data
-    res.json({ 
-      message: 'Login successful', 
-      token, 
-      eID: user.eID, 
+    // Send success response with the token and user-specific data
+    res.json({
+      message: 'Login successful',
+      token,
+      eID: user.eID,
       category: user.category,
-      userSpecificData // Send the user-specific data to the frontend
+      userSpecificData, // Send only the selected user data to the frontend
     });
-
+    
   } catch (error) {
-    console.error('Error logging in:', error);
+    console.error('Error during login:', error);
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
 };
+
 
 
 const sendMessage = async (nuserId, messageContent) => {
