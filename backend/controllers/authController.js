@@ -420,72 +420,55 @@ const complogin = async (req, res) => {
   try {
     const user = await User.findOne({ username });
 
-    // Check if the user exists
+    // Log the user object for debugging
+    console.log('User object:', user);
+
     if (!user) {
       return res.status(401).json({ message: 'Invalid username' });
     }
 
-    // Check if the user is verified
     if (!user.isVerified) {
       return res.status(401).json({ message: 'Please verify your account first' });
     }
 
-    // Age verification for users categorized as "Child"
-    if (user.category === 'Child') {
-      const isDate18Valid = (date) => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset hours to avoid time comparison issues
-        const enteredDate = new Date(date);
-        const minAgeDate = new Date(today.setFullYear(today.getFullYear() - 18));
-        return enteredDate < minAgeDate;
-      };
-
-      // Update user category to "Self" if the user is over 18
-      if (!isDate18Valid(user.dateOfBirth)) {
-        user.category = 'Self';
-        await user.save();
-      }
-    }
-
-    // Check if the password matches
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid password' });
     }
 
-    // Set user as active upon successful login
     user.active = true;
     await user.save();
 
-    // Generate JWT token
     const token = jwt.sign(
       { id: user._id, eID: user.eID, username: user.username, email: user.email, category: user.category },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
-    // Send login success notification
     const messageContent = 'You are now logged in';
-    await sendMessage(user.eID, messageContent); // Await to ensure message sending
+    await sendMessage(user.eID, messageContent);
 
-    // Retrieve the selected data for the associated company
+    // Fetch selected data keys from the company
     const selectedDataKeys = await retrieveStoredData(cid);
 
-    // Log to see if selected data keys are coming through
-    console.log('Selected data keys for this user:', selectedDataKeys);
+    // Log the selected data keys for debugging
+    console.log('Selected data keys:', selectedDataKeys);
 
     // Construct user-specific data based on selected keys
     const userSpecificData = {};
     selectedDataKeys.forEach((key) => {
+      console.log(`Checking user for key: ${key}`);
       if (user[key] !== undefined) {
+        console.log(`Adding key ${key} with value ${user[key]}`);
         userSpecificData[key] = user[key];
+      } else {
+        console.log(`Key ${key} not found in user object`);
       }
     });
 
-    // Log the constructed user-specific data
-    console.log('User-specific data to return:', userSpecificData);
+    // Log the final user-specific data
+    console.log('Final user-specific data:', userSpecificData);
 
-    // Respond to the client with user and company data
     res.json({ 
       message: 'Login successful', 
       token, 
