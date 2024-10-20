@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Education = require('../models/User');
+const Education = require('../models/Education');
 
 // Route to handle education form submission
 router.post('/add', async (req, res) => {
@@ -10,7 +10,7 @@ router.post('/add', async (req, res) => {
     // Loop through entries and save each one to the database
     const savedEntries = [];
     for (let entry of educationEntries) {
-      const newEducation = Education(entry);
+      const newEducation = new Education(entry);
       const savedEntry = await newEducation.save();
       savedEntries.push(savedEntry);
     }
