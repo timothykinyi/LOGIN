@@ -7,10 +7,9 @@ router.post('/add', async (req, res) => {
 
   const { eID, educationLevel, institutionName, degreeType, degree, fieldOfStudy, startDate, endDate, country, transferDetails} = req.body;
   const user = await Education.findOne({ eID });
-  if(!user)
-    {
-      res.status(500).json({ message: 'User not found '+eID});
-    }
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
   try {
     user.educationLevel = educationLevel;
     user.institutionName = institutionName;
