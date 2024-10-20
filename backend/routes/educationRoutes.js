@@ -1,18 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const Education = require('../models/User'); // Assuming User model includes education
+const Education = require('../models/User');
 
 // Route to handle education form submission
 router.post('/add', async (req, res) => {
-  const { eID, educationLevel, institutionName, degreeType, degree, fieldOfStudy, startDate, endDate, country, transferDetails} = req.body;
-  const user = await HealthData.findOne({ eID });
-  try {
-    // Ensure user exists
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
 
-    // Update and save user education data
+  const { eID, educationLevel, institutionName, degreeType, degree, fieldOfStudy, startDate, endDate, country, transferDetails} = req.body;
+  const user = await Education.findOne({ eID });
+
+  try {
     user.educationLevel = educationLevel;
     user.institutionName = institutionName;
     user.degreeType = degreeType;
@@ -31,10 +27,10 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// Route to retrieve all stored education data
+// New Route to retrieve all stored education data
 router.get('/all', async (req, res) => {
   try {
-    const educationData = await Education.find({}, 'education'); // Retrieve all education entries
+    const educationData = await Education.find(); // Retrieve all entries from the database
     res.status(200).json({ message: 'Education data fetched successfully', data: educationData });
   } catch (error) {
     console.error('Error fetching education data:', error);

@@ -49,6 +49,16 @@ const UserSchema = new mongoose.Schema({
   country: { type: String, default: undefined  },
   transferDetails: { type: String, default: undefined},
 
+
+  // EMPLOYMENT MODEL
+  jobTitle: {type: String, default: undefined },
+  employer: {type: String, default: undefined },
+  jobCategory: {type: String, default: undefined },
+  startDate: {type: Date, default: undefined },
+  endDate: {type: Date, default: undefined },
+  skills: {type: String, default: undefined },
+
+  
 }, { timestamps: true });
 
 UserSchema.pre('save', async function(next) {
