@@ -57,28 +57,8 @@ const UserSchema = new mongoose.Schema({
   startDate: {type: Date, default: undefined },
   endDate: {type: Date, default: undefined },
   skills: {type: String, default: undefined },
-  
-  //SOCIALS
-  maritalStatus: { type: String, required: true },
-  familyMembers: [
-    {
-      name: { type: String, required: true },
-      relationship: { type: String, required: true },
-    },
-  ],
-  dependents: [
-    {
-      name: { type: String, required: true },
-      relationship: { type: String, required: true },
-    },
-  ],
-  socialAffiliations: [
-    {
-      organization: { type: String, required: true },
-      role: { type: String, required: true },
-    },
-  ],
-  
+
+
 }, { timestamps: true });
 
 UserSchema.pre('save', async function(next) {
