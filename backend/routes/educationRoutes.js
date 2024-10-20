@@ -4,14 +4,14 @@ const Education = require('../models/User');
 
 // Route to handle education form submission
 router.post('/add', async (req, res) => {
-  const { eID, educationLevel, institutionName, degreeType, degree, fieldOfStudy, startDate, endDate, country, transferDetails } = req.body;
-  
+
+  const { eID, educationLevel, institutionName, degreeType, degree, fieldOfStudy, startDate, endDate, country, transferDetails} = req.body;
+
   try {
     const user = await Education.findOne({ eID });
     if (!user) {
       return res.status(404).json({ message: 'User with this eID not found' });
     }
-
     user.educationLevel = educationLevel;
     user.institutionName = institutionName;
     user.degreeType = degreeType;
@@ -23,13 +23,12 @@ router.post('/add', async (req, res) => {
     user.transferDetails = transferDetails;
 
     await user.save();
-    res.status(201).json({ message: 'Education entries saved successfully' });
+    res.status(201).json({ message: 'Education entries saved successfully'});
   } catch (error) {
     console.error('Error saving education data:', error);
     res.status(500).json({ message: 'An error occurred while saving education entries', error });
   }
 });
-
 
 // New Route to retrieve all stored education data
 router.get('/all', async (req, res) => {
