@@ -6,12 +6,12 @@ const Education = require('../models/User');
 router.post('/add', async (req, res) => {
 
   const { eID, educationLevel, institutionName, degreeType, degree, fieldOfStudy, startDate, endDate, country, transferDetails} = req.body;
-
-  try {
-    const user = await Education.findOne({ eID });
-    if (!user) {
-      return res.status(404).json({ message: 'User with this eID not found' });
+  const user = await Education.findOne({ eID });
+  if(!user)
+    {
+      res.status(201).json({ message: 'User not found'});
     }
+  try {
     user.educationLevel = educationLevel;
     user.institutionName = institutionName;
     user.degreeType = degreeType;
