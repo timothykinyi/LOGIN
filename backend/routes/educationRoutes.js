@@ -9,7 +9,7 @@ router.post('/add', async (req, res) => {
   const user = await Education.findOne({ eID });
   if(!user)
     {
-      res.status(201).json({ message: 'User not found'});
+      res.status(500).json({ message: 'User not found '+eID});
     }
   try {
     user.educationLevel = educationLevel;

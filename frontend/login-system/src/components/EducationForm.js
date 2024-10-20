@@ -16,7 +16,7 @@ const EducationForm = () => {
   }, [navigate, eID]);
 
   const [educationEntries, setEducationEntries] = useState([
-    { eID, 
+    { eID: eID, 
       educationLevel: '', 
       institutionName: '', 
       degreeType: '', 
