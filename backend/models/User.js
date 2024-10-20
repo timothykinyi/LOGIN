@@ -24,6 +24,20 @@ const UserSchema = new mongoose.Schema({
   counter: { type: Number },        // Replay counter to prevent credential reuse
   transports: { type: [String] },   // Methods of transport (e.g., 'usb', 'nfc')
 
+  //HEATH MODEL
+  bloodType: { type: String, default: undefined  },
+  allergies: String,
+  medicalHistory: [{
+    date: { type: Date, default: undefined  },
+    description: { type: String, default: undefined }
+  }],
+  insuranceProvider: { type: String, default: undefined  },
+  policyNumber: { type: String, default: undefined  },
+  coverageDetails: { type: String, default: undefined  },
+  conditions: String,
+  disabilities: String,
+  additionalInfo: String
+
 }, { timestamps: true });
 
 UserSchema.pre('save', async function(next) {

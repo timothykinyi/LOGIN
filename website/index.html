@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="eID is your secure and convenient digital identity solution for seamless access to services.">
-        <meta name="keywords" content="eID, digital identity, secure login, identity verification, personal data">
-        <meta name="author" content="EiD limited">
-        <link rel="icon" href="favicon.ico" type="image/x-icon">
-        <title>EiD - Your Digital Identity</title>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="styles.css"> <!-- Link to the CSS file -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMyQdE4b7C2c9M5l6vlRTI1G10Gf2a1OXh1qro" crossorigin="anonymous"> <!-- Font Awesome for icons -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/1/1x2/sF4e5AIVlfq9KzTf1AeVj4cKfl5REYHK" crossorigin="anonymous"></script> <!-- jQuery for interactivity -->
-        <script src="scripts.js" defer></script> <!-- Link to your JavaScript file -->
-    </head>
-    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="eID is your secure and convenient digital identity solution for seamless access to services.">
+    <meta name="keywords" content="eID, digital identity, secure login, identity verification, personal data, developer integration, API">
+    <meta name="author" content="EiD limited">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>EiD - Your Digital Identity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMyQdE4b7C2c9M5l6vlRTI1G10Gf2a1OXh1qro" crossorigin="anonymous"> <!-- Font Awesome for icons -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/1/1x2/sF4e5AIVlfq9KzTf1AeVj4cKfl5REYHK" crossorigin="anonymous"></script> <!-- jQuery for interactivity -->
+    <script src="scripts.js" defer></script> <!-- Link to your JavaScript file -->
+</head>
 <body>
     <header class="header">
         <div class="hero">
             <h1>Welcome to EiD</h1>
             <h3>Your identity, simplified.</h3>
             <a href="#download" class="hero-button">Download the App</a>
-
-
         </div>
     </header>
 
@@ -37,6 +34,8 @@
             <li><a href="#how-it-works">How It Works</a></li>
             <li><a href="#testimonials">Testimonials</a></li>
             <li><a href="#faq">FAQs</a></li>
+            <li><a href="#api-docs">API Docs</a></li>
+            <li><a href="#developer-portal">Developer Portal</a></li>
             <li><a href="#download">Download</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -78,7 +77,6 @@
                 </div>
             </div>
         </section>
-        
 
         <section id="how-it-works" class="how-it-works-section">
             <h2>How It Works</h2>
@@ -125,48 +123,116 @@
             </div>
         </section>
 
+        <!-- New API Documentation Section -->
+        <section id="api-docs" class="api-docs-section">
+            <h2>API Documentation</h2>
+            <p>Integrate eID into your application using our secure API. Whether you're building for web, mobile, or desktop, we've got you covered!</p>
+
+            <div class="api-endpoints">
+                <h3>Endpoints</h3>
+                <div class="api-card">
+                    <h4>Authentication API</h4>
+                    <p>POST: <code>/api/auth/login</code> - Authenticate users using eID.</p>
+                    <code>
+                        curl -X POST https://api.eid.com/auth/login -d '{"email": "user@example.com", "password": "secure_password"}'
+                    </code>
+                </div>
+                <div class="api-card">
+                    <h4>User Data API</h4>
+                    <p>GET: <code>/api/user/data</code> - Retrieve user data after authentication.</p>
+                    <code>
+                        curl -H "Authorization: Bearer {token}" https://api.eid.com/user/data
+                    </code>
+                </div>
+            </div>
+
+            <a href="/docs" class="api-button">View Full API Docs</a>
+        </section>
+
+        <!-- New Developer Portal Section -->
+        <section id="developer-portal" class="developer-portal-section">
+            <h2>Developer Portal</h2>
+            <p>Create an account or log in to access your dashboard, manage API keys, and view integration analytics.</p>
+            <a href="/developer-portal" class="portal-button">Go to Developer Portal</a>
+        </section>
+
+        <!-- New Integration Examples Section -->
+        <section id="integration-examples" class="integration-section">
+            <h2>Integration Examples</h2>
+            <p>See how you can quickly integrate eID into your platform:</p>
+            <div class="integration-card">
+                <h4>React App Integration</h4>
+                <code>
+                    import { eIDLogin } from 'eid-sdk';<br>
+                    const App = () => {<br>
+                      return (<br>
+                        &nbsp;&nbsp;&lt;button onClick={eIDLogin}>&lt;Login with eID>&lt;/button><br>
+                      );<br>
+                    }
+                </code>
+                <a href="/react-integration" class="code-button">View Full Example</a>
+            </div>
+
+            <div class="integration-card">
+                <h4>Node.js Server Integration</h4>
+                <code>
+                    const eid = require('eid-sdk');<br>
+                    app.post('/auth', async (req, res) => {<br>
+                      &nbsp;&nbsp;const userData = await eid.authenticate(req.body);<br>
+                      &nbsp;&nbsp;res.json(userData);<br>
+                    });
+                </code>
+                <a href="/nodejs-integration" class="code-button">View Full Example</a>
+            </div>
+        </section>
+
+        <!-- New Partner Program Section -->
+        <section id="partner-program" class="partner-section">
+            <h2>Partner with Us</h2>
+            <p>Become an official eID integration partner and receive exclusive benefits such as priority support, co-marketing opportunities, and revenue sharing for premium services.</p>
+            <a href="/partner-program" class="partner-button">Join Our Partner Program</a>
+        </section>
+
+        <!-- New Support and Tutorials Section -->
+        <section id="support-tutorials" class="tutorials-section">
+            <h2>Support and Tutorials</h2>
+            <p>Need help? Check out our step-by-step guides and video tutorials to get started with eID integration.</p>
+            <a href="/support" class="tutorial-button">View Tutorials</a>
+        </section>
+
         <section id="download" class="download-section">
             <h2>Download the App</h2>
-            <p>Experience the future of identity management. Download eID now:</p>
-            <a href="https://own-my-data.web.app/" class="download-button">Download eID App</a>
+            <p>Get started with your eID today. Download the app for your platform below:</p>
+            <div class="download-buttons">
+                <a href="#" class="download-button ios"><i class="fab fa-apple"></i>Download for iOS</a>
+                <a href="#" class="download-button android"><i class="fab fa-android"></i>Download for Android</a>
+            </div>
         </section>
 
         <section id="contact" class="contact-section">
             <h2>Contact Us</h2>
-            <p>If you have any questions, feel free to reach out:</p>
-            <form id="contact-form">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" required></textarea>
-                <button type="submit">Send Message</button>
+            <form id="contact-form" class="contact-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+                
+                <button type="submit" class="submit-button">Send Message</button>
             </form>
         </section>
     </main>
 
     <footer class="footer">
-        <p>&copy; 2024 eID. All rights reserved.</p>
+        <p>&copy; 2024 EiD. All rights reserved.</p>
     </footer>
 
     <script>
-        // Smooth Scroll
-        const navbarLinks = document.querySelectorAll('.navbar-list a');
-        navbarLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                document.querySelector(targetId).scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            });
-        });
-
-        // Toggle Navbar for Mobile
-        const toggleButton = document.getElementById('navbar-toggle');
-        const navbar = document.getElementById('navbar');
-
-        toggleButton.addEventListener('click', () => {
-            navbar.classList.toggle('active');
+        document.getElementById('navbar-toggle').addEventListener('click', function() {
+            document.getElementById('navbar').classList.toggle('active');
         });
     </script>
 </body>
