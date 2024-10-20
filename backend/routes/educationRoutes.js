@@ -4,32 +4,27 @@ const Education = require('../models/User'); // Assuming User model includes edu
 
 // Route to handle education form submission
 router.post('/add', async (req, res) => {
-  const { eID, educationEntries } = req.body;
-
+  const { eID, educationLevel, institutionName, degreeType, degree, fieldOfStudy, startDate, endDate, country, transferDetails} = req.body;
+  const user = await HealthData.findOne({ eID });
   try {
-    const user = await Education.findOne({ eID });
-
+    // Ensure user exists
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Add new education entries
-    educationEntries.forEach((entry) => {
-      user.education.push({
-        educationLevel: entry.educationLevel,
-        institutionName: entry.institutionName,
-        degreeType: entry.degreeType,
-        degree: entry.degree,
-        fieldOfStudy: entry.fieldOfStudy,
-        startDate: entry.startDate,
-        endDate: entry.endDate,
-        country: entry.country,
-        transferDetails: entry.transferDetails
-      });
-    });
+    // Update and save user education data
+    user.educationLevel = educationLevel;
+    user.institutionName = institutionName;
+    user.degreeType = degreeType;
+    user.degree = degree;
+    user.fieldOfStudy = fieldOfStudy;
+    user.startDate = startDate;
+    user.endDate = endDate;
+    user.country = country;
+    user.transferDetails = transferDetails;
 
     await user.save();
-    res.status(201).json({ message: 'Education entries saved successfully' });
+    res.status(201).json({ message: 'Education entries saved successfully'});
   } catch (error) {
     console.error('Error saving education data:', error);
     res.status(500).json({ message: 'An error occurred while saving education entries', error });
