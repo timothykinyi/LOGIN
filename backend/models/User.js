@@ -1,20 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-// Education sub-schema
-const educationSchema = new mongoose.Schema({
-  educationLevel: { type: String, required: true },
-  institutionName: { type: String, required: true },
-  degreeType: { type: String },
-  degree: { type: String },
-  fieldOfStudy: { type: String },
-  startDate: { type: Date, required: true },
-  endDate: { type: Date, required: true },
-  country: { type: String, required: true },
-  transferDetails: { type: String },
-});
-
-// Main User Schema
 const UserSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -24,7 +10,7 @@ const UserSchema = new mongoose.Schema({
   dateOfBirth: { type: Date, required: true },
   gender: { type: String, required: true },
   category: { type: String, required: true },
-  eID: { type: Number, required: true, unique: true },
+  eID: { type: Number, required: true, unique: true }, // New E ID field
   verificationCode: { type: String },
   isVerified: { type: Boolean, default: false },
   passwordRecoveryToken: { type: String, default: undefined },
@@ -32,36 +18,47 @@ const UserSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   active: { type: Boolean, default: false },
 
-  // WebAuthn fields
-  credentialID: { type: String },
-  publicKey: { type: String },
-  counter: { type: Number },
-  transports: { type: [String] },
+  // WebAuthn fields for fingerprint auth
+  credentialID: { type: String },   // ID of the WebAuthn credential
+  publicKey: { type: String },      // Public key from the fingerprint credential
+  counter: { type: Number },        // Replay counter to prevent credential reuse
+  transports: { type: [String] },   // Methods of transport (e.g., 'usb', 'nfc')
 
-  // Health Model
-  bloodType: { type: String, default: undefined },
+  //HEATH MODEL
+  bloodType: { type: String, default: undefined  },
   allergies: String,
   medicalHistory: [{
-    date: { type: Date, default: undefined },
+    date: { type: Date, default: undefined  },
     description: { type: String, default: undefined }
   }],
-  insuranceProvider: { type: String, default: undefined },
-  policyNumber: { type: String, default: undefined },
-  coverageDetails: { type: String, default: undefined },
+  insuranceProvider: { type: String, default: undefined  },
+  policyNumber: { type: String, default: undefined  },
+  coverageDetails: { type: String, default: undefined  },
   conditions: String,
   disabilities: String,
   additionalInfo: String,
 
-  // Employment Model
-  jobTitle: { type: String, default: undefined },
-  employer: { type: String, default: undefined },
-  jobCategory: { type: String, default: undefined },
+  //EDUDATION MODEL
+  educationLevel: { type: String, default: '-' },
+  institutionName: { type: String, default: undefined },
+  degreeType: { type: String, default: undefined  },
+  degree: { type: String, default: undefined  },
+  fieldOfStudy: { type: String, default: undefined },
   startDate: { type: Date, default: undefined },
   endDate: { type: Date, default: undefined },
-  skills: { type: String, default: undefined },
+  country: { type: String, default: undefined  },
+  transferDetails: { type: String, default: undefined},
 
-  // New education field
-  education: [educationSchema], // Array of education sub-documents
+
+  // EMPLOYMENT MODEL
+  jobTitle: {type: String, default: undefined },
+  employer: {type: String, default: undefined },
+  jobCategory: {type: String, default: undefined },
+  startDate: {type: Date, default: undefined },
+  endDate: {type: Date, default: undefined },
+  skills: {type: String, default: undefined },
+
+
 }, { timestamps: true });
 
 UserSchema.pre('save', async function(next) {
