@@ -1,20 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const Education = require('../models/Education');
+const Education = require('../models/User');
 
 // Route to handle education form submission
 router.post('/add', async (req, res) => {
-  try {
-    const educationEntries = req.body; // Array of education entries entries
-    
-    // Loop through entries and save each one to the database
-    const savedEntries = [];
-    for (let entry of educationEntries) {
-      const newEducation = new Education(entry);
-      const savedEntry = await newEducation.save();
-      savedEntries.push(savedEntry);
-    }
 
+  const { eID, educationLevel, institutionName, degreeType, degree, fieldOfStudy, startDate, endDate, country, transferDetails} = req.body;
+  const user = await HealthData.findOne({ eID });
+
+  try {
+    user.educationLevel = educationLevel;
+    user.institutionName = institutionName;
+    user.degreeType = degreeType;
+    user.degree = degree;
+    user.fieldOfStudy = fieldOfStudy;
+    user.startDate = startDate;
+    user.endDate = endDate;
+    user.country = country;
+    user.transferDetails = transferDetails;
+
+    await user.save();
     res.status(201).json({ message: 'Education entries saved successfully', data: savedEntries });
   } catch (error) {
     console.error('Error saving education data:', error);

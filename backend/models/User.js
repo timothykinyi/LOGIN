@@ -36,7 +36,18 @@ const UserSchema = new mongoose.Schema({
   coverageDetails: { type: String, default: undefined  },
   conditions: String,
   disabilities: String,
-  additionalInfo: String
+  additionalInfo: String,
+
+  //EDUDATION MODEL
+  educationLevel: { type: String, default: undefined },
+  institutionName: { type: String, default: undefined },
+  degreeType: { type: String, default: undefined  },
+  degree: { type: String, default: undefined  },
+  fieldOfStudy: { type: String, default: undefined },
+  startDate: { type: Date, default: undefined },
+  endDate: { type: Date, default: undefined },
+  country: { type: String, default: undefined  },
+  transferDetails: { type: String, default: undefined},
 
 }, { timestamps: true });
 
