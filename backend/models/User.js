@@ -39,7 +39,7 @@ const UserSchema = new mongoose.Schema({
   additionalInfo: String,
 
   //EDUDATION MODEL
-  educationLevel: { type: String, default: undefined },
+  educationLevel: { type: String, default: '-' },
   institutionName: { type: String, default: undefined },
   degreeType: { type: String, default: undefined  },
   degree: { type: String, default: undefined  },
@@ -58,7 +58,7 @@ const UserSchema = new mongoose.Schema({
   endDate: {type: Date, default: undefined },
   skills: {type: String, default: undefined },
 
-  
+
 }, { timestamps: true });
 
 UserSchema.pre('save', async function(next) {
