@@ -1,20 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const SocialFamily = require('../models/SocialFamily');
+const SocialFamily = require('../models/User');
 
 // POST route to save form data
 router.post('/', async (req, res) => {
   try {
     console.log('Incoming request body:', req.body);
-    
-    const { eID, maritalStatus, familyMembers, dependents, socialAffiliations } = req.body;
+    const user = await SocialFamily.findOne({ eID });
+    const { maritalStatus, familyMembers, dependents, socialAffiliations } = req.body;
 
     if (!maritalStatus || !Array.isArray(familyMembers) || !Array.isArray(dependents) || !Array.isArray(socialAffiliations)) {
       return res.status(400).json({ message: 'Invalid data format' });
     }
 
-    const newSocialFamily = new SocialFamily({
-      eID,
+    const newSocialFamily = user({
       maritalStatus,
       familyMembers,
       dependents,
