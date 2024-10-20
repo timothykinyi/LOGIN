@@ -20,7 +20,7 @@ router.post('/add', async (req, res) => {
     user.transferDetails = transferDetails;
 
     await user.save();
-    res.status(201).json({ message: 'Education entries saved successfully', data: savedEntries });
+    res.status(201).json({ message: 'Education entries saved successfully'});
   } catch (error) {
     console.error('Error saving education data:', error);
     res.status(500).json({ message: 'An error occurred while saving education entries', error });
