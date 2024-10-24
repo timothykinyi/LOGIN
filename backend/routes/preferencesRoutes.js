@@ -52,12 +52,22 @@ router.post('/', async (req, res) => {
 
 
 // GET route to fetch all preferences
-router.get('/all', async (req, res) => {
+router.get('/preferences/:eID', async (req, res) => {
+  const { eID } = req.params;
+
   try {
-    const preferences = await Preference.find();
-    res.status(200).json({ message: 'Preferences fetched successfully', data: preferences });
+    // Find the user by eID
+    const user = await User.findOne({ eID });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return the user's preferences
+    res.status(200).json(user.preferences);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to retrieve preferences.', error });
+    console.error('Error retrieving preferences:', error);
+    res.status(500).json({ message: 'Error retrieving preferences', error });
   }
 });
 
