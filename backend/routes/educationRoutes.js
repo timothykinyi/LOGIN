@@ -14,7 +14,7 @@ router.post('/add', async (req, res) => {
       let user = await Education.findOne({ eID: entry.eID });
       
       if (!user) {
-        user = new Education({ eID: entry.eID });
+        res.status(500).json({ message: 'No user found with that eID.'});
       }
 
       // Update the user's education details
