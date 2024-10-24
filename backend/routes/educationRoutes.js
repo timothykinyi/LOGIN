@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Education = require('../models/User');
+const Education = require('../models/Education');
 
 // Route to handle education form submission
 router.post('/add', async (req, res) => {
@@ -14,10 +14,8 @@ router.post('/add', async (req, res) => {
 
       if (!user) {
         // Create a new user if not found
-        user = new Education({
-          eID: entry.eID,
-          education: [] // Initialize the education array
-        });
+
+        res.status(500).json({ message: 'User not found' });
       }
 
       // Push the new education entry to the user's education array

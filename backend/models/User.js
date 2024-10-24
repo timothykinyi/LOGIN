@@ -1,14 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-// Importing the new models
-const SocialFamily = require('./SocialFamily');
-const Preference = require('./Preference');
-const PersonalInfo = require('./PersonalInfo');
-const Financial = require('./Financial');
-const Contact = require('./Contact');
-
-// User Schema
 const UserSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -18,7 +10,7 @@ const UserSchema = new mongoose.Schema({
   dateOfBirth: { type: Date, required: true },
   gender: { type: String, required: true },
   category: { type: String, required: true },
-  eID: { type: Number, required: true, unique: true },
+  eID: { type: Number, required: true, unique: true }, // New E ID field
   verificationCode: { type: String },
   isVerified: { type: Boolean, default: false },
   passwordRecoveryToken: { type: String, default: undefined },
@@ -27,59 +19,51 @@ const UserSchema = new mongoose.Schema({
   active: { type: Boolean, default: false },
 
   // WebAuthn fields for fingerprint auth
-  credentialID: { type: String },
-  publicKey: { type: String },
-  counter: { type: Number, default: 0 },
-  transports: { type: [String] },
+  credentialID: { type: String },   // ID of the WebAuthn credential
+  publicKey: { type: String },      // Public key from the fingerprint credential
+  counter: { type: Number },        // Replay counter to prevent credential reuse
+  transports: { type: [String] },   // Methods of transport (e.g., 'usb', 'nfc')
 
-  // Reference to the new models
-  socialFamily: { type: mongoose.Schema.Types.ObjectId, ref: 'SocialFamily' },
-  preferences: { type: mongoose.Schema.Types.ObjectId, ref: 'Preference' },
-  personalInfo: { type: mongoose.Schema.Types.ObjectId, ref: 'PersonalInfo' },
-  financial: { type: mongoose.Schema.Types.ObjectId, ref: 'Financial' },
-  contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact' },
-
-  // Health model
-  health: {
-    bloodType: { type: String },
-    allergies: [String],
-    medicalHistory: [{
-      date: { type: Date },
-      description: { type: String }
-    }],
-    insuranceProvider: { type: String },
-    policyNumber: { type: String },
-    coverageDetails: { type: String },
-    conditions: [String],
-    disabilities: [String],
-    additionalInfo: { type: String }
-  },
-
-  // Education model
-  education: [{
-    educationLevel: { type: String },
-    institutionName: { type: String },
-    degreeType: { type: String },
-    degree: { type: String },
-    fieldOfStudy: { type: String },
-    startDate: { type: Date },
-    endDate: { type: Date },
-    country: { type: String },
-    transferDetails: { type: String }
+  //HEATH MODEL
+  bloodType: { type: String, default: undefined  },
+  allergies: String,
+  medicalHistory: [{
+    date: { type: Date, default: undefined  },
+    description: { type: String, default: undefined }
   }],
+  insuranceProvider: { type: String, default: undefined  },
+  policyNumber: { type: String, default: undefined  },
+  coverageDetails: { type: String, default: undefined  },
+  conditions: String,
+  disabilities: String,
+  additionalInfo: String,
 
-  // Employment model
-  employment: [{
-    jobTitle: { type: String },
-    employer: { type: String },
-    jobCategory: { type: String },
-    startDate: { type: Date },
-    endDate: { type: Date },
-    skills: { type: String }
-  }]
+  //EDUDATION MODEL
+  education: [
+    {
+      educationLevel: String,
+      institutionName: String,
+      degreeType: String,
+      degree: String,
+      fieldOfStudy: String,
+      startDate: Date,
+      endDate: Date,
+      country: String,
+      transferDetails: String,
+    }
+  ],
+
+  // EMPLOYMENT MODEL
+  jobTitle: {type: String, default: undefined },
+  employer: {type: String, default: undefined },
+  jobCategory: {type: String, default: undefined },
+  startDate: {type: Date, default: undefined },
+  endDate: {type: Date, default: undefined },
+  skills: {type: String, default: undefined },
+
+
 }, { timestamps: true });
 
-// Password hashing middleware
 UserSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   try {
