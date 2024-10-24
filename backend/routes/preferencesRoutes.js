@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
       }
 
       // Push the new preference entry to the user's preferences array
-      user.preferences.push({ // Changed 'education' to 'preferences'
+      user.preferences.push({
         hobbies: entry.hobbies,
         dietaryPreference: entry.dietaryPreference,
         religiousAffiliation: entry.religiousAffiliation,
@@ -27,21 +27,28 @@ router.post('/', async (req, res) => {
         favoriteCuisine: entry.favoriteCuisine,
         petPreference: entry.petPreference,
         sleepPreference: entry.sleepPreference,
-        environmentalPractices: entry.environmentalPractices
+        environmentalPractices: entry.environmentalPractices,
+        dateAdded: new Date() // Add the current date/time when the entry is added
       });
 
       const savedEntry = await user.save();
       savedEntries.push(savedEntry);
     }
 
-    res.status(201).json({ message: 'Preferences saved successfully', data: savedEntries });
+    res.status(201).json({
+      message: 'Preferences saved successfully',
+      data: savedEntries
+    });
   } catch (error) {
     console.error('Error saving preference data:', error);
-    res.status(500).json({ message: 'An error occurred while saving preferences', error: error.message });
+    res.status(500).json({
+      message: 'An error occurred while saving preferences',
+      error: error.message
+    });
   }
 });
 
-// New Route to retrieve all stored preference data or by user eID
+// Route to retrieve all stored preference data or by user eID
 router.get('/all', async (req, res) => {
   try {
     const { eID } = req.query; // Get eID from query parameters if provided
@@ -52,15 +59,24 @@ router.get('/all', async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      return res.status(200).json({ message: 'Preference data fetched successfully', data: user.preferences }); // Updated 'education' to 'preferences'
+      return res.status(200).json({
+        message: 'Preference data fetched successfully',
+        data: user.preferences
+      });
     }
 
     // If no eID is provided, return all users with their preference data
     const users = await User.find({}, { preferences: 1, eID: 1 }); // Fetch only preferences and eID fields
-    res.status(200).json({ message: 'All preference data fetched successfully', data: users });
+    res.status(200).json({
+      message: 'All preference data fetched successfully',
+      data: users
+    });
   } catch (error) {
     console.error('Error fetching preference data:', error);
-    res.status(500).json({ message: 'An error occurred while fetching preference data', error: error.message });
+    res.status(500).json({
+      message: 'An error occurred while fetching preference data',
+      error: error.message
+    });
   }
 });
 
