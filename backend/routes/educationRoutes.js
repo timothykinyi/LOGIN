@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Education = require('../models/Education');
+const Education = require('../models/User');
 
 // Route to handle education form submission
 router.post('/add', async (req, res) => {
