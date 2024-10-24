@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/Preference'); // Ensure the model is correct and appropriately named
+const User = require('../models/User'); // Ensure the model is correct and appropriately named
 
 // POST route to add preferences
 router.post('/', async (req, res) => {
