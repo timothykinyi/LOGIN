@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 // Importing the new models
-const SocialFamily = require('./models/SocialFamily');
-const Preference = require('./models/Preference');
-const PersonalInfo = require('./models/PersonalInfo');
-const Financial = require('./models/Financial');
-const Contact = require('./models/Contact');
+const SocialFamily = require('./SocialFamily');
+const Preference = require('./Preference');
+const PersonalInfo = require('./PersonalInfo');
+const Financial = require('./Financial');
+const Contact = require('./Contact');
 
 // User Schema
 const UserSchema = new mongoose.Schema({
