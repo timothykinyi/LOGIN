@@ -63,6 +63,21 @@ const UserSchema = new mongoose.Schema({
       endDate: Date,
       skills: String,
     }
+  ],
+
+  preference: [
+    {
+      hobbies: [String],
+      dietaryPreference: String,
+      religiousAffiliation: String,
+      selectedHobbies: [String],
+      selectedActivities: [String],
+      selectedMusicGenres: [String],
+      favoriteCuisine: String,
+      sleepPreference: String,
+      petPreference: String,
+      environmentalPractices: String,
+    }
   ]
 
 
