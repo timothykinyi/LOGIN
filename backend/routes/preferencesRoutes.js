@@ -1,36 +1,55 @@
 const express = require('express');
 const router = express.Router();
-const Preference = require('../models/User');
+const User = require('../models/User');
 
 // POST route to add preferences
 router.post('/', async (req, res) => {
+  const {
+    eID,
+    hobbies,
+    dietaryPreference,
+    religiousAffiliation,
+    selectedHobbies,
+    selectedActivities,
+    selectedMusicGenres,
+    favoriteCuisine,
+    sleepPreference,
+    petPreference,
+    environmentalPractices,
+  } = req.body;
+
   try {
+    // Find the user by eID
+    const user = await User.findOne({ eID });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-    const { eID } = req.body;
-    const user = await Preference.findOne({ eID, hobbies, dietaryPreference, religiousAffiliation, selectedHobbies, selectedActivities, selectedMusicGenres, favoriteCuisine, sleepPreference, petPreference, environmentalPractices });
+    // Update the user's preferences
+    user.preferences = {
+      hobbies,
+      dietaryPreference,
+      religiousAffiliation,
+      selectedHobbies,
+      selectedActivities,
+      selectedMusicGenres,
+      favoriteCuisine,
+      sleepPreference,
+      petPreference,
+      environmentalPractices,
+    };
 
-    if(!user)
-      {
-        res.status(500).json({ message: 'User not found.'});
-      }
+    // Save the updated user document
+    await user.save();
 
-      user.preference.hobbies = hobbies;
-      user.preference.dietaryPreference = dietaryPreference;
-      user.preference.religiousAffiliation = religiousAffiliation;
-      user.preference.selectedHobbies = selectedHobbies;
-      user.preference.selectedActivities = selectedActivities;
-      user.preference.selectedMusicGenres = selectedMusicGenres;
-      user.preference.favoriteCuisine = favoriteCuisine;
-      user.preference.sleepPreference = sleepPreference;
-      user.preference.petPreference = petPreference;
-      user.preference.environmentalPractices = environmentalPractices;
-
-    const savedPreference = await user.save();
-    res.status(201).json({ message: 'Preferences saved successfully!', data: savedPreference });
+    res.status(200).json({ message: 'Preferences updated successfully!' });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to save preferences.', error });
+    console.error('Error updating preferences:', error);
+    res.status(500).json({ message: 'Error updating preferences', error });
   }
 });
+
 
 // GET route to fetch all preferences
 router.get('/all', async (req, res) => {
@@ -41,5 +60,6 @@ router.get('/all', async (req, res) => {
     res.status(500).json({ message: 'Failed to retrieve preferences.', error });
   }
 });
+
 
 module.exports = router;
