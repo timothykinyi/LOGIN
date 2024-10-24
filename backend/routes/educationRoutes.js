@@ -6,27 +6,32 @@ const Education = require('../models/User');
 router.post('/add', async (req, res) => {
   try {
     const educationEntries = req.body; // Array of education entries
-
-    // Loop through entries and save each one to the database
+    
     const savedEntries = [];
     for (let entry of educationEntries) {
-      // Find the user based on eID, or create a new one if not found
+      // Find user by eID or create a new one if not found
       let user = await Education.findOne({ eID: entry.eID });
-      
+
       if (!user) {
-        res.status(500).json({ message: 'No user found with that eID.'});
+        // Create a new user if not found
+        user = new Education({
+          eID: entry.eID,
+          education: [] // Initialize the education array
+        });
       }
 
-      // Update the user's education details
-      user.educationLevel = entry.educationLevel;
-      user.institutionName = entry.institutionName;
-      user.degreeType = entry.degreeType;
-      user.degree = entry.degree;
-      user.fieldOfStudy = entry.fieldOfStudy;
-      user.startDate = entry.startDate;
-      user.endDate = entry.endDate;
-      user.country = entry.country;
-      user.transferDetails = entry.transferDetails;
+      // Push the new education entry to the user's education array
+      user.education.push({
+        educationLevel: entry.educationLevel,
+        institutionName: entry.institutionName,
+        degreeType: entry.degreeType,
+        degree: entry.degree,
+        fieldOfStudy: entry.fieldOfStudy,
+        startDate: entry.startDate,
+        endDate: entry.endDate,
+        country: entry.country,
+        transferDetails: entry.transferDetails
+      });
 
       const savedEntry = await user.save();
       savedEntries.push(savedEntry);
