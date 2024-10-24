@@ -1,6 +1,7 @@
+// Importing necessary modules
 const express = require('express');
 const router = express.Router();
-const Education = require('../models/User');
+const User = require('../models/User'); // Ensure this is the User model where education is stored
 
 // Route to handle education form submission
 router.post('/add', async (req, res) => {
@@ -10,12 +11,11 @@ router.post('/add', async (req, res) => {
     const savedEntries = [];
     for (let entry of educationEntries) {
       // Find user by eID or create a new one if not found
-      let user = await Education.findOne({ eID: entry.eID });
+      let user = await User.findOne({ eID: entry.eID });
 
       if (!user) {
         // Create a new user if not found
-
-        res.status(500).json({ message: 'User not found' });
+        return res.status(404).json({ message: 'User not found' }); // Updated to 404 for not found
       }
 
       // Push the new education entry to the user's education array
@@ -42,11 +42,23 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// New Route to retrieve all stored education data
+// New Route to retrieve all stored education data or by user eID
 router.get('/all', async (req, res) => {
   try {
-    const educationData = await Education.find(); // Retrieve all entries from the database
-    res.status(200).json({ message: 'Education data fetched successfully', data: educationData });
+    const { eID } = req.query; // Get eID from query parameters if provided
+
+    if (eID) {
+      // If eID is provided, find the specific user and return their education data
+      const user = await User.findOne({ eID });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      return res.status(200).json({ message: 'Education data fetched successfully', data: user.education });
+    }
+
+    // If no eID is provided, return all users with their education data
+    const users = await User.find({}, { education: 1, eID: 1 }); // Fetch only education and eID fields
+    res.status(200).json({ message: 'All education data fetched successfully', data: users });
   } catch (error) {
     console.error('Error fetching education data:', error);
     res.status(500).json({ message: 'An error occurred while fetching education data', error: error.message });

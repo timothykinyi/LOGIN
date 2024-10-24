@@ -2,25 +2,33 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/displayeducation.css';
+
 const EducationList = () => {
   const [educationData, setEducationData] = useState([]);
   const navigate = useNavigate();
   const eID = sessionStorage.getItem('eID');
+
   useEffect(() => {
-    const eID = sessionStorage.getItem('eID'); // Retrieve eID from session storage
     const token = sessionStorage.getItem('userToken');
-  
-    if (!eID || !token)
-      {
-        navigate('/');
-        return;
-      }
+
+    // Redirect if eID or token is not present
+    if (!eID || !token) {
+      navigate('/');
+      return;
+    }
+
     // Fetch education data when the component mounts
-    axios.get('https://login-9ebe.onrender.com/api/education/all')
+    axios.get(`https://login-9ebe.onrender.com/api/education/all?eID=${eID}`)
       .then(response => {
-        // Filter the data based on eID, assuming there's a field like userId or _id in the education object
-        const filteredEducation = response.data.data.filter(education => education.eID === parseInt(eID));
-        setEducationData(filteredEducation); 
+        // Check if the user exists
+        if (response.data.data.length === 0) {
+          setEducationData([]); // No data for the user
+          return;
+        }
+        
+        // Assuming the response returns the user object with education details
+        const user = response.data.data[0]; // Get the first user matching the eID
+        setEducationData(user.education); // Set the education data
       })
       .catch(error => {
         console.error('Error fetching education data:', error);
@@ -49,7 +57,6 @@ const EducationList = () => {
         )}
       </ul>
     </div>
-
   );
 };
 
