@@ -1,7 +1,7 @@
 // routes/employment.js
 const express = require('express');
 const router = express.Router();
-const Employment = require('../models/Employment');
+const Employment = require('../models/User');
 
 // POST route to handle form submission
 router.post('/', async (req, res) => {
