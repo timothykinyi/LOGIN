@@ -52,6 +52,7 @@ router.post('/', async (req, res) => {
 
 
 // GET route to fetch all preferences
+// GET route to fetch preferences based on eID
 router.get('/preferences/:eID', async (req, res) => {
   const { eID } = req.params;
 
@@ -61,6 +62,11 @@ router.get('/preferences/:eID', async (req, res) => {
     
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Check if user has preferences
+    if (!user.preferences) {
+      return res.status(404).json({ message: 'Preferences not found for this user' });
     }
 
     // Return the user's preferences
