@@ -54,12 +54,16 @@ const UserSchema = new mongoose.Schema({
   ],
 
   // EMPLOYMENT MODEL
-  jobTitle: {type: String, default: undefined },
-  employer: {type: String, default: undefined },
-  jobCategory: {type: String, default: undefined },
-  startDate: {type: Date, default: undefined },
-  endDate: {type: Date, default: undefined },
-  skills: {type: String, default: undefined },
+  employment: [
+    {    
+      jobTitle: String,
+      employer: String,
+      jobCategory: String,
+      startDate: Date,
+      endDate: Date,
+      skills: String,
+    }
+  ]
 
 
 }, { timestamps: true });

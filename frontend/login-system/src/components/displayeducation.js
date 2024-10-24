@@ -18,17 +18,22 @@ const EducationList = () => {
     }
 
     // Fetch education data when the component mounts
-    axios.get(`https://login-9ebe.onrender.com/api/education/all?eID=${eID}`)
+    axios.get(`https://login-9ebe.onrender.com/api/education/all`)
       .then(response => {
-        // Check if the user exists
-        if (response.data.data.length === 0) {
-          setEducationData([]); // No data for the user
-          return;
+        // Check if response.data and response.data.data are defined
+        if (response.data && response.data.data) {
+          // Assuming the response returns an array of users
+          const user = response.data.data.find(user => user.eID === parseInt(eID)); // Find the user by eID
+          
+          if (user) {
+            setEducationData(user.education || []); // Set education data or empty array if undefined
+          } else {
+            setEducationData([]); // No user found
+          }
+        } else {
+          console.error('Unexpected response structure:', response.data);
+          setEducationData([]); // Handle unexpected response
         }
-        
-        // Assuming the response returns the user object with education details
-        const user = response.data.data[0]; // Get the first user matching the eID
-        setEducationData(user.education); // Set the education data
       })
       .catch(error => {
         console.error('Error fetching education data:', error);
