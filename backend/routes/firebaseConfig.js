@@ -6,7 +6,7 @@ try {
   // Initialize Firebase Admin SDK
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    storageBucket: "firebase-adminsdk-ufawq@own-my-data.iam.gserviceaccount.com", // Ensure this matches your Firebase project
+    storageBucket: "own-my-data.appspot.com", // Ensure this matches your Firebase project
   });
 
   const bucket = admin.storage().bucket();
