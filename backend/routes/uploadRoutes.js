@@ -1,7 +1,7 @@
 // server/routes/uploadRoutes.js
 const express = require("express");
 const multer = require("multer");
-const bucket = require("../firebaseConfig"); // Adjusted path to reflect the correct import location
+const bucket = require("./firebaseConfig"); // Adjusted path to reflect the correct import location
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
