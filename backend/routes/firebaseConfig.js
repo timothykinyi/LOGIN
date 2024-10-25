@@ -1,6 +1,6 @@
 // server/firebaseConfig.js
 const admin = require("firebase-admin");
-const serviceAccount = require("./own-my-data-firebase-adminsdk-ufawq-82685da7a9");
+const serviceAccount = require("./own-my-data-firebase-adminsdk-ufawq-82685da7a9.json");
 
 try {
   // Initialize Firebase Admin SDK
