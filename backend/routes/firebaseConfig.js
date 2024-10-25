@@ -1,12 +1,12 @@
 // server/firebaseConfig.js
 const admin = require("firebase-admin");
-const serviceAccount = require("./own-my-data-firebase-adminsdk-ufawq-425b30dffd.json");
+const serviceAccount = require("./own-my-data-firebase-adminsdk-ufawq-82685da7a9");
 
 try {
   // Initialize Firebase Admin SDK
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    storageBucket: "own-my-data.appspot.com", // Ensure this matches your Firebase project
+    storageBucket: "firebase-adminsdk-ufawq@own-my-data.iam.gserviceaccount.com", // Ensure this matches your Firebase project
   });
 
   const bucket = admin.storage().bucket();
