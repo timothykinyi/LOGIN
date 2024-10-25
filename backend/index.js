@@ -25,7 +25,7 @@ const accessManagementRoutes = require('./routes/accessManagementRoutes');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const fingerprintRoutes = require('./routes/fingerprintRoutes');
 const shareRoutes = require('./routes/share');
-
+const uploadRoutes = require("./routes/uploadRoutes");
 // Initialize the app
 const app = express();
 
@@ -53,6 +53,7 @@ app.use('/api/notifications', notificationsRoutes);
 app.use('/api/subs', subscriptionRoutes);
 app.use('/auth', fingerprintRoutes);
 app.use('/api/shared', shareRoutes);
+app.use("/api/j", uploadRoutes);
 // Error handling middleware
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
