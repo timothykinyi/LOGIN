@@ -132,6 +132,17 @@ const UserSchema = new mongoose.Schema({
       petPreference: String,
       environmentalPractices: String,
     }
+  ],
+
+  finance: [
+    {
+      bankAccountNumber: String,
+      bankName: String,
+      income: Number,
+      creditScore: Number,
+      taxId: String,
+      mobileNumber: String,
+    }
   ]
 
 
