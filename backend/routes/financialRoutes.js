@@ -1,34 +1,64 @@
 const express = require('express');
 const router = express.Router();
-const Financial = require('../models/Financial');
+const User = require('../models/User');
 
-// POST endpoint to handle financial data submission
+// Endpoint to update preferences based on eID
 router.post('/', async (req, res) => {
+    const { 
+        eID,
+        bankAccountNumber,
+        bankName,
+        income,
+        creditScore,
+        taxId,
+        mobileNumber
+         } = req.body;
+
   try {
-    const financialEntries = req.body;
+    // Check if user with given eID exists
+    const user = await User.findOne({ eID });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-    // Save each entry to the database
-    await Promise.all(financialEntries.map(async (entry) => {
-      const newEntry = new Financial(entry);
-      await newEntry.save();
-    }));
+    // Create the preference object to add to user's preferences array
+    const financialInfo = {
+      bankAccountNumber,
+      bankName,
+      income,
+      creditScore,
+      taxId,
+      mobileNumber
+    };
 
-    res.status(200).json({ message: 'Financial data successfully submitted' });
+    // Add new preference to user's preference array and save
+    user.finance.push(financialInfo);
+    await user.save();
+
+    res.status(200).json({ message: 'financial info updated successfully' });
   } catch (error) {
-    console.error('Error submitting financial data:', error);
-    res.status(500).json({ message: 'Error submitting financial data', error });
+    console.error('Error updating finance:', error);
+    res.status(500).json({ message: 'Server error, please try again' });
   }
 });
 
-// GET endpoint to retrieve all financial data
 router.get('/all', async (req, res) => {
+  const { eID } = req.query;
+
   try {
-    const financialData = await Financial.find(); // Retrieve all financial records
-    res.status(200).json({ message: 'Financial data fetched successfully', data: financialData });
+    // Find user by eID and return preferences if user exists
+    const user = await User.findOne({ eID });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ data: user.finance });
   } catch (error) {
-    console.error('Error fetching financial data:', error);
-    res.status(500).json({ message: 'Error fetching financial data', error });
+    console.error('Error retrieving preferences:', error);
+    res.status(500).json({ message: 'Server error, please try again' });
   }
 });
+
 
 module.exports = router;
