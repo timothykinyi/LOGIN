@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-// POST route to add preferences
+// Endpoint to update preferences based on eID
 router.post('/', async (req, res) => {
   const {
     eID,
@@ -15,19 +15,19 @@ router.post('/', async (req, res) => {
     favoriteCuisine,
     sleepPreference,
     petPreference,
-    environmentalPractices,
+    environmentalPractices
   } = req.body;
 
   try {
-    // Find the user by eID
+    // Check if user with given eID exists
     const user = await User.findOne({ eID });
     
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Update the user's preferences
-    user.preferences = {
+    // Create the preference object to add to user's preferences array
+    const newPreference = {
       hobbies,
       dietaryPreference,
       religiousAffiliation,
@@ -37,22 +37,21 @@ router.post('/', async (req, res) => {
       favoriteCuisine,
       sleepPreference,
       petPreference,
-      environmentalPractices,
+      environmentalPractices
     };
 
-    // Save the updated user document
+    // Add new preference to user's preference array and save
+    user.preference.push(newPreference);
     await user.save();
 
-    res.status(200).json({ message: 'Preferences updated successfully!' });
+    res.status(200).json({ message: 'Preferences updated successfully' });
   } catch (error) {
     console.error('Error updating preferences:', error);
-    res.status(500).json({ message: 'Error updating preferences', error });
+    res.status(500).json({ message: 'Server error, please try again' });
   }
 });
 
 
-// GET route to fetch all preferences
-// GET route to fetch preferences based on eID
 router.get('/preferences/:eID', async (req, res) => {
   const { eID } = req.params;
 
