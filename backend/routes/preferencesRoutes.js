@@ -51,28 +51,20 @@ router.post('/', async (req, res) => {
   }
 });
 
-
-router.get('/preferences/:eID', async (req, res) => {
-  const { eID } = req.params;
+router.get('/all', async (req, res) => {
+  const { eID } = req.query;
 
   try {
-    // Find the user by eID
+    // Find user by eID and return preferences if user exists
     const user = await User.findOne({ eID });
-    
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Check if user has preferences
-    if (!user.preferences) {
-      return res.status(404).json({ message: 'Preferences not found for this user' });
-    }
-
-    // Return the user's preferences
-    res.status(200).json(user.preferences);
+    res.status(200).json({ data: user.preference });
   } catch (error) {
     console.error('Error retrieving preferences:', error);
-    res.status(500).json({ message: 'Error retrieving preferences', error });
+    res.status(500).json({ message: 'Server error, please try again' });
   }
 });
 
