@@ -55,18 +55,18 @@ const FinancialForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const updatedEntries = financialEntries.map(entry => ({
-        ...entry,
-      }));
-
-      try {
-        const response = await axios.post('https://login-9ebe.onrender.com/api/financial', updatedEntries);
-        setResponseMessage(`Success: ${response.data.message}`);
-      } catch (error) {
-        setResponseMessage(`Error: ${error.response ? error.response.data.message : 'Something went wrong'}`);
-      }
+        try {
+            const response = await axios.post('https://login-9ebe.onrender.com/api/financial', {
+                eID: eID,
+                entries: financialEntries // send entries as an array
+            });
+            setResponseMessage(`Success: ${response.data.message}`);
+        } catch (error) {
+            setResponseMessage(`Error: ${error.response ? error.response.data.message : 'Something went wrong'}`);
+        }
     }
-  };
+};
+
 
   return (
     <form className="financial-form" onSubmit={handleSubmit}>

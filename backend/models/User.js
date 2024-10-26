@@ -143,6 +143,30 @@ const UserSchema = new mongoose.Schema({
       taxId: String,
       mobileNumber: String,
     }
+  ],
+
+  social: [
+    {
+      maritalStatus: String,
+      familyMembers: [
+        {
+          name: String,
+          relationship: String,
+        },
+      ],
+      dependents: [
+        {
+          name: String,
+          relationship: String,
+        },
+      ],
+      socialAffiliations: [
+        {
+          organization: String,
+          role: String,
+        },
+      ],
+    }
   ]
 
 

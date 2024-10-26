@@ -1,43 +1,60 @@
 const express = require('express');
 const router = express.Router();
-const SocialFamily = require('../models/SocialFamily');
+const User = require('../models/User');
 
-// POST route to save form data
+// Endpoint to update preferences based on eID
 router.post('/', async (req, res) => {
-  try {
-    console.log('Incoming request body:', req.body);
-    
-    const { eID, maritalStatus, familyMembers, dependents, socialAffiliations } = req.body;
+  const {
+    eID,
+    maritalStatus,
+    familyMembers,
+    dependents,
+    socialAffiliations
+  } = req.body;
 
-    if (!maritalStatus || !Array.isArray(familyMembers) || !Array.isArray(dependents) || !Array.isArray(socialAffiliations)) {
-      return res.status(400).json({ message: 'Invalid data format' });
+  try {
+    // Check if user with given eID exists
+    const user = await User.findOne({ eID });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    const newSocialFamily = new SocialFamily({
-      eID,
+    // Create the preference object to add to user's preferences array
+    const socialInfo = {
       maritalStatus,
       familyMembers,
       dependents,
-      socialAffiliations,
-    });
+      socialAffiliations
+    };
 
-    await newSocialFamily.save();
-    res.status(201).json({ message: 'Form data saved successfully!' });
+    // Add new preference to user's preference array and save
+    user.social.push(socialInfo);
+    await user.save();
+
+    res.status(200).json({ message: 'social info updated successfully' });
   } catch (error) {
-    console.error('Error saving form data:', error);
-    res.status(500).json({ message: 'Error saving form data', error });
+    console.error('Error updating social:', error);
+    res.status(500).json({ message: 'Server error, please try again' });
   }
 });
 
-// GET route to fetch all social family data
 router.get('/all', async (req, res) => {
+  const { eID } = req.query;
+
   try {
-    const socialFamilyData = await SocialFamily.find();
-    res.status(200).json({ message: 'Data fetched successfully', data: socialFamilyData });
+    // Find user by eID and return preferences if user exists
+    const user = await User.findOne({ eID });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ data: user.social });
   } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).json({ message: 'Error fetching data', error });
+    console.error('Error retrieving social:', error);
+    res.status(500).json({ message: 'Server error, please try again' });
   }
 });
+
 
 module.exports = router;
