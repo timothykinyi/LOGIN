@@ -38,6 +38,24 @@ const UserSchema = new mongoose.Schema({
   disabilities: String,
   additionalInfo: String,
 
+
+  personalinfo: [
+    {
+      firstName: String,
+      lastName: String,
+      dateOfBirth: Date,
+      gender: String,
+      maritalStatus: String,
+      nationality: String,
+      streetAddress1: String,
+      streetAddress2: String,
+      city: String,
+      state: String,
+      postalCode: String,
+      country: String
+    }
+  ],
+
   //EDUDATION MODEL
   education: [
     {
