@@ -1,84 +1,236 @@
-.data-share-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
+/* DataShare.css */
+
+.dts-user-profile {
+  font-family: 'Montserrat', sans-serif;
+  background-color: rgba(16, 23, 30, 0.9); /* Darker for contrast */
+  color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2); /* Deeper shadow for depth */
+  max-width: 1000px;
+  margin: 30px auto;
+  max-height: 80vh; /* Limit height to fit viewport */
+  overflow-y: auto;
+  box-sizing: border-box; /* Include padding and border in total width/height */
+}
+
+.dts-user-profile h1 {
+  color: #ffffff;
+  font-size: 2.2em; /* Larger for emphasis */
+  margin-bottom: 1.5em;
+  text-align: center;
+  text-transform: uppercase; /* Make it stand out */
+  letter-spacing: 1px; /* Added spacing for readability */
+}
+
+.dts-deadline-label {
+  display: block;
+  margin-bottom: 1em;
+  font-weight: bold;
+  color: #d1d1d1; /* Lighter for visibility */
+}
+
+.dts-user-profile label input[type="date"] {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 8px; /* Increased padding for better touch targets */
+  font-size: 1em;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: rgba(25, 69, 110, 0.451);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /* Enables scrolling if content overflows */
-  height: 80vh;
-  width: 80vw; 
+  border-radius: 4px;
+  transition: border 0.3s ease;
+  width: auto; /* Allow input to size responsively */
 }
 
-h2, h3 {
+.dts-user-profile label input[type="date"]:focus {
+  border-color: #4caf50; /* Highlighted border on focus */
+  outline: none; /* Remove default outline */
+}
+
+.dts-checkbox {
+  display: inline-block;
+  margin-right: 10px;
+  transform: scale(1.4); /* Larger checkboxes for easier interaction */
+}
+
+.dts-section-title {
+  font-size: 1.6em; /* Increased size for visibility */
+  color: #ffffff;
+  border-bottom: 1px solid #444; /* Darker line for better separation */
+  padding-bottom: 5px;
+  margin-top: 20px;
+  text-transform: uppercase; /* For a more formal look */
+}
+
+.dts-info-item {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 1em;
+  color: #ffffff; /* Consistent color for all text */
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.1); /* Slight background for items */
+  border-radius: 6px; /* Rounded corners for a softer look */
+  transition: background 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.dts-info-item:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Highlight on hover */
+}
+
+.dts-info-item strong {
+  font-weight: 600;
+  margin-right: 8px;
+  color: #d1d1d1; /* Lighter for emphasis */
+}
+
+.dts-info-item label {
+  display: flex;
+  align-items: center;
+}
+
+.dts-share-button {
+  display: block;
+  width: 100%;
+  padding: 14px; /* Increased padding for a bolder button */
+  margin-top: 30px;
+  background-color: #4caf50;
   color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.2em; /* Slightly larger font for emphasis */
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform for hover */
 }
 
-
-
-.error-message {
-  color: red;
+.dts-share-button:hover {
+  background-color: #45a049;
+  transform: scale(1.02); /* Slightly enlarge button on hover */
 }
 
-.data-section {
+.dts-shareable-link {
+  margin-top: 20px;
+  font-size: 1em;
+  text-align: center;
+  color: #1e90ff;
+  font-weight: bold;
+}
+
+.dts-shareable-link a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.dts-error-message,
+.dts-loading-message {
+  font-size: 1.1em;
+  color: #d9534f;
+  text-align: center;
   margin-top: 20px;
 }
 
-.data-section h3 {
-  color: lightgray;
+/* Sub-sections within user data */
+.dts-sub-section {
+  padding-left: 20px;
+  margin-top: 15px; /* Added space between sections */
 }
-.data-item
-{
-  background-color: aqua;
+
+.dts-sub-section h3,
+.dts-sub-section h4 {
+  font-size: 1.4em; /* Slightly larger for better hierarchy */
+  color: #ffffff;
+}
+
+.dts-medical-history-item,
+.dts-personal-info-item,
+.dts-contact-item,
+.dts-education-item,
+.dts-employment-item,
+.dts-preference-item,
+.dts-finance-item,
+.dts-social-item {
+  padding: 8px 0; /* Increased padding for readability */
+  margin: 5px 0;
+}
+
+.dts-checkbox-label {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
-  background-color: rgba(25, 69, 110, 0.451);
-  margin: 10px;
-}
-.data-item label {
-  display: block;
-  margin-bottom: 10px;
 }
 
-.deadline-picker {
-  margin: 10px 0;
-  color: lightgray;
+.dts-checkbox-label input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2); /* Larger checkboxes for better interaction */
 }
 
-.deadline-picker input {
+/* Responsive styles */
+@media (max-width: 768px) {
+  .dts-user-profile {
+    padding: 25px; /* Reduced padding for smaller screens */
+    margin: 20px; /* Adjust margin */
+  }
+
+  .dts-user-profile h1 {
+    font-size: 1.8em; /* Smaller heading on mobile */
+  }
+
+  .dts-section-title,
+  .dts-info-item {
+    font-size: 1.4em; /* Adjust font size for smaller screens */
+  }
+
+  .dts-share-button {
+    padding: 12px; /* Smaller padding on mobile */
+    font-size: 1em; /* Smaller button text */
+  }
+
+  .dts-shareable-link {
+    font-size: 0.9em; /* Smaller text for links */
+  }
+
+  .dts-deadline-label {
+    font-size: 1em; /* Smaller text for labels */
+  }
+
+  .dts-user-profile label input[type="date"] {
+    width: 100%; /* Full-width inputs on small screens */
+    margin-left: 0; /* Remove margin on small screens */
+  }
+
+  .dts-info-item {
+    flex-direction: column; /* Stack items vertically on small screens */
+    align-items: flex-start; /* Align to the start */
+  }
+}
+
+@media (max-width: 480px) {
+  .dts-user-profile {
+    padding: 15px; /* Further reduced padding for extra-small screens */
+  }
+
+  .dts-user-profile h1 {
+    font-size: 1.6em; /* Even smaller heading */
+  }
+
+  .dts-section-title,
+  .dts-info-item {
+    font-size: 1.2em; /* Further reduced font size */
+  }
+}
+
+.dts-input-date {
+  display: inline-block;
   margin-left: 10px;
+  padding: 8px; /* Increased padding for better touch targets */
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border 0.3s ease;
+  width: auto; /* Allow input to size responsively */
 }
 
-button.clear-btn {
-  margin: 10px;
-  padding: 10px;
-  background-color: red;
-  color: white;
-  border: none;
-  cursor: pointer;
+.dts-input-date:focus {
+  border-color: #4caf50; /* Highlighted border on focus */
+  outline: none; /* Remove default outline */
 }
 
-button.clear-btn:hover {
-  background-color: darkred;
-}
-
-button.share-btn {
-  margin: 10px;
-  padding: 10px;
-  background-color: rgb(4, 85, 135);
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button.share-btn:hover {
-  background-color: rgb(0, 62, 100);
-}
-
-.shareable-link {
-  margin-top: 10px;
-  color: lightgreen;
-}
