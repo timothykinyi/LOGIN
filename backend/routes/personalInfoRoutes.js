@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
     user.personalinfo.push(personalInfo);
     await user.save();
 
-    res.status(200).json({ message: 'Preferences updated successfully' });
+    res.status(200).json({ message: 'pesonal info updated successfully' });
   } catch (error) {
     console.error('Error updating preferences:', error);
     res.status(500).json({ message: 'Server error, please try again' });

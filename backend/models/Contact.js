@@ -5,7 +5,7 @@ const contactSchema = new mongoose.Schema({
   eID: { type: Number, required: true},
   phoneNumbers: [{ number: String }],
   emails: [{ email: String }],
-  emergencyContacts: [
+  emergencyContacts: [ 
     {
       name: String,
       phone: String,

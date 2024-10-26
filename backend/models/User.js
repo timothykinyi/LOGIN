@@ -56,6 +56,42 @@ const UserSchema = new mongoose.Schema({
     }
   ],
 
+  contacts: [
+    {
+      phoneNumbers: [
+        {
+          number: String,
+        },
+      ],
+      emails: [
+        {
+          email: String,
+        },
+      ],
+      emergencyContacts: [
+        {
+          name: String,
+          phone: String,
+          address: String,
+        },
+      ],
+      socialMedia: [
+        {
+          platform: String,
+          username: String,
+        },
+      ],
+      address: {
+        streetAddress1: String,
+        streetAddress2: String,
+        city: String,
+        state: String,
+        postalCode: String,
+        country: String,
+      },
+    },
+  ],
+
   //EDUDATION MODEL
   education: [
     {

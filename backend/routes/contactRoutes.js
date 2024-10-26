@@ -1,30 +1,60 @@
 const express = require('express');
 const router = express.Router();
-const Contact = require('../models/Contact');
+const User = require('../models/User');
 
-// POST route to handle form submissions
+// Endpoint to update preferences based on eID
 router.post('/', async (req, res) => {
-  const contactData = req.body;
+    const { 
+        eID,
+        phoneNumbers,
+        emails,
+        emergencyContacts,
+        socialMedia
+      } = req.body;
 
   try {
-    const newContact = new Contact(contactData);
-    await newContact.save();
-    res.json({ message: 'Contact information successfully received' });
+    // Check if user with given eID exists
+    const user = await User.findOne({ eID });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Create the preference object to add to user's preferences array
+    const contact = {
+      phoneNumbers,
+      emails,
+      emergencyContacts,
+      socialMedia
+    };
+
+    // Add new preference to user's preference array and save
+    user.contacts.push(contact);
+    await user.save();
+
+    res.status(200).json({ message: 'contact info updated successfully' });
   } catch (error) {
-    console.error('Error saving contact data:', error);
-    res.status(500).json({ message: 'Failed to save contact information' });
+    console.error('Error updating preferences:', error);
+    res.status(500).json({ message: 'Server error, please try again' });
   }
 });
 
-// GET route to retrieve all contact information
-router.get('/', async (req, res) => {
+router.get('/all', async (req, res) => {
+  const { eID } = req.query;
+
   try {
-    const contacts = await Contact.find(); // Fetch all contact information from the database
-    res.json(contacts); // Send the data to the frontend
+    // Find user by eID and return preferences if user exists
+    const user = await User.findOne({ eID });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ data: user.contacts });
   } catch (error) {
-    console.error('Error retrieving contact data:', error);
-    res.status(500).json({ message: 'Failed to retrieve contact information' });
+    console.error('Error retrieving preferences:', error);
+    res.status(500).json({ message: 'Server error, please try again' });
   }
 });
+
 
 module.exports = router;
