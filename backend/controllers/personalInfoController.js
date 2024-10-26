@@ -4,7 +4,20 @@ const PersonalInfo = require('../models/User');
 // @route   POST /api/personal-info
 // @access  Public
 const submitPersonalInfo = async (req, res) => {
-  const { eID, firstName, lastName, dateOfBirth, gender, maritalStatus, nationality, streetAddress1, streetAddress2, city, state, postalCode, country } = req.body;
+  const { 
+    eID, 
+    firstName, 
+    lastName, 
+    dateOfBirth, 
+    gender, 
+    maritalStatus, 
+    nationality, 
+    streetAddress1, 
+    streetAddress2, 
+    city, 
+    state, 
+    postalCode, 
+    country } = req.body;
 
   try {
     // Step 1: Check if the user exists
