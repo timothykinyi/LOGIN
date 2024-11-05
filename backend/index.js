@@ -26,16 +26,20 @@ const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const fingerprintRoutes = require('./routes/fingerprintRoutes');
 const shareRoutes = require('./routes/share');
 const uploadRoutes = require("./routes/uploadRoutes");
-const { deleteExpiredData } = require('./controllers/shareController');
 
+const DataShare = require('./models/SharedData');
 // Initialize the app
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-cron.schedule('0 * * * *', deleteExpiredData);
 
+cron.schedule('0 * * * *', async () => {
+  const now = new Date();
+  await DataShare.deleteMany({ expiryTime: { $lte: now } });
+  console.log('Expired data cleaned up');
+});
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/personal-info', personalInfoRoutes);

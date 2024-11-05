@@ -1,13 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { storeSelectedData, getSharedDataByEID } = require('../controllers/shareController');
+const { shareData, getData } = require('../controllers/shareController');
 
-// Route to share selected data
-router.post('/share', storeSelectedData);
-
-// Route to get shared data by eID
-router.get('/shared-data/:eID', getSharedDataByEID); // Add this line for fetching shared data
+router.post('/share-data', shareData); // Endpoint to create a new data share
+router.get('/get-data/:dataID', getData); // Endpoint to retrieve shared data
 
 module.exports = router;
-
-  

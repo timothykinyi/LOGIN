@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-const selectedDataSchema = new mongoose.Schema({
-  compId: { type: String, required: true },
-  did: { type: String, unique: true, required: true },
-  expiry: { type: Date, required: true },
-  data: { type: Map, of: String }, // This will store the selected fields data
+const DataShareSchema = new mongoose.Schema({
+  dataID: { type: String, required: true, unique: true },
+  sharedData: { type: mongoose.Schema.Types.Mixed, required: true },
+  expiryTime: { type: Date, required: true },
+  createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('SelectedData', selectedDataSchema);
+module.exports = mongoose.model('DataShare', DataShareSchema);
