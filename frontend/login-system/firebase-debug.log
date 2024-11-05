@@ -1,0 +1,76 @@
+[debug] [2024-10-26T22:04:45.332Z] ----------------------------------------------------------------------
+[debug] [2024-10-26T22:04:45.336Z] Command:       /usr/bin/node /usr/local/bin/firebase deploy
+[debug] [2024-10-26T22:04:45.337Z] CLI Version:   13.22.1
+[debug] [2024-10-26T22:04:45.337Z] Platform:      linux
+[debug] [2024-10-26T22:04:45.338Z] Node Version:  v18.19.1
+[debug] [2024-10-26T22:04:45.341Z] Time:          Sun Oct 27 2024 01:04:45 GMT+0300 (East Africa Time)
+[debug] [2024-10-26T22:04:45.341Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-10-26T22:04:45.350Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-10-26T22:04:45.524Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-10-26T22:04:45.525Z] > authorizing via signed-in user (grandelo.sup2@gmail.com)
+[debug] [2024-10-26T22:04:45.525Z] [iam] checking project own-my-data for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-10-26T22:04:45.528Z] Checked if tokens are valid: false, expires at: 1729859316025
+[debug] [2024-10-26T22:04:45.529Z] Checked if tokens are valid: false, expires at: 1729859316025
+[debug] [2024-10-26T22:04:45.530Z] > refreshing access token with scopes: []
+[debug] [2024-10-26T22:04:45.532Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-10-26T22:04:45.533Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-10-26T22:04:46.133Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-10-26T22:04:46.135Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-10-26T22:04:46.185Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions [none]
+[debug] [2024-10-26T22:04:46.186Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions x-goog-quota-user=projects/own-my-data
+[debug] [2024-10-26T22:04:46.186Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-10-26T22:04:46.294Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-10-26T22:04:46.294Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2024-10-26T22:04:48.170Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions 200
+[debug] [2024-10-26T22:04:48.170Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions {}
+[debug] [2024-10-26T22:04:48.171Z] [iam] error while checking permissions, command may fail: FirebaseError: Authorization failed. This account is missing the following required permissions on project own-my-data:
+
+  firebase.projects.get
+  firebasehosting.sites.update
+[debug] [2024-10-26T22:04:48.172Z] Checked if tokens are valid: true, expires at: 1729983885136
+[debug] [2024-10-26T22:04:48.172Z] Checked if tokens are valid: true, expires at: 1729983885136
+[debug] [2024-10-26T22:04:48.173Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data [none]
+[debug] [2024-10-26T22:04:49.101Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data 403
+[debug] [2024-10-26T22:04:49.102Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2024-10-26T22:04:49.108Z] HTTP Error: 403, The caller does not have permission
+[debug] [2024-10-26T22:04:49.604Z] FirebaseError: HTTP Error: 403, The caller does not have permission
+    at responseToError (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:49:12)
+    at RetryOperation._fn (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to get Firebase project own-my-data. Please make sure the project exists and your account has permission to access it.
+[debug] [2024-10-26T22:05:19.575Z] ----------------------------------------------------------------------
+[debug] [2024-10-26T22:05:19.578Z] Command:       /usr/bin/node /usr/local/bin/firebase deploy
+[debug] [2024-10-26T22:05:19.578Z] CLI Version:   13.22.1
+[debug] [2024-10-26T22:05:19.579Z] Platform:      linux
+[debug] [2024-10-26T22:05:19.579Z] Node Version:  v18.19.1
+[debug] [2024-10-26T22:05:19.579Z] Time:          Sun Oct 27 2024 01:05:19 GMT+0300 (East Africa Time)
+[debug] [2024-10-26T22:05:19.580Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-10-26T22:05:19.675Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-10-26T22:05:19.675Z] > authorizing via signed-in user (grandelo.sup2@gmail.com)
+[debug] [2024-10-26T22:05:19.676Z] [iam] checking project own-my-data for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-10-26T22:05:19.677Z] Checked if tokens are valid: true, expires at: 1729983885136
+[debug] [2024-10-26T22:05:19.678Z] Checked if tokens are valid: true, expires at: 1729983885136
+[debug] [2024-10-26T22:05:19.679Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions [none]
+[debug] [2024-10-26T22:05:19.680Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions x-goog-quota-user=projects/own-my-data
+[debug] [2024-10-26T22:05:19.680Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-10-26T22:05:21.362Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions 200
+[debug] [2024-10-26T22:05:21.363Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/own-my-data:testIamPermissions {}
+[debug] [2024-10-26T22:05:21.363Z] [iam] error while checking permissions, command may fail: FirebaseError: Authorization failed. This account is missing the following required permissions on project own-my-data:
+
+  firebase.projects.get
+  firebasehosting.sites.update
+[debug] [2024-10-26T22:05:21.364Z] Checked if tokens are valid: true, expires at: 1729983885136
+[debug] [2024-10-26T22:05:21.364Z] Checked if tokens are valid: true, expires at: 1729983885136
+[debug] [2024-10-26T22:05:21.365Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data [none]
+[debug] [2024-10-26T22:05:22.075Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data 403
+[debug] [2024-10-26T22:05:22.075Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/own-my-data {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2024-10-26T22:05:22.082Z] HTTP Error: 403, The caller does not have permission
+[debug] [2024-10-26T22:05:22.578Z] FirebaseError: HTTP Error: 403, The caller does not have permission
+    at responseToError (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:49:12)
+    at RetryOperation._fn (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to get Firebase project own-my-data. Please make sure the project exists and your account has permission to access it.
