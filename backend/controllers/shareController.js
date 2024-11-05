@@ -2,38 +2,45 @@ const SelectedData  = require('../models/SharedData');
 const User = require('../models/User');
 const { v4: uuidv4 } = require('uuid');
 
-const storeSelectedData = async (req, res) => {
-  const { selectedFields, compId, expiryDate, viewOnce } = req.body;
 
-  try {
-    // Fetch the user data based on the selected fields
-    const userId = req.user.id; // Assume you have user ID from authentication middleware
-    const userData = await User.findById(userId).select(selectedFields.join(' '));
-
-    if (!userData) {
-      return res.status(404).json({ message: 'User not found' });
+  const storeSelectedData = async (req, res) => {
+    try {
+      const { selectedFields, compId, expiryDate, viewOnce } = req.body;
+  
+      // Check if required data is present
+      if (!selectedFields || !compId || !expiryDate) {
+        return res.status(400).json({ error: 'Missing required fields.' });
+      }
+  
+      // Retrieve user data based on selected fields
+      const userId = req.user.id; // Ensure you have middleware to set req.user
+      const userData = await User.findById(userId).select(selectedFields.join(' '));
+  
+      if (!userData) {
+        return res.status(404).json({ error: 'User not found.' });
+      }
+  
+      // Prepare data to store
+      const selectedData = new SelectedData({
+        compId,
+        did: generateUniqueId(), // Implement this function to create a unique ID
+        expiry: new Date(expiryDate),
+        data: userData.toObject(), // Convert mongoose document to plain object
+      });
+  
+      await selectedData.save();
+  
+      res.status(200).json({ message: 'Data stored successfully.', did: selectedData.did });
+    } catch (error) {
+      console.error('Error sharing user data:', error);
+      res.status(500).json({ error: 'Internal server error.' });
     }
-
-    // Create a new SelectedData entry
-    const did = uuidv4(); // Generate a unique ID for the data sharing
-    const selectedData = new SelectedData({
-      compId,
-      did,
-      expiry: viewOnce ? null : new Date(expiryDate), // Set expiry date if not "View Once"
-      data: userData.toObject(), // Convert mongoose document to plain object
-    });
-
-    // Save the selected data
-    await selectedData.save();
-
-    // Return success response
-    return res.status(200).json({ did }); // Return the data ID for reference
-  } catch (error) {
-    console.error('Error sharing user data:', error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
-};
-
+  };
+  
+  // Helper function to generate a unique ID
+  const generateUniqueId = () => {
+    return `did-${Date.now()}`; // Example of generating a unique ID, adjust as necessary
+  };
 
 
 // Auto-delete expired data every hour
