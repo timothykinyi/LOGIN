@@ -138,11 +138,18 @@ const DataStoreForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
       const response = await axios.post('https://login-9ebe.onrender.com/api/shared/share', {
         selectedFields,
-        expiryDate: viewOnce ? 'View Once' : expiryDate,
         compId,
+        expiryDate,
+        viewOnce,
+      }, {
+        headers: {
+          'Content-Type': 'application/json', // Ensure correct Content-Type is sent
+          // Add other headers if necessary
+        }
       });
       if (response.status === 200) {
         alert(`https://own-my-data.web.app/sharedlink/${response.data.did}`);

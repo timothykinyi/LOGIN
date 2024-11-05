@@ -36,7 +36,6 @@ const extractSelectedData = (data, selectedFields) => {
   return result;
 };
 
-// Function to store selected data with a unique DID
 const storeSelectedData = async (req, res) => {
   const { selectedFields, compId, expiryDate, viewOnce } = req.body;
 
@@ -65,8 +64,8 @@ const storeSelectedData = async (req, res) => {
     await newData.save();
     res.status(200).json({ message: 'Data stored successfully', did });
   } catch (error) {
-    console.error('Error storing user data:', error);
-    res.status(500).json({ message: 'Failed to store data' });
+    console.error('Error storing user data:', error); // Add more details here if needed
+    res.status(500).json({ message: 'Failed to store data', error: error.message }); // Send error message in response
   }
 };
 
