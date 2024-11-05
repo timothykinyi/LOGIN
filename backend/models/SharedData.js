@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
-const sharedDataSchema = new mongoose.Schema({
-  eID: { type: Number, required: true },
-  dID: { type: Number, required: true },
-  sharedData: { type: Object, required: true },
-  expdate: { type: Date,required: true },
-  sharedAt: { type: Date, default: Date.now },
+const selectedDataSchema = new mongoose.Schema({
+  compId: { type: String, required: true },
+  did: { type: String, unique: true, required: true },
+  expiry: { type: Date, required: true },
+  data: { type: Map, of: String }, // This will store the selected fields data
 });
 
-module.exports = mongoose.model('SharedData', sharedDataSchema);
+module.exports = mongoose.model('SelectedData', selectedDataSchema);

@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
-
+const cron = require('node-cron');
 
 
 // Import routes
@@ -26,12 +26,15 @@ const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const fingerprintRoutes = require('./routes/fingerprintRoutes');
 const shareRoutes = require('./routes/share');
 const uploadRoutes = require("./routes/uploadRoutes");
+const { deleteExpiredData } = require('./controllers/shareController');
+
 // Initialize the app
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+cron.schedule('0 * * * *', deleteExpiredData);
 
 // Routes
 app.use('/api/auth', authRoutes);

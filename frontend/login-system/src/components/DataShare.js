@@ -1,285 +1,248 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './styles/DataShare.css'; // Adjust the path as needed
+import React, { useState } from 'react';
+import './styles/DataStoreForm.css';
 
-const DataShareComponent = () => {
-  const [contacts, setContacts] = useState([]);
-  const [educationData, setEducationData] = useState([]);
-  const [employmentData, setEmploymentData] = useState([]);
-  const [financialData, setFinancialData] = useState([]);
-  const [healthData, setHealthData] = useState([]);
-  const [personalInfoList, setPersonalInfoList] = useState([]);
-  const [preferences, setPreferences] = useState([]);
-  const [socialFamilyData, setSocialFamilyData] = useState([]);
-  const [selectedData, setSelectedData] = useState({
-    contacts: {},
-    education: {},
-    employment: {},
-    financial: {},
-    health: {},
-    personal: {},
-    preferences: {},
-    socialFamily: {}
-  });
-  const [shareableLink, setShareableLink] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [deadlineDate, setDeadlineDate] = useState(''); // New state for deadline
-  const navigate = useNavigate();
-  const eID = sessionStorage.getItem('eID');
+const DataStoreForm = () => {
+  const [selectedFields, setSelectedFields] = useState([]);
+  const [currentSection, setCurrentSection] = useState(0); // Track which section is currently displayed
+  const [expiryDate, setExpiryDate] = useState('');
+  const [viewOnce, setViewOnce] = useState(false);
+  const compId = sessionStorage.getItem('cID');  // Company ID
 
-  useEffect(() => {
-    const token = sessionStorage.getItem('userToken');
-
-    if (!eID || !token) {
-      navigate('/');
-      return;
+  const sections = [
+    {
+    title: 'Basic Info',
+      fields: [
+        { label: 'Full Name', value: 'fullName' },
+        { label: 'Email', value: 'email' },
+        { label: 'Phone Number', value: 'phoneNumber' },
+        { label: 'Username', value: 'username' },
+        { label: 'Date of Birth', value: 'dateOfBirth' },
+        { label: 'Gender', value: 'gender' },
+        { label: 'Category', value: 'category' },
+        { label: 'eID', value: 'eID' },
+        { label: 'Is Verified', value: 'isVerified' },
+        { label: 'Active Status', value: 'active' },
+      ],
+    },{
+      title: 'Health Info',
+      fields: [
+        { label: 'Blood Type', value: 'bloodType' },
+        { label: 'Allergies', value: 'allergies' },
+        { label: 'Medical History', value: 'medicalHistory' },
+        { label: 'Insurance Provider', value: 'insuranceProvider' },
+        { label: 'Policy Number', value: 'policyNumber' },
+        { label: 'Coverage Details', value: 'coverageDetails' },
+        { label: 'Conditions', value: 'conditions' },
+        { label: 'Disabilities', value: 'disabilities' },
+        { label: 'Additional Health Info', value: 'additionalInfo' },
+      ]
+    },{
+      title: 'Personal Info',
+      fields: [
+        { label: 'First Name', value: 'personalinfo.firstName' },
+        { label: 'Last Name', value: 'personalinfo.lastName' },
+        { label: 'Marital Status', value: 'personalinfo.maritalStatus' },
+        { label: 'Nationality', value: 'personalinfo.nationality' },
+        { label: 'Street Address 1', value: 'personalinfo.streetAddress1' },
+        { label: 'Street Address 2', value: 'personalinfo.streetAddress2' },
+        { label: 'City', value: 'personalinfo.city' },
+        { label: 'State', value: 'personalinfo.state' },
+        { label: 'Postal Code', value: 'personalinfo.postalCode' },
+        { label: 'Country', value: 'personalinfo.country' },
+      ],
+    },{
+      title: 'Contacts Info',
+      fields: [
+        { label: 'Phone Numbers', value: 'contacts.phoneNumbers' },
+        { label: 'Emails', value: 'contacts.emails' },
+        { label: 'Emergency Contacts', value: 'contacts.emergencyContacts' },
+        { label: 'Social Media Accounts', value: 'contacts.socialMedia' },
+      ],
+    },{
+      title: 'Education Info',
+      fields: [
+        { label: 'Education Level', value: 'education.educationLevel' },
+        { label: 'Institution Name', value: 'education.institutionName' },
+        { label: 'Degree Type', value: 'education.degreeType' },
+        { label: 'Field of Study', value: 'education.fieldOfStudy' },
+        { label: 'Start Date', value: 'education.startDate' },
+        { label: 'End Date', value: 'education.endDate' },
+      ],
+    },{
+      title: 'Employment Info',
+      fields: [
+        { label: 'Job Title', value: 'employment.jobTitle' },
+        { label: 'Employer', value: 'employment.employer' },
+        { label: 'Job Category', value: 'employment.jobCategory' },
+        { label: 'Skills', value: 'employment.skills' },
+      ],
+    },{
+      title: 'Preferences Info',
+      fields: [
+        { label: 'Hobbies', value: 'preference.hobbies' },
+        { label: 'Dietary Preference', value: 'preference.dietaryPreference' },
+        { label: 'Religious Affiliation', value: 'preference.religiousAffiliation' },
+        { label: 'Favorite Cuisine', value: 'preference.favoriteCuisine' },
+        { label: 'Sleep Preference', value: 'preference.sleepPreference' },
+        { label: 'Pet Preference', value: 'preference.petPreference' },
+      ],
+    },{
+      title: 'Finance Info',
+      fields: [
+        { label: 'Bank Account Number', value: 'finance.bankAccountNumber' },
+        { label: 'Bank Name', value: 'finance.bankName' },
+        { label: 'Income', value: 'finance.income' },
+        { label: 'Credit Score', value: 'finance.creditScore' },
+        { label: 'Tax ID', value: 'finance.taxId' },
+      ]
+    },{
+      title: 'social info' ,
+      fields: [
+        {  social: [
+          { label: 'Bank Account Number', value: 'finance.bankAccountNumber' },
+          {
+            maritalStatus: String,
+            familyMembers: [
+              {
+                name: String,
+                relationship: String,
+              },
+            ],
+            dependents: [
+              {
+                name: String,
+                relationship: String,
+              },
+            ],
+            socialAffiliations: [
+              {
+                organization: String,
+                role: String,
+              },
+            ],
+          }
+        ]}
+      ]
     }
+  ];
 
-    const fetchData = async () => {
-      try {
-        const [contactResponse, educationResponse, employmentResponse, financialResponse, healthResponse, personalResponse, preferencesResponse, socialFamilyResponse] = await Promise.all([
-          axios.get('https://login-9ebe.onrender.com/api/contact'),
-          axios.get('https://login-9ebe.onrender.com/api/education/all'),
-          axios.get('https://login-9ebe.onrender.com/api/employment'),
-          axios.get('https://login-9ebe.onrender.com/api/financial/all'),
-          axios.get('https://login-9ebe.onrender.com/api/health/all'),
-          axios.get('https://login-9ebe.onrender.com/api/personal-info'),
-          axios.get('https://login-9ebe.onrender.com/api/preferences/all'),
-          axios.get('https://login-9ebe.onrender.com/api/social-family/all'),
-        ]);
-
-        setContacts(contactResponse.data.filter(contact => contact.eID === parseInt(eID)));
-        setEducationData(educationResponse.data.data.filter(edu => edu.eID === parseInt(eID)));
-        setEmploymentData(employmentResponse.data.data.filter(emp => emp.eID === parseInt(eID)));
-        setFinancialData(financialResponse.data.data.filter(fin => fin.eID === parseInt(eID)));
-        setHealthData(healthResponse.data.data.filter(health => health.eID === parseInt(eID)));
-        setPersonalInfoList(personalResponse.data.data.filter(personal => personal.eID === parseInt(eID)));
-        setPreferences(preferencesResponse.data.data.filter(preference => preference.eID === parseInt(eID)));
-        setSocialFamilyData(socialFamilyResponse.data.data.filter(family => family.eID === parseInt(eID)));
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Failed to fetch data. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [navigate, eID]);
-
-  const handleSelectData = (category, item, isSelected) => {
-    setSelectedData(prev => {
-      const updatedCategory = { ...prev[category] };
-      if (isSelected) {
-        // Add the entire item to the selected data
-        updatedCategory[item._id] = item;
-      } else {
-        // Remove the item from selected data
-        delete updatedCategory[item._id];
-      }
-      return { ...prev, [category]: updatedCategory };
-    });
+  const handleFieldChange = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setSelectedFields((prevFields) => [...prevFields, value]);
+    } else {
+      setSelectedFields((prevFields) => prevFields.filter((field) => field !== value));
+    }
   };
 
-  const handleSubmit = async () => {
-    if (!Object.keys(selectedData).some(cat => Object.keys(selectedData[cat]).length > 0)) {
-      alert('Please select at least one item to share.');
-      return;
-    }
-
-    if (!deadlineDate) {
-      alert('Please select a deadline date for sharing the data.');
-      return;
-    }
-
-    const confirmSubmit = window.confirm('Are you sure you want to share the selected data?');
-    if (!confirmSubmit) return;
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post('https://login-9ebe.onrender.com/api/shared/share', { selectedData, eID, deadlineDate });
-      setShareableLink(`https://own-my-data.web.app/sharedlink/${response.data.id}`);
+      const response = await axios.post('https://login-9ebe.onrender.com/api/shared/share', {
+        selectedFields,
+        expiryDate: viewOnce ? 'View Once' : expiryDate,
+        compId,
+      });
+      if (response.status === 200) {
+        alert(`https://own-my-data.web.app/sharedlink/${response.data.did}`);
+      } else {
+        alert('Failed to store data.');
+      }
     } catch (error) {
-      console.error('Error sharing data:', error);
-      setError('Failed to share data. Please try again later.');
+      console.error('Error storing user data:', error);
+      alert('Failed to store data.');
     }
   };
 
-  const handleClearSelection = () => {
-    setSelectedData({
-      contacts: {},
-      education: {},
-      employment: {},
-      financial: {},
-      health: {},
-      personal: {},
-      preferences: {},
-      socialFamily: {}
-    });
-    setDeadlineDate(''); // Clear the deadline date
+  const goToNextSection = () => {
+    setCurrentSection((prevSection) => Math.min(prevSection + 1, sections.length - 1));
+  };
+
+  const goToPreviousSection = () => {
+    setCurrentSection((prevSection) => Math.max(prevSection - 1, 0));
   };
 
   return (
-    <div className="data-share-container">
-      <h2 className="section-title">Select Data to Share</h2>
-      
-      {loading && <p className="loading-message">Loading data...</p>}
-      {error && <p className="error-message">{error}</p>}
-      
-      {!loading && (
-        <>
-          
-          {contacts.map(contact => (
-            <div key={contact._id} className="data-item">
-              <h3 className="data-section-title">Contact Information</h3>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={!!selectedData.contacts[contact._id]}
-                  onChange={e => handleSelectData('contacts', contact, e.target.checked)}
-                />
-                {contact.phoneNumbers.map(num => num.number).join(', ')}
-              </label>
-            </div>
-          ))}
-          
-          
-          {educationData.map(education => (
-            <div key={education._id} className="data-item">
-              <h3 className="data-section-title">Education Data</h3>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={!!selectedData.education[education._id]}
-                  onChange={e => handleSelectData('education', education, e.target.checked)}
-                />
-                {education.institutionName} ({education.degree})
-              </label>
-            </div>
-          ))}
-          
-          
-          {employmentData.map(employment => (
-            <div key={employment._id} className="data-item">
-              <h3 className="data-section-title">Employment Data</h3>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={!!selectedData.employment[employment._id]}
-                  onChange={e => handleSelectData('employment', employment, e.target.checked)}
-                />
-                {employment.jobTitle} at {employment.employer}
-              </label>
-            </div>
-          ))}
-          
-          
-          {financialData.map(financial => (
-            <div key={financial._id} className="data-item">
-              <h3 className="data-section-title">Financial Data</h3>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={!!selectedData.financial[financial._id]}
-                  onChange={e => handleSelectData('financial', financial, e.target.checked)}
-                />
-                {financial.bankName}
-              </label>
-            </div>
-          ))}
-          
-          
-          {healthData.map(health => (
-            <div key={health._id} className="data-item">
-              <h3 className="data-section-title">Health Data</h3>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={!!selectedData.health[health._id]}
-                  onChange={e => handleSelectData('health', health, e.target.checked)}
-                />
-                Blood Type: {health.bloodType}
-              </label>
-            </div>
-          ))}
-          
-          
-          {personalInfoList.map(personal => (
-            <div key={personal._id} className="data-item">
-              <h3 className="data-section-title">Personal Information</h3>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={!!selectedData.personal[personal._id]}
-                  onChange={e => handleSelectData('personal', personal, e.target.checked)}
-                />
-                {personal.firstName} {personal.lastName}
-              </label>
-            </div>
-          ))}
-          
-          
-          {preferences.map(preference => (
-            <div key={preference._id} className="data-item">
-              <h3 className="data-section-title">Preferences</h3>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={!!selectedData.preferences[preference._id]}
-                  onChange={e => handleSelectData('preferences', preference, e.target.checked)}
-                />
-                {preference.favoriteCuisine}
-              </label>
-            </div>
-          ))}
-          
-          
-          {socialFamilyData.map(family => (
-            <div key={family._id} className="data-item">
-              <h3 className="data-section-title">Social Family Data</h3>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={!!selectedData.socialFamily[family._id]}
-                  onChange={e => handleSelectData('socialFamily', family, e.target.checked)}
-                />
-                Marital Status: {family.maritalStatus}
-              </label>
-            </div>
-          ))}
-  
-          {/* Date Picker for Deadline */}
-          <div className="deadline-picker">
-            <label>
-              Deadline Date:
+    <div className="cnd-form-container">
+      <h2 className="cnd-heading">Select user data you want to get</h2>
+      <form className="cnd-form" onSubmit={handleSubmit}>
+        {sections.map((section, index) => (
+          <div
+            key={section.title}
+            style={{ display: currentSection === index ? 'block' : 'none' }}
+          >
+            <h3 className="cnd-subheading">{section.title}</h3>
+            {section.fields.map((field) => (
+              <div className="cnd-checkbox-container" key={field.value}>
+                <label className="cnd-checkbox-label">
+                  <input
+                    type="checkbox"
+                    value={field.value}
+                    onChange={handleFieldChange}
+                    className="cnd-checkbox-input"
+                  />
+                  {field.label}
+                </label>
+              </div>
+            ))}
+          </div>
+        ))}
+
+        <div className="cnd-navigation-buttons">
+          <button
+            type="button"
+            onClick={goToPreviousSection}
+            disabled={currentSection === 0}
+            className="cnd-back-button"
+          >
+            Back
+          </button>
+          {currentSection < sections.length - 1 && (
+            <button type="button" onClick={goToNextSection} className="cnd-next-button">
+              Next
+            </button>
+          )}
+        </div>
+
+        {/* Expiry Section */}
+        {currentSection === sections.length - 1 && (
+          <div className="cnd-expiry-section">
+            <h3 className="cnd-subheading">Data Expiry</h3>
+            <label className="cnd-expiry-label">
+              Expiry Date & Time:
               <input
-                type="date"
-                value={deadlineDate}
-                onChange={e => setDeadlineDate(e.target.value)}
+                type="datetime-local"
+                value={expiryDate}
+                onChange={(e) => setExpiryDate(e.target.value)}
+                disabled={viewOnce}
+                className="cnd-expiry-input"
               />
             </label>
+            <label className="cnd-view-once-label">
+              <input
+                type="checkbox"
+                checked={viewOnce}
+                onChange={() => {
+                  setViewOnce(!viewOnce);
+                  setExpiryDate(''); // Clear expiry date if "View Once" is selected
+                }}
+                className="cnd-view-once-checkbox"
+              />
+              View Once
+            </label>
           </div>
-          
-          <div className="button-group">
-            <button className="sign-in-btn"onClick={handleClearSelection}>
-              Clear All Selections
-            </button>
-    
-            <button className="sign-in-btn" onClick={handleSubmit}>
-              Share Selected Data
-            </button>
+        )}
+
+        {/* Submit Button */}
+        {currentSection === sections.length - 1 && (
+          <div className="cnd-submit-container">
+            <button type="submit" className="cnd-submit-button">Store Selected Data</button>
           </div>
-          {shareableLink && (
-            <p className="shareable-link">
-              Shareable Link: <a href={shareableLink}>{shareableLink}</a>
-            </p>
-          )}
-        </>
-      )}
+        )}
+      </form>
     </div>
   );
-  
 };
 
-export default DataShareComponent;
+export default DataStoreForm;
