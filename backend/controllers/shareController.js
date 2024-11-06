@@ -6,11 +6,19 @@ const { v4: uuidv4 } = require('uuid'); // Generate unique IDs
 
 const storeSelectedData = async (req, res) => {
   try {
-    const { selectedFields, expiryTime, viewOnce, eID } = req.body; // Changed expiryDate to expiryTime
+    const { selectedFields, expiryTime, viewOnce, eID } = req.body; 
+
+    // Debug log for incoming data
+    console.log("Incoming data:", req.body);
 
     // Validate selected fields
     if (!selectedFields || selectedFields.length === 0) {
       return res.status(400).json({ message: 'No valid fields selected' });
+    }
+
+    // Validate expiryTime and set a fallback (optional)
+    if (!expiryTime) {
+      return res.status(400).json({ message: 'expiryTime is required' });
     }
 
     // Fetch the User model using eID
@@ -19,36 +27,45 @@ const storeSelectedData = async (req, res) => {
       return res.status(404).json({ message: 'Person not found' });
     }
 
-    // Convert selectedFields into a nested object
+    // Convert selectedFields into a nested object for dot notation
     const selectedData = selectedFields.reduce((acc, field) => {
-      const keys = field.split('.'); // Split fields by dot notation
+      const keys = field.split('.');
       keys.reduce((nestedAcc, key, index) => {
         if (index === keys.length - 1) {
-          nestedAcc[key] = true;  // Set the final key to true
+          nestedAcc[key] = true;
         } else {
-          nestedAcc[key] = nestedAcc[key] || {}; // Create nested object if it doesn't exist
+          nestedAcc[key] = nestedAcc[key] || {};
         }
         return nestedAcc[key];
       }, acc);
       return acc;
     }, {});
 
-    // Ensure expiryTime is provided
-    if (!expiryTime) {
-      return res.status(400).json({ message: 'expiryTime is required' });
-    }
+    // Debug log to check selectedData structure
+    console.log("Constructed selectedData:", selectedData);
 
-    // Generate dataID and create new DataShare instance
+    // Generate dataID and create a new DataShare instance
     const dataID = uuidv4();
-    const dataShare = new DataShare({ eID, dataID, selectedData, expiryTime, viewOnce });
-    await dataShare.save();
+    const dataShare = new DataShare({
+      eID,
+      dataID,
+      selectedData,
+      expiryTime,
+      viewOnce
+    });
 
+    // Debug log to check DataShare object before saving
+    console.log("DataShare object to save:", dataShare);
+
+    await dataShare.save();
     res.status(200).json({ message: 'Selected data stored successfully', DataID: dataID });
+
   } catch (error) {
     console.error('Error storing selected data:', error);
     res.status(500).json({ message: 'Error storing selected data', error });
   }
 };
+
 
 
 // Retrieve Data
