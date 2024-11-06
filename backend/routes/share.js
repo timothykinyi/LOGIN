@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { shareData, getData } = require('../controllers/shareController');
+const { storeSelectedData, getData } = require('../controllers/shareController');
 
-router.post('/share-data', shareData); // Endpoint to create a new data share
-router.get('/get-data/:dataID', getData); // Endpoint to retrieve shared data
+router.post('/share-data', storeSelectedData); 
+router.get('/get-data/:dataID', getData);
 
 module.exports = router;

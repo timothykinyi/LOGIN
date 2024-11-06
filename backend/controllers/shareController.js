@@ -3,38 +3,37 @@ const DataShare = require('../models/SharedData'); // The DataShare schema
 const { v4: uuidv4 } = require('uuid'); // Generate unique IDs
 
 // Share Data
-const shareData = async (req, res) => {
+
+const storeSelectedData = async (req, res) => {
   try {
-    const { userId, selectedFields, expiryHours } = req.body;
-    
-    // Fetch user data
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    const {selectedFields, expiryDate, viewOnce, eID} = req.body;
+    // Validate selected fields
+    if (!selectedFields || selectedFields.length === 0) {
+      return res.status(400).json({ message: 'No valid fields selected' });
+    }
 
-    // Select specified fields
-    const sharedData = {};
-    selectedFields.forEach(field => {
-      if (user[field] !== undefined) {
-        sharedData[field] = user[field];
-      }
-    });
+    // Fetch the Comp model using compId (cID)
+    const user = await User.findOne({ eID: eID }); // Use findOne with the cID field
+    if (!user) {
+      return res.status(404).json({ message: 'person not found' });
+    }
 
-    // Generate a unique dataID
+    const selectedData = selectedFields.reduce((acc, field) => {
+      acc[field] = true;  // Set each field to true or a relevant value
+      return acc;
+    }, {});
+
     const dataID = uuidv4();
-    
-    // Calculate expiry time
-    const expiryTime = new Date(Date.now() + expiryHours * 60 * 60 * 1000);
-
-    // Save to DataShare collection
-    const dataShare = new DataShare({ dataID, sharedData, expiryTime });
+    const dataShare = new DataShare({ eID, dataID, selectedData, expiryTime, viewOnce });
     await dataShare.save();
 
-    res.status(201).json({ dataID, expiryTime });
+    res.status(200).json({ message: 'Selected data stored successfully', Dataid: dataID });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error sharing data' });
+    console.error('Error storing selected data:', error);
+    res.status(500).json({ message: 'Error storing selected data', error });
   }
 };
+
 // Retrieve Data
 const getData = async (req, res) => {
   try {
@@ -57,6 +56,6 @@ const getData = async (req, res) => {
 };
 
 module.exports = {
-  shareData,
+  storeSelectedData,
   getData,
 };
