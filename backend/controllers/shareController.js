@@ -62,12 +62,10 @@ const getSelectedData = async (req, res) => {
       return res.status(404).json({ message: 'No shared data found for the given ID and eID' });
     }
 
-    // Extract selectedData and convert to plain object if stored as Map
+    // Convert selectedData to a plain object if it's stored as Map
     const selectedData = dataShare.selectedData instanceof Map
       ? Object.fromEntries(dataShare.selectedData)
       : dataShare.selectedData;
-
-    console.log("Selected Data after Map conversion:", selectedData);
 
     // Fetch the User document using the eID from dataShare
     const user = await User.findOne({ eID: dataShare.eID }).lean();
@@ -75,22 +73,21 @@ const getSelectedData = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Recursive function to retrieve selected fields from the user data
+    // Recursive function to retrieve selected fields, including nested data
     const retrieveSelectedFields = (selection, data) => {
       const result = {};
 
       for (const [key, value] of Object.entries(selection)) {
         if (typeof value === 'object' && value !== null) {
-          // If the value is an object, recursively retrieve nested data
+          // Recursive case: nested object handling
           if (data[key] && typeof data[key] === 'object') {
             const nestedData = retrieveSelectedFields(value, data[key]);
             if (Object.keys(nestedData).length > 0) {
               result[key] = nestedData;
-              console.log(nestedData);
             }
           }
         } else if (value === true) {
-          // If the value is true, add the corresponding data field
+          // Base case: add field if selected and exists in user data
           if (data[key] !== undefined) {
             result[key] = data[key];
           }
@@ -100,10 +97,10 @@ const getSelectedData = async (req, res) => {
       return result;
     };
 
-    // Retrieve data based on selectedData
+    // Retrieve data based on selectedData structure
     const retrievedData = retrieveSelectedFields(selectedData, user);
 
-    // Send retrieved data or a not-found message if empty
+    // Send retrieved data if found, or a 404 if no matching data
     if (Object.keys(retrievedData).length > 0) {
       res.status(200).json({ message: 'Data retrieved successfully', data: retrievedData });
     } else {
@@ -115,6 +112,7 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
+
 
 
 
