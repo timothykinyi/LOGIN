@@ -84,25 +84,56 @@ const getSelectedData = async (req, res) => {
 
     const retrievedData = {};
 
-    // Iterate over selectedData and retrieve all the data for each selected key
+    // Iterate over selectedData and use dot notation to retrieve nested fields
     for (const key in selectedData) {
       if (selectedData[key] === true) {
-        // Direct field selection or nested object
+        // Direct field selection
         const fieldValue = retrieveFieldByPath(user, key);
         if (fieldValue !== undefined) {
-          // Assign the whole object for the selected key
-          retrievedData[key] = fieldValue;
+          // Structure nested output based on dot notation
+          key.split('.').reduce((acc, part, index, arr) => {
+            if (index === arr.length - 1) {
+              acc[part] = fieldValue;
+            } else {
+              acc[part] = acc[part] || {};
+            }
+            return acc[part];
+          }, retrievedData);
         }
       } else if (typeof selectedData[key] === 'object') {
-        // For nested fields (recursive call for deeper levels)
+        // Nested object selection (recursive call)
         for (const subKey in selectedData[key]) {
           if (selectedData[key][subKey] === true) {
             const nestedKey = `${key}.${subKey}`;
             const fieldValue = retrieveFieldByPath(user, nestedKey);
             if (fieldValue !== undefined) {
-              retrievedData[nestedKey] = fieldValue;
+              nestedKey.split('.').reduce((acc, part, index, arr) => {
+                if (index === arr.length - 1) {
+                  acc[part] = fieldValue;
+                } else {
+                  acc[part] = acc[part] || {};
+                }
+                return acc[part];
+              }, retrievedData);
             }
           }
+        }
+      } else if (Array.isArray(selectedData[key])) {
+        // Handle arrays (retrieve each item inside the array)
+        const arrayData = retrieveFieldByPath(user, key);
+        if (Array.isArray(arrayData)) {
+          retrievedData[key] = arrayData.map(item => {
+            const nestedData = {};
+
+            // If the array item is an object, we can process it further
+            for (const subKey of selectedData[key]) {
+              if (subKey === true) {
+                // Get the entire object data
+                nestedData[subKey] = item[subKey];
+              }
+            }
+            return nestedData;
+          });
         }
       }
     }
@@ -120,6 +151,7 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
+
 
 
 
