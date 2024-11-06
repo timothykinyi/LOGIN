@@ -78,21 +78,28 @@ const getSelectedData = async (req, res) => {
 
       for (const key in selectedFields) {
         if (selectedFields[key] === true) {
-          const keys = key.split('.'); // For nested properties
+          const keys = key.split('.'); // Split the key by dot notation for nested properties
           let value = userData;
 
           for (const k of keys) {
+            // Navigate through each level, checking if the property exists
             if (value && k in value) {
               value = value[k];
             } else {
-              value = undefined; // If any part of the path is missing, set value to undefined
+              value = undefined; // Stop if any part of the path is missing
               break;
             }
           }
 
+          // Only add the field to the result if a valid value was found
           if (value !== undefined) {
-            // Only add the field if the value is found
-            result[key] = value;
+            let nestedResult = result;
+            for (let i = 0; i < keys.length - 1; i++) {
+              const nestedKey = keys[i];
+              if (!nestedResult[nestedKey]) nestedResult[nestedKey] = {}; // Ensure the parent object exists
+              nestedResult = nestedResult[nestedKey];
+            }
+            nestedResult[keys[keys.length - 1]] = value; // Set the final nested value
           }
         }
       }
@@ -120,6 +127,7 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error });
   }
 };
+
 
 
 
