@@ -52,25 +52,32 @@ const storeSelectedData = async (req, res) => {
   }
 };
 
-const filterData = (userData, selectedData) => {
-  if (!userData || !selectedData) {
-    console.error("Invalid userData or selectedData", userData, selectedData);
-    return {}; // Return empty object if either is invalid
+function filterUserData(userData, dataShare) {
+  const filteredData = {};
+
+  // Loop through the selectedData to filter the relevant fields from the user data
+  for (const [field, selection] of Object.entries(dataShare.selectedData)) {
+    if (selection === true) {
+      // If the field is a simple boolean (like 'email'), add it directly
+      if (typeof userData[field] !== 'undefined') {
+        filteredData[field] = userData[field];
+      }
+    } else if (typeof selection === 'object') {
+      // If the field has nested selected data (like 'personalinfo')
+      if (userData[field]) {
+        filteredData[field] = {};
+        for (const [nestedField, isSelected] of Object.entries(selection)) {
+          if (isSelected && userData[field][nestedField] !== undefined) {
+            filteredData[field][nestedField] = userData[field][nestedField];
+          }
+        }
+      }
+    }
   }
 
-  console.log('Filtering data with userData:', userData); // Log user data before filtering
-  console.log('Using selectedData:', selectedData); // Log selected data for transparency
+  return filteredData;
+}
 
-  return Object.keys(selectedData).reduce((filteredData, field) => {
-    const value = userData[field];
-    if (value) {
-      filteredData[field] = value;
-    } else {
-      console.log(`Field '${field}' not found in user data`); // Log if field is not found
-    }
-    return filteredData;
-  }, {});
-};
 
 const retrieveSelectedData = async (req, res) => {
   try {
