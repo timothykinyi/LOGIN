@@ -75,26 +75,23 @@ const getSelectedData = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Function to retrieve only selected fields from the user data
+    // Recursive function to retrieve selected fields from the user data
     const retrieveSelectedFields = (selection, data) => {
       const result = {};
 
       for (const [key, value] of Object.entries(selection)) {
-        if (value === true) {
-          const keys = key.split('.');
-          let temp = data;
-
-          for (const part of keys) {
-            if (temp && temp[part] !== undefined) {
-              temp = temp[part];
-            } else {
-              temp = null;
-              break;
+        if (typeof value === 'object' && value !== null) {
+          // If the value is an object, recursively retrieve nested data
+          if (data[key] && typeof data[key] === 'object') {
+            const nestedData = retrieveSelectedFields(value, data[key]);
+            if (Object.keys(nestedData).length > 0) {
+              result[key] = nestedData;
             }
           }
-
-          if (temp !== null) {
-            result[key] = temp;
+        } else if (value === true) {
+          // If the value is true, add the corresponding data field
+          if (data[key] !== undefined) {
+            result[key] = data[key];
           }
         }
       }
@@ -117,6 +114,7 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
+
 
 
 
