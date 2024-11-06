@@ -54,9 +54,9 @@ const storeSelectedData = async (req, res) => {
 
 const getSelectedData = async (req, res) => {
   try {
-    const { dataID } = req.params; // Assume dataID is passed as a parameter
+    const { dataID } = req.params;
 
-    // Fetch the DataShare document using dataID
+    // Fetch the DataShare document using dataID and eID
     const dataShare = await DataShare.findOne({ dataID });
     if (!dataShare) {
       return res.status(404).json({ message: 'No shared data found for the given ID and eID' });
@@ -64,9 +64,9 @@ const getSelectedData = async (req, res) => {
 
     // Extract selectedData structure from DataShare
     const selectedData = dataShare.selectedData;
-    const Dd = dataShare.eID;
+    const Dd = dataShare.eID
     // Fetch the User model using eID
-    const user = await User.findOne({ eID: Dd});
+    const user = await User.findOne({ Dd });
     if (!user) {
       return res.status(404).json({ message: 'Person not found' });
     }
@@ -74,39 +74,54 @@ const getSelectedData = async (req, res) => {
     // Function to retrieve the nested values from user based on selectedData structure
     const getDataFromUser = (selectedFields, data) => {
       const result = {};
-      
+
       selectedFields.forEach(field => {
         const keys = field.split('.');
         let value = data;
-        
-        keys.forEach(key => {
+
+        // Navigate through the nested keys to extract the value
+        keys.forEach((key, index) => {
           if (value && value[key] !== undefined) {
             value = value[key];
           } else {
-            value = null; // Field not found
+            value = null; // If any key does not exist, set the value to null
+            return; // Exit early if value is not found
+          }
+
+          // For the last key, store the value in the result
+          if (index === keys.length - 1) {
+            result[field] = value;
           }
         });
-
-        // Set the result with the final value
-        if (value !== null) {
-          result[field] = value;
-        }
       });
-      
+
       return result;
     };
+
+    // Debugging: Log the selectedData and user object
+    console.log('Selected Data Structure:', selectedData);
+    console.log('User Data:', user);
 
     // Retrieve the data based on selectedData structure
     const retrievedData = getDataFromUser(Object.keys(selectedData), user);
 
+    // Debugging: Log the retrieved data
+    console.log('Retrieved Data:', retrievedData);
+
     // Send the retrieved data as the response
-    res.status(200).json({ message: 'Data retrieved successfully', data: retrievedData });
+    if (Object.keys(retrievedData).length > 0) {
+      res.status(200).json({ message: 'Data retrieved successfully', data: retrievedData });
+    } else {
+      res.status(404).json({ message: 'No matching data found' });
+    }
 
   } catch (error) {
     console.error('Error retrieving selected data:', error);
     res.status(500).json({ message: 'Error retrieving selected data', error });
   }
 };
+
+
 
 
 module.exports = {
