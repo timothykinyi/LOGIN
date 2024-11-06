@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { storeSelectedData, getData } = require('../controllers/shareController');
+const { storeSelectedData, retrieveSelectedData } = require('../controllers/shareController');
 
 router.post('/share-data', storeSelectedData); 
-router.get('/get-data/:dataID', getData);
+router.get('/get-data/:dataID', retrieveSelectedData);
 
 module.exports = router;

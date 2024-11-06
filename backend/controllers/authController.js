@@ -390,7 +390,6 @@ const companyactuallogin = async (req, res) => {
   }
 };
 
-// Create a predefined mapping of possible data fields
 const availableFields = {
   fullName: 'fullName',
   email: 'email',
@@ -401,7 +400,6 @@ const availableFields = {
   eID: 'eID',
 };
 
-// Function to retrieve selected data from the Comp model
 const retrieveStoredData = async (compId) => {
   try {
     // Fetch the Comp model using the custom cID field, not the _id
@@ -434,7 +432,6 @@ const retrieveStoredData = async (compId) => {
   }
 };
 
-// Main login function
 const complogin = async (req, res) => {
   const { username, password, cid } = req.body;
 
@@ -500,8 +497,6 @@ const complogin = async (req, res) => {
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
 };
-
-
 
 const sendMessage = async (nuserId, messageContent) => {
   try {

@@ -52,31 +52,47 @@ const storeSelectedData = async (req, res) => {
   }
 };
 
-
-
-
-// Retrieve Data
-const getData = async (req, res) => {
+const retrieveSelectedData = async (req, res) => {
   try {
-    const { dataID } = req.params;
-    const dataShare = await DataShare.findOne({ dataID });
+    const { dataID } = req.params; // Get dataID from request parameters
 
-    // Check if data exists and is still valid
-    if (!dataShare) return res.status(404).json({ error: 'Data not found' });
-    if (new Date() > dataShare.expiryTime) {
-      // Expired data: optionally, delete it
-      await DataShare.deleteOne({ dataID });
-      return res.status(410).json({ error: 'Data has expired' });
+    // Fetch the DataShare entry using the dataID
+    const dataShare = await DataShare.findOne({ dataID });
+    if (!dataShare) {
+      return res.status(404).json({ message: 'Data not found' });
     }
 
-    res.status(200).json({ sharedData: dataShare.sharedData });
+    // Fetch the User associated with the eID
+    const user = await User.findOne({ eID: dataShare.eID });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Recursive function to filter user data based on selectedData structure
+    const filterData = (source, filter) => {
+      const result = {};
+      for (const key in filter) {
+        if (filter[key] === true) {
+          result[key] = source[key]; // Copy the field's value if set to true
+        } else if (typeof filter[key] === 'object' && filter[key] !== null) {
+          result[key] = filterData(source[key], filter[key]); // Recurse if it's a nested object
+        }
+      }
+      return result;
+    };
+
+    // Filter the user data based on the selectedData structure
+    const filteredData = filterData(user.toObject(), dataShare.selectedData);
+
+    res.status(200).json({ data: filteredData });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error retrieving data' });
+    console.error('Error retrieving selected data:', error);
+    res.status(500).json({ message: 'Error retrieving selected data', error });
   }
 };
 
+
 module.exports = {
   storeSelectedData,
-  getData,
+  retrieveSelectedData,
 };
