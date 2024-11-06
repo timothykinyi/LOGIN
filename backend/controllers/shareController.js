@@ -67,19 +67,23 @@ const getSelectedData = async (req, res) => {
       ? Object.fromEntries(dataShare.selectedData)
       : dataShare.selectedData;
 
+    console.log("Selected Data Structure:", selectedData);
+
     // Fetch the User document using the eID from dataShare
     const user = await User.findOne({ eID: dataShare.eID }).lean();
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Recursive function to retrieve selected fields, including nested data
+    console.log("User Data:", user);
+
+    // Recursive function to retrieve selected fields, including deeply nested data
     const retrieveSelectedFields = (selection, data) => {
       const result = {};
 
       for (const [key, value] of Object.entries(selection)) {
         if (typeof value === 'object' && value !== null) {
-          // Recursive case: nested object handling
+          // Check for nested selection and data
           if (data[key] && typeof data[key] === 'object') {
             const nestedData = retrieveSelectedFields(value, data[key]);
             if (Object.keys(nestedData).length > 0) {
@@ -87,7 +91,7 @@ const getSelectedData = async (req, res) => {
             }
           }
         } else if (value === true) {
-          // Base case: add field if selected and exists in user data
+          // Direct field selection
           if (data[key] !== undefined) {
             result[key] = data[key];
           }
@@ -99,6 +103,8 @@ const getSelectedData = async (req, res) => {
 
     // Retrieve data based on selectedData structure
     const retrievedData = retrieveSelectedFields(selectedData, user);
+
+    console.log("Retrieved Data:", retrievedData); // Debugging to check the retrieved data
 
     // Send retrieved data if found, or a 404 if no matching data
     if (Object.keys(retrievedData).length > 0) {
@@ -112,11 +118,6 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
-
-
-
-
-
 
 
 
