@@ -64,10 +64,10 @@ const getSelectedData = async (req, res) => {
 
     // Extract selectedData structure from DataShare
     const selectedData = dataShare.selectedData;
-    const Dd = dataShare.eID;
+    const eID = dataShare.eID;
 
     // Fetch the User model using eID
-    const user = await User.findOne({ eID: Dd });
+    const user = await User.findOne({ eID });
     if (!user) {
       return res.status(404).json({ message: 'Person not found' });
     }
@@ -76,25 +76,29 @@ const getSelectedData = async (req, res) => {
     const getDataFromUser = (selectedFields, data) => {
       const result = {};
 
-      selectedFields.forEach(field => {
-        const keys = field.split('.'); // Split the field by dot (for nested properties)
-        let value = data;
+      // Loop over the selectedFields to find out the keys that are true
+      for (let field in selectedFields) {
+        if (selectedFields[field] === true) {
+          const keys = field.split('.'); // Split the field by dot (for nested properties)
+          let value = data;
 
-        // Navigate through the nested keys to extract the value
-        keys.forEach((key, index) => {
-          if (value && value[key] !== undefined) {
-            value = value[key];
-          } else {
-            value = null; // If any key does not exist, set the value to null
-            return; // Exit early if value is not found
+          // Navigate through the nested keys to extract the value
+          for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            if (value && value[key] !== undefined) {
+              value = value[key];
+            } else {
+              value = null; // If any key does not exist, set the value to null
+              break;
+            }
           }
 
-          // For the last key, store the value in the result
-          if (index === keys.length - 1) {
+          // Only add to result if value exists
+          if (value !== null) {
             result[field] = value;
           }
-        });
-      });
+        }
+      }
 
       return result;
     };
@@ -104,7 +108,7 @@ const getSelectedData = async (req, res) => {
     console.log('User Data:', user);
 
     // Retrieve the data based on selectedData structure
-    const retrievedData = getDataFromUser(Object.keys(selectedData), user);
+    const retrievedData = getDataFromUser(selectedData, user);
 
     // Debugging: Log the retrieved data
     console.log('Retrieved Data:', retrievedData);
@@ -121,6 +125,7 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error });
   }
 };
+
 
 
 
