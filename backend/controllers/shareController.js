@@ -77,23 +77,28 @@ const getSelectedData = async (req, res) => {
 
     console.log("User Data:", user);
 
-    // Recursive function to retrieve selected fields, including deeply nested data
+    // Enhanced recursive function to retrieve selected fields, including deeply nested data
     const retrieveSelectedFields = (selection, data) => {
       const result = {};
 
       for (const [key, value] of Object.entries(selection)) {
         if (typeof value === 'object' && value !== null) {
-          // Check for nested selection and data
+          // Ensure nested data exists in user before diving deeper
           if (data[key] && typeof data[key] === 'object') {
+            console.log(`Entering nested level for key: ${key}`); // Debugging each level
             const nestedData = retrieveSelectedFields(value, data[key]);
             if (Object.keys(nestedData).length > 0) {
               result[key] = nestedData;
             }
+          } else {
+            console.log(`Nested data not found for key: ${key}`); // Missing nested data
           }
         } else if (value === true) {
-          // Direct field selection
+          // Directly add field if it exists
           if (data[key] !== undefined) {
             result[key] = data[key];
+          } else {
+            console.log(`Field "${key}" is missing in user data`); // Missing field
           }
         }
       }
@@ -104,7 +109,7 @@ const getSelectedData = async (req, res) => {
     // Retrieve data based on selectedData structure
     const retrievedData = retrieveSelectedFields(selectedData, user);
 
-    console.log("Retrieved Data:", retrievedData); // Debugging to check the retrieved data
+    console.log("Retrieved Data:", retrievedData); // Debugging the final retrieved data
 
     // Send retrieved data if found, or a 404 if no matching data
     if (Object.keys(retrievedData).length > 0) {
@@ -118,8 +123,6 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
-
-
 
 
 
