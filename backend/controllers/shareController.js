@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid'); // Generate unique IDs
 
 const storeSelectedData = async (req, res) => {
   try {
-    const { selectedFields, expiryDate, viewOnce, eID } = req.body;
+    const { selectedFields, expiryTime, viewOnce, eID } = req.body; // Changed expiryDate to expiryTime
 
     // Validate selected fields
     if (!selectedFields || selectedFields.length === 0) {
@@ -33,14 +33,14 @@ const storeSelectedData = async (req, res) => {
       return acc;
     }, {});
 
-    // Ensure expiryDate is provided
-    if (!expiryDate) {
-      return res.status(400).json({ message: 'expiryDate is required' });
+    // Ensure expiryTime is provided
+    if (!expiryTime) {
+      return res.status(400).json({ message: 'expiryTime is required' });
     }
 
     // Generate dataID and create new DataShare instance
     const dataID = uuidv4();
-    const dataShare = new DataShare({ eID, dataID, selectedData, expiryDate, viewOnce });
+    const dataShare = new DataShare({ eID, dataID, selectedData, expiryTime, viewOnce });
     await dataShare.save();
 
     res.status(200).json({ message: 'Selected data stored successfully', DataID: dataID });
