@@ -76,7 +76,7 @@ const getSelectedData = async (req, res) => {
       const result = {};
 
       selectedFields.forEach(field => {
-        const keys = field;
+        const keys = field.split('.');
         let value = data;
 
         // Navigate through the nested keys to extract the value
