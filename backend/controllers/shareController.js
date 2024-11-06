@@ -64,9 +64,9 @@ const getSelectedData = async (req, res) => {
 
     // Extract selectedData structure from DataShare
     const selectedData = dataShare.selectedData;
-    const Dd = dataShare.eID
+    const Dd = dataShare.eID;
     // Fetch the User model using eID
-    const user = await User.findOne({ Dd });
+    const user = await User.findOne({ eID: Dd });
     if (!user) {
       return res.status(404).json({ message: 'Person not found' });
     }
