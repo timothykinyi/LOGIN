@@ -6,28 +6,24 @@ const { v4: uuidv4 } = require('uuid'); // Generate unique IDs
 
 const storeSelectedData = async (req, res) => {
   try {
-    const { selectedFields, expiryTime, viewOnce, eID } = req.body; 
-
-    // Debug log for incoming data
-    console.log("Incoming data:", req.body);
+    const { selectedFields, expiryDate, viewOnce, eID } = req.body; // Use expiryDate as per incoming data
 
     // Validate selected fields
     if (!selectedFields || selectedFields.length === 0) {
       return res.status(400).json({ message: 'No valid fields selected' });
     }
 
-    // Validate expiryTime and set a fallback (optional)
-    if (!expiryTime) {
-      return res.status(400).json({ message: 'expiryTime is required' });
+    if (!expiryDate) {
+      return res.status(400).json({ message: 'expiryDate is required' });
     }
 
     // Fetch the User model using eID
-    const user = await User.findOne({ eID: eID });
+    const user = await User.findOne({ eID });
     if (!user) {
       return res.status(404).json({ message: 'Person not found' });
     }
 
-    // Convert selectedFields into a nested object for dot notation
+    // Transform selectedFields into a nested structure
     const selectedData = selectedFields.reduce((acc, field) => {
       const keys = field.split('.');
       keys.reduce((nestedAcc, key, index) => {
@@ -41,21 +37,14 @@ const storeSelectedData = async (req, res) => {
       return acc;
     }, {});
 
-    // Debug log to check selectedData structure
-    console.log("Constructed selectedData:", selectedData);
-
-    // Generate dataID and create a new DataShare instance
     const dataID = uuidv4();
     const dataShare = new DataShare({
       eID,
       dataID,
       selectedData,
-      expiryTime,
-      viewOnce
+      expiryTime: expiryDate, // Use the correct field name for saving
+      viewOnce,
     });
-
-    // Debug log to check DataShare object before saving
-    console.log("DataShare object to save:", dataShare);
 
     await dataShare.save();
     res.status(200).json({ message: 'Selected data stored successfully', DataID: dataID });
@@ -65,6 +54,7 @@ const storeSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error storing selected data', error });
   }
 };
+
 
 
 
