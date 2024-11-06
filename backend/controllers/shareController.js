@@ -55,22 +55,19 @@ const storeSelectedData = async (req, res) => {
 const filterData = (userData, selectedData) => {
   const filteredData = {};
 
-  // Check if selectedData exists and is an object
-  if (!selectedData || typeof selectedData !== 'object') {
-    throw new Error('Invalid selectedData format');
-  }
-
-  // Loop through the selectedData to filter the relevant fields from the user data
+  // Iterate over each field in selectedData
   for (const [field, selection] of Object.entries(selectedData)) {
+    // Check if it's a boolean (simple field selection) or an object (nested selection)
     if (selection === true) {
-      // If the field is a simple boolean (like 'email'), add it directly
-      if (typeof userData[field] !== 'undefined') {
+      // If selectedData requests this field, check if it's in userData
+      if (userData[field] !== undefined) {
         filteredData[field] = userData[field];
       }
     } else if (typeof selection === 'object') {
-      // If the field has nested selected data (like 'personalinfo')
+      // If it's an object, we assume it's a nested structure
       if (userData[field]) {
         filteredData[field] = {};
+        // Loop through the nested fields within the selectedData
         for (const [nestedField, isSelected] of Object.entries(selection)) {
           if (isSelected && userData[field][nestedField] !== undefined) {
             filteredData[field][nestedField] = userData[field][nestedField];
@@ -83,13 +80,13 @@ const filterData = (userData, selectedData) => {
   return filteredData;
 };
 
+// Example of how to use this:
 const retrieveSelectedData = async (req, res) => {
   try {
     const { dataID } = req.params;
 
     // Fetch the DataShare document by dataID
     const dataShare = await DataShare.findOne({ dataID });
-    console.log('DataShare:', dataShare); // Log dataShare to check its content
 
     if (!dataShare) {
       return res.status(404).json({ message: 'Data not found for the provided ID' });
@@ -99,28 +96,28 @@ const retrieveSelectedData = async (req, res) => {
 
     // Fetch the User data by eID
     const user = await User.findOne({ eID });
-    console.log('User:', user); // Log user data to check its content
 
     if (!user) {
       return res.status(404).json({ message: 'User not found for the provided eID' });
     }
 
-    // Check if selectedData is valid
+    // Ensure selectedData is not empty
     if (!selectedData) {
-      return res.status(400).json({ message: 'Selected data is missing in DataShare' });
+      return res.status(400).json({ message: 'No data selected for retrieval' });
     }
 
-    // Pass the user data and selectedData to filterData
+    // Filter the user data based on the selected fields
     const filteredData = filterData(user, selectedData);
 
     // Return the filtered data to the frontend
-    res.status(200).json(filteredData);
+    return res.status(200).json(filteredData);
 
   } catch (error) {
     console.error('Error retrieving selected data:', error);
-    res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
+    return res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
+
 
 module.exports = {
   storeSelectedData,
