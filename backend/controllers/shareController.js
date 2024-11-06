@@ -52,7 +52,7 @@ const storeSelectedData = async (req, res) => {
   }
 };
 
-function filterUserData(userData, dataShare) {
+function filterData(userData, dataShare) {
   const filteredData = {};
 
   // Loop through the selectedData to filter the relevant fields from the user data
