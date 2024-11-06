@@ -52,77 +52,64 @@ const storeSelectedData = async (req, res) => {
   }
 };
 
-const filterData = (userData, selectedData) => {
-  const filteredData = {};
-
-  // Iterate over each field in selectedData
-  for (const [field, selection] of Object.entries(selectedData)) {
-    // Check if it's a boolean (simple field selection) or an object (nested selection)
-    if (selection === true) {
-      // If selectedData requests this field, check if it's in userData
-      if (userData[field] !== undefined) {
-        filteredData[field] = userData[field];
-      }
-    } else if (typeof selection === 'object') {
-      // If it's an object, we assume it's a nested structure
-      if (userData[field]) {
-        filteredData[field] = {};
-        // Loop through the nested fields within the selectedData
-        for (const [nestedField, isSelected] of Object.entries(selection)) {
-          if (isSelected && userData[field][nestedField] !== undefined) {
-            filteredData[field][nestedField] = userData[field][nestedField];
-          }
-        }
-      }
-    }
-  }
-
-  console.log(filteredData);
-  return filteredData;
-};
-
-// Example of how to use this:
-const retrieveSelectedData = async (req, res) => {
+const getSelectedData = async (req, res) => {
   try {
-    const { dataID } = req.params;
+    const { dataID } = req.params; // Assume dataID is passed as a parameter
 
-    // Fetch the DataShare document by dataID
-    const dataShare = await DataShare.findOne({ dataID });
-
+    // Fetch the DataShare document using dataID
+    const dataShare = await DataShare.findOne({ dataID, eID });
     if (!dataShare) {
-      return res.status(404).json({ message: 'Data not found for the provided ID' });
+      return res.status(404).json({ message: 'No shared data found for the given ID and eID' });
     }
 
-    const { eID, selectedData } = dataShare;
+    // Extract selectedData structure from DataShare
+    const selectedData = dataShare.selectedData;
 
-    // Fetch the User data by eID
+    // Fetch the User model using eID
     const user = await User.findOne({ eID });
-
     if (!user) {
-      return res.status(404).json({ message: 'User not found for the provided eID' });
+      return res.status(404).json({ message: 'Person not found' });
     }
 
-    // Ensure selectedData is not empty
-    if (!selectedData) {
-      return res.status(400).json({ message: 'No data selected for retrieval' });
-    }
+    // Function to retrieve the nested values from user based on selectedData structure
+    const getDataFromUser = (selectedFields, data) => {
+      const result = {};
+      
+      selectedFields.forEach(field => {
+        const keys = field.split('.');
+        let value = data;
+        
+        keys.forEach(key => {
+          if (value && value[key] !== undefined) {
+            value = value[key];
+          } else {
+            value = null; // Field not found
+          }
+        });
 
-    // Filter the user data based on the selected fields
-    const filteredData = filterData(user, selectedData);
+        // Set the result with the final value
+        if (value !== null) {
+          result[field] = value;
+        }
+      });
+      
+      return result;
+    };
 
-    // Return the filtered data to the frontend
-    console.log(filteredData);
-    return res.status(200).json(filteredData);
+    // Retrieve the data based on selectedData structure
+    const retrievedData = getDataFromUser(Object.keys(selectedData), user);
 
+    // Send the retrieved data as the response
+    res.status(200).json({ message: 'Data retrieved successfully', data: retrievedData });
 
   } catch (error) {
     console.error('Error retrieving selected data:', error);
-    return res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
+    res.status(500).json({ message: 'Error retrieving selected data', error });
   }
 };
 
 
 module.exports = {
   storeSelectedData,
-  retrieveSelectedData,
+  getSelectedData,
 };
