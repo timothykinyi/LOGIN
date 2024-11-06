@@ -62,12 +62,12 @@ const getSelectedData = async (req, res) => {
       return res.status(404).json({ message: 'No shared data found for the given ID and eID' });
     }
 
-    // Convert selectedData to a plain object if it's stored as Map
+    // Convert selectedData to plain object if it's stored as Map
     const selectedData = dataShare.selectedData instanceof Map
       ? Object.fromEntries(dataShare.selectedData)
       : dataShare.selectedData;
 
-    console.log("Selected Data Structure:", selectedData);
+    console.log("Selected Data:", selectedData);
 
     // Fetch the User document using the eID from dataShare
     const user = await User.findOne({ eID: dataShare.eID }).lean();
@@ -77,41 +77,52 @@ const getSelectedData = async (req, res) => {
 
     console.log("User Data:", user);
 
-    // Enhanced recursive function to retrieve selected fields, including deeply nested data
-    const retrieveSelectedFields = (selection, data) => {
-      const result = {};
+    // Function to retrieve data using dot-notation for nested fields
+    const retrieveFieldByPath = (data, path) => {
+      return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), data);
+    };
 
-      for (const [key, value] of Object.entries(selection)) {
-        if (typeof value === 'object' && value !== null) {
-          // Ensure nested data exists in user before diving deeper
-          if (data[key] && typeof data[key] === 'object') {
-            console.log(`Entering nested level for key: ${key}`); // Debugging each level
-            const nestedData = retrieveSelectedFields(value, data[key]);
-            if (Object.keys(nestedData).length > 0) {
-              result[key] = nestedData;
+    const retrievedData = {};
+
+    // Iterate over selectedData and use dot notation to retrieve nested fields
+    for (const key in selectedData) {
+      if (selectedData[key] === true) {
+        // Direct field selection
+        const fieldValue = retrieveFieldByPath(user, key);
+        if (fieldValue !== undefined) {
+          // Structure nested output based on dot notation
+          key.split('.').reduce((acc, part, index, arr) => {
+            if (index === arr.length - 1) {
+              acc[part] = fieldValue;
+            } else {
+              acc[part] = acc[part] || {};
             }
-          } else {
-            console.log(`Nested data not found for key: ${key}`); // Missing nested data
-          }
-        } else if (value === true) {
-          // Directly add field if it exists
-          if (data[key] !== undefined) {
-            result[key] = data[key];
-          } else {
-            console.log(`Field "${key}" is missing in user data`); // Missing field
+            return acc[part];
+          }, retrievedData);
+        }
+      } else if (typeof selectedData[key] === 'object') {
+        // Nested object selection (recursive call)
+        for (const subKey in selectedData[key]) {
+          if (selectedData[key][subKey] === true) {
+            const nestedKey = `${key}.${subKey}`;
+            const fieldValue = retrieveFieldByPath(user, nestedKey);
+            if (fieldValue !== undefined) {
+              nestedKey.split('.').reduce((acc, part, index, arr) => {
+                if (index === arr.length - 1) {
+                  acc[part] = fieldValue;
+                } else {
+                  acc[part] = acc[part] || {};
+                }
+                return acc[part];
+              }, retrievedData);
+            }
           }
         }
       }
+    }
 
-      return result;
-    };
+    console.log("Retrieved Data:", retrievedData);
 
-    // Retrieve data based on selectedData structure
-    const retrievedData = retrieveSelectedFields(selectedData, user);
-
-    console.log("Retrieved Data:", retrievedData); // Debugging the final retrieved data
-
-    // Send retrieved data if found, or a 404 if no matching data
     if (Object.keys(retrievedData).length > 0) {
       res.status(200).json({ message: 'Data retrieved successfully', data: retrievedData });
     } else {
