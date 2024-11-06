@@ -56,64 +56,59 @@ const getSelectedData = async (req, res) => {
   try {
     const { dataID } = req.params;
 
-    // Fetch the DataShare document using dataID
+    // Step 1: Fetch the DataShare document using dataID
     const dataShare = await DataShare.findOne({ dataID });
     if (!dataShare) {
-      return res.status(404).json({ message: 'No shared data found for the given ID and eID' });
+      return res.status(404).json({ message: 'No shared data found for the given ID' });
     }
 
-    // Extract selectedData structure from DataShare
+    // Extract `selectedData` structure and `eID` from DataShare
     const selectedData = dataShare.selectedData;
     const eID = dataShare.eID;
 
-    // Fetch the User model using eID
+    // Step 2: Fetch the User document using eID
     const user = await User.findOne({ eID });
     if (!user) {
-      return res.status(404).json({ message: 'Person not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    // Function to retrieve the nested values from user based on selectedData structure
-    const getDataFromUser = (selectedFields, data) => {
+    // Step 3: Build the response based on `selectedData` structure
+    const retrieveData = (selectedFields, userData) => {
       const result = {};
 
-      // Loop over the selectedFields to find out the keys that are true
-      for (let field in selectedFields) {
-        if (selectedFields[field] === true) {
-          const keys = field.split('.'); // Split the field by dot (for nested properties)
-          let value = data;
+      for (const key in selectedFields) {
+        if (selectedFields[key] === true) {
+          const keys = key.split('.'); // For nested properties
+          let value = userData;
 
-          // Navigate through the nested keys to extract the value
-          for (let i = 0; i < keys.length; i++) {
-            const key = keys[i];
-            if (value && value[key] !== undefined) {
-              value = value[key];
+          for (const k of keys) {
+            if (value && k in value) {
+              value = value[k];
             } else {
-              value = null; // If any key does not exist, set the value to null
+              value = undefined; // If any part of the path is missing, set value to undefined
               break;
             }
           }
 
-          // Only add to result if value exists
-          if (value !== null) {
-            result[field] = value;
+          if (value !== undefined) {
+            // Only add the field if the value is found
+            result[key] = value;
           }
         }
       }
-
       return result;
     };
 
-    // Debugging: Log the selectedData and user object
-    console.log('Selected Data Structure:', selectedData);
+    // Debugging: Log selectedData, user data, and the result
+    console.log('Selected Data:', selectedData);
     console.log('User Data:', user);
 
-    // Retrieve the data based on selectedData structure
-    const retrievedData = getDataFromUser(selectedData, user);
+    // Step 4: Retrieve data based on selectedData structure
+    const retrievedData = retrieveData(selectedData, user);
 
-    // Debugging: Log the retrieved data
-    console.log('Retrieved Data:', retrievedData);
+    console.log('Retrieved Data:', retrievedData); // Log the final data
 
-    // Send the retrieved data as the response
+    // Send the response with retrieved data or handle empty results
     if (Object.keys(retrievedData).length > 0) {
       res.status(200).json({ message: 'Data retrieved successfully', data: retrievedData });
     } else {
@@ -125,6 +120,7 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error });
   }
 };
+
 
 
 
