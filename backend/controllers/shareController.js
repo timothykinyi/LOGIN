@@ -56,66 +56,56 @@ const getSelectedData = async (req, res) => {
   try {
     const { dataID } = req.params;
 
-    // Step 1: Fetch the DataShare document using dataID
-    const dataShare = await DataShare.findOne({ dataID });
-    if (!dataShare) {
-      return res.status(404).json({ message: 'No shared data found for the given ID' });
+    // Fetch the DataShare document using dataID
+    const dataShare = await DataShare.findOne({ dataID }).lean();
+    if (!dataShare || !dataShare.selectedData) {
+      return res.status(404).json({ message: 'No shared data found for the given ID and eID' });
     }
 
-    // Extract `selectedData` structure and `eID` from DataShare
-    const selectedData = dataShare.selectedData;
-    const eID = dataShare.eID;
+    // Extract selectedData and convert to plain object if stored as Map
+    const selectedData = dataShare.selectedData instanceof Map
+      ? Object.fromEntries(dataShare.selectedData)
+      : dataShare.selectedData;
 
-    // Step 2: Fetch the User document using eID
-    const user = await User.findOne({ eID });
+    console.log("Selected Data after Map conversion:", selectedData);
+
+    // Fetch the User document using the eID from dataShare
+    const user = await User.findOne({ eID: dataShare.eID }).lean();
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Step 3: Build the response based on `selectedData` structure
-    const retrieveData = (selectedFields, userData) => {
+    // Function to retrieve only selected fields from the user data
+    const retrieveSelectedFields = (selection, data) => {
       const result = {};
 
-      for (const key in selectedFields) {
-        if (selectedFields[key] === true) {
-          const keys = key.split('.'); // Split the key by dot notation for nested properties
-          let value = userData;
+      for (const [key, value] of Object.entries(selection)) {
+        if (value === true) {
+          const keys = key.split('.');
+          let temp = data;
 
-          for (const k of keys) {
-            // Navigate through each level, checking if the property exists
-            if (value && k in value) {
-              value = value[k];
+          for (const part of keys) {
+            if (temp && temp[part] !== undefined) {
+              temp = temp[part];
             } else {
-              value = undefined; // Stop if any part of the path is missing
+              temp = null;
               break;
             }
           }
 
-          // Only add the field to the result if a valid value was found
-          if (value !== undefined) {
-            let nestedResult = result;
-            for (let i = 0; i < keys.length - 1; i++) {
-              const nestedKey = keys[i];
-              if (!nestedResult[nestedKey]) nestedResult[nestedKey] = {}; // Ensure the parent object exists
-              nestedResult = nestedResult[nestedKey];
-            }
-            nestedResult[keys[keys.length - 1]] = value; // Set the final nested value
+          if (temp !== null) {
+            result[key] = temp;
           }
         }
       }
+
       return result;
     };
 
-    // Debugging: Log selectedData, user data, and the result
-    console.log('Selected Data:', selectedData);
-    console.log('User Data:', user);
+    // Retrieve data based on selectedData
+    const retrievedData = retrieveSelectedFields(selectedData, user);
 
-    // Step 4: Retrieve data based on selectedData structure
-    const retrievedData = retrieveData(selectedData, user);
-
-    console.log('Retrieved Data:', retrievedData); // Log the final data
-
-    // Send the response with retrieved data or handle empty results
+    // Send retrieved data or a not-found message if empty
     if (Object.keys(retrievedData).length > 0) {
       res.status(200).json({ message: 'Data retrieved successfully', data: retrievedData });
     } else {
@@ -123,8 +113,8 @@ const getSelectedData = async (req, res) => {
     }
 
   } catch (error) {
-    console.error('Error retrieving selected data:', error);
-    res.status(500).json({ message: 'Error retrieving selected data', error });
+    console.error("Error retrieving selected data:", error);
+    res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
 
