@@ -52,11 +52,16 @@ const storeSelectedData = async (req, res) => {
   }
 };
 
-function filterData(userData, dataShare) {
+const filterData = (userData, selectedData) => {
   const filteredData = {};
 
+  // Check if selectedData exists and is an object
+  if (!selectedData || typeof selectedData !== 'object') {
+    throw new Error('Invalid selectedData format');
+  }
+
   // Loop through the selectedData to filter the relevant fields from the user data
-  for (const [field, selection] of Object.entries(dataShare.selectedData)) {
+  for (const [field, selection] of Object.entries(selectedData)) {
     if (selection === true) {
       // If the field is a simple boolean (like 'email'), add it directly
       if (typeof userData[field] !== 'undefined') {
@@ -76,13 +81,12 @@ function filterData(userData, dataShare) {
   }
 
   return filteredData;
-}
-
+};
 
 const retrieveSelectedData = async (req, res) => {
   try {
     const { dataID } = req.params;
-    
+
     // Fetch the DataShare document by dataID
     const dataShare = await DataShare.findOne({ dataID });
     console.log('DataShare:', dataShare); // Log dataShare to check its content
@@ -109,11 +113,12 @@ const retrieveSelectedData = async (req, res) => {
     // Pass the user data and selectedData to filterData
     const filteredData = filterData(user, selectedData);
 
+    // Return the filtered data to the frontend
     res.status(200).json(filteredData);
-    
+
   } catch (error) {
     console.error('Error retrieving selected data:', error);
-    res.status(500).json({ message: 'Error retrieving selected data', error });
+    res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
 
