@@ -13,9 +13,6 @@ const storeSelectedData = async (req, res) => {
       return res.status(400).json({ message: 'No valid fields selected' });
     }
 
-    if (!expiryDate) {
-      return res.status(400).json({ message: 'expiryDate is required' });
-    }
 
     // Fetch the User model using eID
     const user = await User.findOne({ eID });
