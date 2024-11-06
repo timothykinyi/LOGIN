@@ -118,7 +118,7 @@ const DataStoreForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://login-9ebe.onrender.com//api/shared/share-data', {
+      const response = await axios.post('https://login-9ebe.onrender.com/api/shared/share-data', {
         selectedFields,
         expiryDate,
         viewOnce,
@@ -157,7 +157,7 @@ const DataStoreForm = () => {
 
   return (
     <div className="cnd-form-container">
-      <h2 className="cnd-heading">Select user data you want to get</h2>
+      <h2 className="cnd-heading">Select the data you want to share</h2>
       <form className="cnd-form" onSubmit={handleSubmit}>
         {sections.map((section, index) => (
           <div
@@ -197,7 +197,6 @@ const DataStoreForm = () => {
           )}
         </div>
 
-        {currentSection === sections.length - 1 && (
           <div className="cnd-expiry-section">
             <h3 className="cnd-subheading">Data Expiry</h3>
             <label className="cnd-expiry-label">
@@ -220,8 +219,6 @@ const DataStoreForm = () => {
               View Once
             </label>
           </div>
-        )}
-
         <div className="cnd-submit-container">
           <button type="submit" className="cnd-submit-button">Store Selected Data</button>
         </div>

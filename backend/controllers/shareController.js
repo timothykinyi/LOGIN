@@ -24,7 +24,7 @@ const storeSelectedData = async (req, res) => {
     }, {});
 
     const dataID = uuidv4();
-    const dataShare = new DataShare({ eID, dataID, selectedData, expiryTime, viewOnce });
+    const dataShare = new DataShare({ eID, dataID, selectedData, expiryDate, viewOnce });
     await dataShare.save();
 
     res.status(200).json({ message: 'Selected data stored successfully', Dataid: dataID });
