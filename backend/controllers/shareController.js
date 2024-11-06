@@ -77,6 +77,7 @@ const filterData = (userData, selectedData) => {
     }
   }
 
+  console.log(filteredData);
   return filteredData;
 };
 
@@ -110,7 +111,9 @@ const retrieveSelectedData = async (req, res) => {
     const filteredData = filterData(user, selectedData);
 
     // Return the filtered data to the frontend
+    console.log(filteredData);
     return res.status(200).json(filteredData);
+
 
   } catch (error) {
     console.error('Error retrieving selected data:', error);
