@@ -56,7 +56,7 @@ const getSelectedData = async (req, res) => {
   try {
     const { dataID } = req.params;
 
-    // Fetch the DataShare document using dataID and eID
+    // Fetch the DataShare document using dataID
     const dataShare = await DataShare.findOne({ dataID });
     if (!dataShare) {
       return res.status(404).json({ message: 'No shared data found for the given ID and eID' });
@@ -65,6 +65,7 @@ const getSelectedData = async (req, res) => {
     // Extract selectedData structure from DataShare
     const selectedData = dataShare.selectedData;
     const Dd = dataShare.eID;
+
     // Fetch the User model using eID
     const user = await User.findOne({ eID: Dd });
     if (!user) {
@@ -76,7 +77,7 @@ const getSelectedData = async (req, res) => {
       const result = {};
 
       selectedFields.forEach(field => {
-        const keys = field.split('.');
+        const keys = field.split('.'); // Split the field by dot (for nested properties)
         let value = data;
 
         // Navigate through the nested keys to extract the value
@@ -120,6 +121,7 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error });
   }
 };
+
 
 
 
