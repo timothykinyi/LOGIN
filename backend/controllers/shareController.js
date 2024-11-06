@@ -84,37 +84,23 @@ const getSelectedData = async (req, res) => {
 
     const retrievedData = {};
 
-    // Iterate over selectedData and use dot notation to retrieve nested fields
+    // Iterate over selectedData and retrieve all the data for each selected key
     for (const key in selectedData) {
       if (selectedData[key] === true) {
-        // Direct field selection
+        // Direct field selection or nested object
         const fieldValue = retrieveFieldByPath(user, key);
         if (fieldValue !== undefined) {
-          // Structure nested output based on dot notation
-          key.split('.').reduce((acc, part, index, arr) => {
-            if (index === arr.length - 1) {
-              acc[part] = fieldValue;
-            } else {
-              acc[part] = acc[part] || {};
-            }
-            return acc[part];
-          }, retrievedData);
+          // Assign the whole object for the selected key
+          retrievedData[key] = fieldValue;
         }
       } else if (typeof selectedData[key] === 'object') {
-        // Nested object selection (recursive call)
+        // For nested fields (recursive call for deeper levels)
         for (const subKey in selectedData[key]) {
           if (selectedData[key][subKey] === true) {
             const nestedKey = `${key}.${subKey}`;
             const fieldValue = retrieveFieldByPath(user, nestedKey);
             if (fieldValue !== undefined) {
-              nestedKey.split('.').reduce((acc, part, index, arr) => {
-                if (index === arr.length - 1) {
-                  acc[part] = fieldValue;
-                } else {
-                  acc[part] = acc[part] || {};
-                }
-                return acc[part];
-              }, retrievedData);
+              retrievedData[nestedKey] = fieldValue;
             }
           }
         }
