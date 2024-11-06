@@ -52,45 +52,63 @@ const storeSelectedData = async (req, res) => {
   }
 };
 
+const filterData = (userData, selectedData) => {
+  if (!userData || !selectedData) {
+    console.error("Invalid userData or selectedData", userData, selectedData);
+    return {}; // Return empty object if either is invalid
+  }
+
+  console.log('Filtering data with userData:', userData); // Log user data before filtering
+  console.log('Using selectedData:', selectedData); // Log selected data for transparency
+
+  return Object.keys(selectedData).reduce((filteredData, field) => {
+    const value = userData[field];
+    if (value) {
+      filteredData[field] = value;
+    } else {
+      console.log(`Field '${field}' not found in user data`); // Log if field is not found
+    }
+    return filteredData;
+  }, {});
+};
+
 const retrieveSelectedData = async (req, res) => {
   try {
-    const { dataID } = req.params; // Get dataID from request parameters
-
-    // Fetch the DataShare entry using the dataID
+    const { dataID } = req.params;
+    
+    // Fetch the DataShare document by dataID
     const dataShare = await DataShare.findOne({ dataID });
+    console.log('DataShare:', dataShare); // Log dataShare to check its content
+
     if (!dataShare) {
-      return res.status(404).json({ message: 'Data not found' });
+      return res.status(404).json({ message: 'Data not found for the provided ID' });
     }
 
-    // Fetch the User associated with the eID
-    const user = await User.findOne({ eID: dataShare.eID });
+    const { eID, selectedData } = dataShare;
+
+    // Fetch the User data by eID
+    const user = await User.findOne({ eID });
+    console.log('User:', user); // Log user data to check its content
+
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found for the provided eID' });
     }
 
-    // Recursive function to filter user data based on selectedData structure
-    const filterData = (source, filter) => {
-      const result = {};
-      for (const key in filter) {
-        if (filter[key] === true) {
-          result[key] = source[key]; // Copy the field's value if set to true
-        } else if (typeof filter[key] === 'object' && filter[key] !== null) {
-          result[key] = filterData(source[key], filter[key]); // Recurse if it's a nested object
-        }
-      }
-      return result;
-    };
+    // Check if selectedData is valid
+    if (!selectedData) {
+      return res.status(400).json({ message: 'Selected data is missing in DataShare' });
+    }
 
-    // Filter the user data based on the selectedData structure
-    const filteredData = filterData(user.toObject(), dataShare.selectedData);
+    // Pass the user data and selectedData to filterData
+    const filteredData = filterData(user, selectedData);
 
-    res.status(200).json({ data: filteredData });
+    res.status(200).json(filteredData);
+    
   } catch (error) {
     console.error('Error retrieving selected data:', error);
     res.status(500).json({ message: 'Error retrieving selected data', error });
   }
 };
-
 
 module.exports = {
   storeSelectedData,
