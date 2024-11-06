@@ -86,6 +86,7 @@ const getSelectedData = async (req, res) => {
             const nestedData = retrieveSelectedFields(value, data[key]);
             if (Object.keys(nestedData).length > 0) {
               result[key] = nestedData;
+              console.log(nestedData);
             }
           }
         } else if (value === true) {
