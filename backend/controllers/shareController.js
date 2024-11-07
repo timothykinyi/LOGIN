@@ -61,7 +61,7 @@ const getSelectedData = async (req, res) => {
     if (!dataShare || !dataShare.selectedData) {
       return res.status(404).json({ message: 'No shared data found for the given ID and eID' });
     }
-
+    const eID = dataShare.eID;
     // Convert selectedData to plain object if it's stored as Map
     const selectedData = dataShare.selectedData instanceof Map
       ? Object.fromEntries(dataShare.selectedData)
@@ -69,70 +69,57 @@ const getSelectedData = async (req, res) => {
 
     console.log("Selected Data:", selectedData);
 
+    const retrieveDataByKey = async (key, eID) => {
+      switch (key) {
+        case 'contacts':
+          return await Contact(eID);
+        case 'education':
+          return await Education(eID);
+        case 'employment':
+          return await Employment(eID);
+        case 'finance':
+          return await Finance(eID);
+        case 'health':
+          return await Health(eID);
+        case 'personalinfo':
+          return await Personal(eID);
+        case 'preference':
+          return await Preference(eID);
+        default:
+          return null;
+      }
+    };
+
     // Fetch the User document using the eID from dataShare
     const user = await User.findOne({ eID: dataShare.eID }).lean();
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    console.log("User Data:", user);
-
-    // Function to retrieve data using dot-notation for nested fields
-    const retrieveFieldByPath = (data, path) => {
-      return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), data);
-    };
-
     const retrievedData = {};
 
-    // Iterate over selectedData and use dot notation to retrieve nested fields
+    // Iterate over selectedData and fetch data accordingly
     for (const key in selectedData) {
       if (selectedData[key] === true) {
-        // Direct field selection
-        const fieldValue = retrieveFieldByPath(user, key);
-        if (fieldValue !== undefined) {
-          // Structure nested output based on dot notation
-          key.split('.').reduce((acc, part, index, arr) => {
-            if (index === arr.length - 1) {
-              acc[part] = fieldValue;
-            } else {
-              acc[part] = acc[part] || {};
-            }
-            return acc[part];
-          }, retrievedData);
+        // Fetch data for the key
+        const data = await retrieveDataByKey(key, user.eID);
+        if (data) {
+          retrievedData[key] = data;
         }
       } else if (typeof selectedData[key] === 'object') {
-        // Nested object selection (recursive call)
-        for (const subKey in selectedData[key]) {
-          if (selectedData[key][subKey] === true) {
-            const nestedKey = `${key}.${subKey}`;
-            const fieldValue = retrieveFieldByPath(user, nestedKey);
-            if (fieldValue !== undefined) {
-              nestedKey.split('.').reduce((acc, part, index, arr) => {
-                if (index === arr.length - 1) {
-                  acc[part] = fieldValue;
-                } else {
-                  acc[part] = acc[part] || {};
-                }
-                return acc[part];
-              }, retrievedData);
-            }
-          }
-        }
-      } else if (Array.isArray(selectedData[key])) {
-        // Handle arrays (retrieve each item inside the array)
-        const arrayData = retrieveFieldByPath(user, key);
-        if (Array.isArray(arrayData)) {
-          retrievedData[key] = arrayData.map(item => {
-            const nestedData = {};
+        // Nested object selection
+        const nestedData = await retrieveDataByKey(key, user.eID);
 
-            // If the array item is an object, we can process it further
-            for (const subKey of selectedData[key]) {
-              if (subKey === true) {
-                // Get the entire object data
-                nestedData[subKey] = item[subKey];
+        if (nestedData && Array.isArray(nestedData)) {
+          // Filter based on selected subfields in nested objects
+          retrievedData[key] = nestedData.map(item => {
+            const selectedItem = {};
+            for (const subKey in selectedData[key]) {
+              if (selectedData[key][subKey] === true) {
+                selectedItem[subKey] = item[subKey];
               }
             }
-            return nestedData;
+            return selectedItem;
           });
         }
       }
@@ -152,8 +139,123 @@ const getSelectedData = async (req, res) => {
   }
 };
 
+const Contact = async (eID) => {
+  try {
+    // Find user by eID and return preferences if user exists
+    const user = await User.findOne({ eID });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
+    return(user.contacts);
+  } catch (error) {
+    console.error('Error retrieving preferences:', error);
+    res.status(500).json({ message: 'Server error, please try again' });
+  }
+};
 
+const Education = async (eID) => {
+  try {
+
+    if (eID) {
+      // If eID is provided, find the specific user and return their education data
+      const user = await User.findOne({ eID });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      return res.status(200).json({ message: 'Education data fetched successfully', data: user.education });
+    }
+
+    // If no eID is provided, return all users with their education data
+    const users = await User.find({}, { education: 1, eID: 1 }); // Fetch only education and eID fields
+    res.status(200).json({ message: 'All education data fetched successfully', data: users });
+  } catch (error) {
+    console.error('Error fetching education data:', error);
+    res.status(500).json({ message: 'An error occurred while fetching education data', error: error.message });
+  }
+};
+
+const Employment = async (eID) => {
+  try {
+
+    if (eID) {
+      // If eID is provided, find the specific user and return their employment data
+      const user = await User.findOne({ eID });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      return res.status(200).json({
+        message: 'Employment data fetched successfully',
+        data: user.employment
+      });
+    }
+
+    // If no eID is provided, return all users with their employment data
+    const users = await User.find({}, { employment: 1, eID: 1 }); // Fetch only employment and eID fields
+    res.status(200).json({
+      message: 'All employment data fetched successfully',
+      data: users
+    });
+  } catch (error) {
+    console.error('Error fetching employment data:', error);
+    res.status(500).json({ message: 'An error occurred while fetching employment data', error: error.message });
+  }
+};
+
+const Finance = async (eID) => {
+  try {
+    // Find user by eID and return financial data if user exists
+    const user = await User.findOne({ eID });
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ data: user.finance });
+} catch (error) {
+    console.error('Error retrieving finance:', error);
+    res.status(500).json({ message: 'Server error, please try again' });
+}
+};
+
+const Health = async (eID) => {
+  try {
+    const healthData = await HealthData.find();
+    res.status(200).json({ message: 'Health data fetched successfully', data: healthData });
+  } catch (error) {
+    console.error('Error fetching health data:', error);
+    res.status(500).json({ message: 'An error occurred while fetching health data', error });
+  }
+};
+
+const Personal = async (eID) => {
+  try {
+    // Find user by eID and return preferences if user exists
+    const user = await User.findOne({ eID });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ data: user.personalinfo });
+  } catch (error) {
+    console.error('Error retrieving preferences:', error);
+    res.status(500).json({ message: 'Server error, please try again' });
+  }
+};
+
+const Preference = async (eID) => {
+  try {
+    // Find user by eID and return preferences if user exists
+    const user = await User.findOne({ eID });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ data: user.preference });
+  } catch (error) {
+    console.error('Error retrieving preferences:', error);
+    res.status(500).json({ message: 'Server error, please try again' });
+  }
+};
 
 module.exports = {
   storeSelectedData,
