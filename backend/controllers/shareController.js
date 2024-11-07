@@ -67,8 +67,6 @@ const getSelectedData = async (req, res) => {
       ? Object.fromEntries(dataShare.selectedData)
       : dataShare.selectedData;
 
-    console.log("Selected Data:", selectedData);
-
     const retrieveDataByKey = async (key, eID) => {
       switch (key) {
         case 'contacts':
@@ -86,7 +84,7 @@ const getSelectedData = async (req, res) => {
         case 'preference':
           return await Preference(eID);
         default:
-          return null; // Default case handled in the main loop below
+          return null;
       }
     };
 
@@ -101,10 +99,7 @@ const getSelectedData = async (req, res) => {
     // Iterate over selectedData and fetch data accordingly
     for (const key in selectedData) {
       if (selectedData[key] === true) {
-        // Try to fetch data using the retrieveDataByKey function
         let data = await retrieveDataByKey(key, user.eID);
-        
-        // If the key is not handled in the switch statement, get it directly from the user document
         if (data === null && key in user) {
           data = user[key];
         }
@@ -112,26 +107,27 @@ const getSelectedData = async (req, res) => {
         if (data) {
           retrievedData[key] = data;
         }
+
       } else if (typeof selectedData[key] === 'object') {
-        // Nested object selection
         const nestedData = await retrieveDataByKey(key, user.eID);
 
-        if (nestedData && Array.isArray(nestedData)) {
-          // Filter based on selected subfields in nested objects
-          retrievedData[key] = nestedData.map(item => {
-            const selectedItem = {};
-            for (const subKey in selectedData[key]) {
-              if (selectedData[key][subKey] === true) {
-                selectedItem[subKey] = item[subKey];
-              }
+        if (nestedData && typeof nestedData === 'object') {
+          const filteredData = {};
+
+          // Loop through nested fields to filter based on `true` values
+          for (const subKey in selectedData[key]) {
+            if (selectedData[key][subKey] === true) {
+              filteredData[subKey] = nestedData[subKey];
             }
-            return selectedItem;
-          });
+          }
+
+          // Add filtered nested data to the result
+          if (Object.keys(filteredData).length > 0) {
+            retrievedData[key] = filteredData;
+          }
         }
       }
     }
-
-    console.log("Retrieved Data:", retrievedData);
 
     if (Object.keys(retrievedData).length > 0) {
       res.status(200).json({ message: 'Data retrieved successfully', data: retrievedData });
@@ -144,6 +140,7 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
+
 
 
 
