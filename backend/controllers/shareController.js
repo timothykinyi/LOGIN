@@ -144,13 +144,13 @@ const Contact = async (eID) => {
     // Find user by eID and return preferences if user exists
     const user = await User.findOne({ eID });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return ('User not found');
     }
 
     return(user.contacts);
   } catch (error) {
     console.error('Error retrieving preferences:', error);
-    res.status(500).json({ message: 'Server error, please try again' });
+    return( 'Server error, please try again');
   }
 };
 
@@ -161,17 +161,15 @@ const Education = async (eID) => {
       // If eID is provided, find the specific user and return their education data
       const user = await User.findOne({ eID });
       if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return ('User not found');
       }
-      return res.status(200).json({ message: 'Education data fetched successfully', data: user.education });
+      return(user.education );
+    }else{
+    return ('no user found')
     }
-
-    // If no eID is provided, return all users with their education data
-    const users = await User.find({}, { education: 1, eID: 1 }); // Fetch only education and eID fields
-    res.status(200).json({ message: 'All education data fetched successfully', data: users });
   } catch (error) {
     console.error('Error fetching education data:', error);
-    res.status(500).json({ message: 'An error occurred while fetching education data', error: error.message });
+    return('An error occurred while fetching education data');
   }
 };
 
@@ -182,23 +180,16 @@ const Employment = async (eID) => {
       // If eID is provided, find the specific user and return their employment data
       const user = await User.findOne({ eID });
       if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return ('User not found');
       }
-      return res.status(200).json({
-        message: 'Employment data fetched successfully',
-        data: user.employment
-      });
+      return (user.employment);
+    }else{
+    return ('No user found')
     }
 
-    // If no eID is provided, return all users with their employment data
-    const users = await User.find({}, { employment: 1, eID: 1 }); // Fetch only employment and eID fields
-    res.status(200).json({
-      message: 'All employment data fetched successfully',
-      data: users
-    });
   } catch (error) {
     console.error('Error fetching employment data:', error);
-    res.status(500).json({ message: 'An error occurred while fetching employment data', error: error.message });
+    return('An error occurred while fetching employment data');
   }
 };
 
@@ -207,23 +198,23 @@ const Finance = async (eID) => {
     // Find user by eID and return financial data if user exists
     const user = await User.findOne({ eID });
     if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return ('User not found');
     }
 
-    res.status(200).json({ data: user.finance });
+    return (user.finance);
 } catch (error) {
     console.error('Error retrieving finance:', error);
-    res.status(500).json({ message: 'Server error, please try again' });
+    return('Server error, please try again');
 }
 };
 
 const Health = async (eID) => {
   try {
     const healthData = await HealthData.find();
-    res.status(200).json({ message: 'Health data fetched successfully', data: healthData });
+    return( healthData );
   } catch (error) {
     console.error('Error fetching health data:', error);
-    res.status(500).json({ message: 'An error occurred while fetching health data', error });
+    return ('An error occurred while fetching health data');
   }
 };
 
@@ -232,13 +223,13 @@ const Personal = async (eID) => {
     // Find user by eID and return preferences if user exists
     const user = await User.findOne({ eID });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return ('User not found');
     }
 
-    res.status(200).json({ data: user.personalinfo });
+    return (user.personalinfo );
   } catch (error) {
     console.error('Error retrieving preferences:', error);
-    res.status(500).json({ message: 'Server error, please try again' });
+    return ( 'Server error, please try again');
   }
 };
 
@@ -247,13 +238,13 @@ const Preference = async (eID) => {
     // Find user by eID and return preferences if user exists
     const user = await User.findOne({ eID });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return ('User not found' );
     }
 
-    res.status(200).json({ data: user.preference });
+    return (user.preference);
   } catch (error) {
     console.error('Error retrieving preferences:', error);
-    res.status(500).json({ message: 'Server error, please try again' });
+    return ('Server error, please try again');
   }
 };
 
