@@ -77,24 +77,23 @@ const getSelectedData = async (req, res) => {
 
     console.log("User Data:", user);
 
-    // Function to retrieve data using dot-notation for nested fields
+    // Helper function to retrieve nested data using dot notation
     const retrieveFieldByPath = (data, path) => {
       return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), data);
     };
 
     const retrievedData = {};
 
-    // Iterate over selectedData and use dot notation to retrieve nested fields
+    // Iterate over selectedData and handle both direct and nested field retrieval
     for (const key in selectedData) {
       if (selectedData[key] === true) {
-        // If the key is directly on the user object (non-nested field), retrieve it directly
+        // Directly retrieve top-level fields like 'email'
         if (user[key] !== undefined) {
           retrievedData[key] = user[key];
         } else {
-          // Nested field selection
+          // Handle nested field selection
           const fieldValue = retrieveFieldByPath(user, key);
           if (fieldValue !== undefined) {
-            // Structure nested output based on dot notation
             key.split('.').reduce((acc, part, index, arr) => {
               if (index === arr.length - 1) {
                 acc[part] = fieldValue;
@@ -106,11 +105,14 @@ const getSelectedData = async (req, res) => {
           }
         }
       } else if (typeof selectedData[key] === 'object') {
-        // Nested object selection (recursive call)
+        // Handle nested objects like 'preference' recursively
+        retrievedData[key] = {};
+
         for (const subKey in selectedData[key]) {
           if (selectedData[key][subKey] === true) {
             const nestedKey = `${key}.${subKey}`;
             const fieldValue = retrieveFieldByPath(user, nestedKey);
+
             if (fieldValue !== undefined) {
               nestedKey.split('.').reduce((acc, part, index, arr) => {
                 if (index === arr.length - 1) {
@@ -122,20 +124,6 @@ const getSelectedData = async (req, res) => {
               }, retrievedData);
             }
           }
-        }
-      } else if (Array.isArray(selectedData[key])) {
-        // Handle arrays (retrieve each item inside the array)
-        const arrayData = retrieveFieldByPath(user, key);
-        if (Array.isArray(arrayData)) {
-          retrievedData[key] = arrayData.map(item => {
-            const nestedData = {};
-            for (const subKey of selectedData[key]) {
-              if (subKey === true) {
-                nestedData[subKey] = item[subKey];
-              }
-            }
-            return nestedData;
-          });
         }
       }
     }
@@ -153,6 +141,7 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
+
 
 
 const Contact = async (eID) => {
