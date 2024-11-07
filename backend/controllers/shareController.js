@@ -99,6 +99,7 @@ const getSelectedData = async (req, res) => {
     // Iterate over selectedData and fetch data accordingly
     for (const key in selectedData) {
       if (selectedData[key] === true) {
+        // Get top-level data for keys marked as true
         let data = await retrieveDataByKey(key, user.eID);
         if (data === null && key in user) {
           data = user[key];
@@ -109,14 +110,18 @@ const getSelectedData = async (req, res) => {
         }
 
       } else if (typeof selectedData[key] === 'object') {
-        const nestedData = await retrieveDataByKey(key, user.eID);
+        // Handle nested fields within selectedData[key]
+        let nestedData = await retrieveDataByKey(key, user.eID);
+        if (nestedData === null && key in user) {
+          nestedData = user[key];
+        }
 
         if (nestedData && typeof nestedData === 'object') {
           const filteredData = {};
 
-          // Loop through nested fields to filter based on `true` values
+          // Filter nested fields based on `true` values in selectedData
           for (const subKey in selectedData[key]) {
-            if (selectedData[key][subKey] === true) {
+            if (selectedData[key][subKey] === true && subKey in nestedData) {
               filteredData[subKey] = nestedData[subKey];
             }
           }
@@ -128,6 +133,8 @@ const getSelectedData = async (req, res) => {
         }
       }
     }
+
+    console.log("Retrieved Data:", retrievedData);
 
     if (Object.keys(retrievedData).length > 0) {
       res.status(200).json({ message: 'Data retrieved successfully', data: retrievedData });
