@@ -67,26 +67,7 @@ const getSelectedData = async (req, res) => {
       ? Object.fromEntries(dataShare.selectedData)
       : dataShare.selectedData;
 
-    const retrieveDataByKey = async (key, eID) => {
-      switch (key) {
-        case 'contacts':
-          return await Contact(eID);
-        case 'education':
-          return await Education(eID);
-        case 'employment':
-          return await Employment(eID);
-        case 'finance':
-          return await Finance(eID);
-        case 'health':
-          return await Health(eID);
-        case 'personalinfo':
-          return await Personal(eID);
-        case 'preference':
-          return await Preference(eID);
-        default:
-          return null;
-      }
-    };
+    console.log("Selected Data:", selectedData);
 
     // Fetch the User document using the eID from dataShare
     const user = await User.findOne({ eID: dataShare.eID }).lean();
@@ -94,41 +75,54 @@ const getSelectedData = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    console.log("User Data:", user);
+
+    // Helper function to retrieve nested data using dot notation
+    const retrieveFieldByPath = (data, path) => {
+      return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), data);
+    };
+
     const retrievedData = {};
 
-    // Iterate over selectedData and fetch data accordingly
+    // Iterate over selectedData and handle both direct and nested field retrieval
     for (const key in selectedData) {
       if (selectedData[key] === true) {
-        // Get top-level data for keys marked as true
-        let data = await retrieveDataByKey(key, user.eID);
-        if (data === null && key in user) {
-          data = user[key];
-        }
-
-        if (data) {
-          retrievedData[key] = data;
-        }
-
-      } else if (typeof selectedData[key] === 'object') {
-        // Handle nested fields within selectedData[key]
-        let nestedData = await retrieveDataByKey(key, user.eID);
-        if (nestedData === null && key in user) {
-          nestedData = user[key];
-        }
-
-        if (nestedData && typeof nestedData === 'object') {
-          const filteredData = {};
-
-          // Filter nested fields based on `true` values in selectedData
-          for (const subKey in selectedData[key]) {
-            if (selectedData[key][subKey] === true && subKey in nestedData) {
-              filteredData[subKey] = nestedData[subKey];
-            }
+        // Directly retrieve top-level fields like 'email'
+        if (user[key] !== undefined) {
+          retrievedData[key] = user[key];
+        } else {
+          // Handle nested field selection
+          const fieldValue = retrieveFieldByPath(user, key);
+          if (fieldValue !== undefined) {
+            key.split('.').reduce((acc, part, index, arr) => {
+              if (index === arr.length - 1) {
+                acc[part] = fieldValue;
+              } else {
+                acc[part] = acc[part] || {};
+              }
+              return acc[part];
+            }, retrievedData);
           }
+        }
+      } else if (typeof selectedData[key] === 'object') {
+        // Handle nested objects like 'preference' recursively
+        retrievedData[key] = {};
 
-          // Add filtered nested data to the result
-          if (Object.keys(filteredData).length > 0) {
-            retrievedData[key] = filteredData;
+        for (const subKey in selectedData[key]) {
+          if (selectedData[key][subKey] === true) {
+            const nestedKey = `${key}.${subKey}`;
+            const fieldValue = retrieveFieldByPath(user, nestedKey);
+
+            if (fieldValue !== undefined) {
+              nestedKey.split('.').reduce((acc, part, index, arr) => {
+                if (index === arr.length - 1) {
+                  acc[part] = fieldValue;
+                } else {
+                  acc[part] = acc[part] || {};
+                }
+                return acc[part];
+              }, retrievedData);
+            }
           }
         }
       }
@@ -147,8 +141,6 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
-
-
 
 
 
