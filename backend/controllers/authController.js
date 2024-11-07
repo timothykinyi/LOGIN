@@ -973,7 +973,7 @@ Follow this link https://own-my-data.web.app/verification to verify your account
 Best regards,
 eID`;
     try {
-      await sendEmail(lemail, subject, vermessage);
+      await sendEmail(user.email, subject, vermessage);
       console.log('Email sent successfully');
     } catch (error) {
       console.error('Error sending email:', error);

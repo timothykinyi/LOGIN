@@ -69,8 +69,8 @@ const AppSettings = () => {
   const handleSaveEmail = async () => {
     setError(null);
     setMessage(null);
-    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(newEmail)) {
-      setError('Please enter a valid Gmail address (e.g., yourname@gmail.com).');
+    if (!/^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~.-]{1,64}@[a-zA-Z0-9.-]{1,255}\.[a-zA-Z]{2,}$/.test(newEmail)) {
+      setError('Please enter a valid email address (e.g., yourname@gmail.com).');
       return;
     } else {
       try {
@@ -185,7 +185,7 @@ const AppSettings = () => {
           </div>
         </section>
 
-        {/* App Preferences Section */}
+        {/* 
         <section className="seti-settings-section">
           <h3 className="seti-section-title">App Preferences</h3>
           <div className="seti-settings-option">
@@ -211,7 +211,6 @@ const AppSettings = () => {
           </div>
         </section>
 
-        {/* Notifications Section */}
         <section className="seti-settings-section">
           <h3 className="seti-section-title">Notifications</h3>
           <div className="seti-settings-option">
@@ -225,7 +224,7 @@ const AppSettings = () => {
           </div>
         </section>
 
-        {/* Security & Privacy Section */}
+
         <section className="seti-settings-section">
           <h3 className="seti-section-title">Security & Privacy</h3>
           <div className="seti-settings-option">
@@ -241,7 +240,7 @@ const AppSettings = () => {
             <button className="sign-in-btn">Manage Permissions</button>
             <button className="sign-in-btn">Clear Cache</button>
           </div>
-        </section>
+        </section> */}
 
         {/* Logout Section */}
         <section className="seti-settings-section">
