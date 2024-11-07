@@ -69,61 +69,73 @@ const getSelectedData = async (req, res) => {
 
     console.log("Selected Data:", selectedData);
 
+    const retrieveDataByKey = async (key, eID) => {
+      switch (key) {
+        case 'contacts':
+          return await Contact(eID);
+        case 'education':
+          return await Education(eID);
+        case 'employment':
+          return await Employment(eID);
+        case 'finance':
+          return await Finance(eID);
+        case 'health':
+          return await Health(eID);
+        case 'personalinfo':
+          return await Personal(eID);
+        case 'preference':
+          return await Preference(eID);
+        default:
+          return null; // Default case handled in the main loop below
+      }
+    };
+
     // Fetch the User document using the eID from dataShare
     const user = await User.findOne({ eID: dataShare.eID }).lean();
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    console.log("User Data:", user);
-
-    // Helper function to retrieve nested data using dot notation
-    const retrieveFieldByPath = (data, path) => {
-      return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), data);
-    };
-
     const retrievedData = {};
 
-    // Iterate over selectedData and handle both direct and nested field retrieval
+    // Iterate over selectedData and fetch data accordingly
     for (const key in selectedData) {
       if (selectedData[key] === true) {
-        // Directly retrieve top-level fields like 'email'
-        if (user[key] !== undefined) {
-          retrievedData[key] = user[key];
-        } else {
-          // Handle nested field selection
-          const fieldValue = retrieveFieldByPath(user, key);
-          if (fieldValue !== undefined) {
-            key.split('.').reduce((acc, part, index, arr) => {
-              if (index === arr.length - 1) {
-                acc[part] = fieldValue;
-              } else {
-                acc[part] = acc[part] || {};
-              }
-              return acc[part];
-            }, retrievedData);
-          }
+        // Try to fetch data using the retrieveDataByKey function
+        let data = await retrieveDataByKey(key, user.eID);
+        
+        // If the key is not handled in the switch statement, get it directly from the user document
+        if (data === null && key in user) {
+          data = user[key];
+        }
+
+        if (data) {
+          retrievedData[key] = data;
         }
       } else if (typeof selectedData[key] === 'object') {
-        // Handle nested objects like 'preference' recursively
-        retrievedData[key] = {};
+        // Nested object selection
+        let nestedData = await retrieveDataByKey(key, user.eID);
 
-        for (const subKey in selectedData[key]) {
-          if (selectedData[key][subKey] === true) {
-            const nestedKey = `${key}.${subKey}`;
-            const fieldValue = retrieveFieldByPath(user, nestedKey);
-
-            if (fieldValue !== undefined) {
-              nestedKey.split('.').reduce((acc, part, index, arr) => {
-                if (index === arr.length - 1) {
-                  acc[part] = fieldValue;
-                } else {
-                  acc[part] = acc[part] || {};
-                }
-                return acc[part];
-              }, retrievedData);
+        // Filter for the 'preference' key to retrieve only fields set to `true`
+        if (key === 'preference' && nestedData) {
+          const filteredPreferences = {};
+          for (const subKey in selectedData.preference) {
+            if (selectedData.preference[subKey] === true && subKey in nestedData) {
+              filteredPreferences[subKey] = nestedData[subKey];
             }
           }
+          retrievedData[key] = filteredPreferences;
+        } else if (nestedData && Array.isArray(nestedData)) {
+          // General filtering based on selected subfields in nested objects
+          retrievedData[key] = nestedData.map(item => {
+            const selectedItem = {};
+            for (const subKey in selectedData[key]) {
+              if (selectedData[key][subKey] === true) {
+                selectedItem[subKey] = item[subKey];
+              }
+            }
+            return selectedItem;
+          });
         }
       }
     }
@@ -141,7 +153,6 @@ const getSelectedData = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving selected data', error: error.message });
   }
 };
-
 
 
 const Contact = async (eID) => {
