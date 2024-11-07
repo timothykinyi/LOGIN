@@ -885,10 +885,10 @@ const logout = async (req, res) => {
 };
 
 const changeusername = async (req, res) => {
-  const { lemail, newUsername } = req.body;
+  const { eID, newUsername } = req.body;
 
   try {
-    const user = await User.findOne({ email: lemail });
+    const user = await User.findOne({ eID });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -908,10 +908,10 @@ const changeusername = async (req, res) => {
 };
 
 const changepassword = async (req, res) => {
-  const { lemail, newPassword } = req.body;
+  const { eID, newPassword } = req.body;
 
   try {
-    const user = await User.findOne({ email: lemail });
+    const user = await User.findOne({ eID });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -928,10 +928,10 @@ const changepassword = async (req, res) => {
 };
 
 const changephonenumber = async (req, res) => {
-  const { lemail, newPhoneNumber } = req.body;
+  const { eID, newPhoneNumber } = req.body;
 
   try {
-    const user = await User.findOne({ email: lemail });
+    const user = await User.findOne({ eID });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -948,10 +948,10 @@ const changephonenumber = async (req, res) => {
 };
 
 const changeemail = async (req, res) => {
-  const { lemail, newEmail } = req.body;
+  const { eID, newEmail } = req.body;
 
   try {
-    const user = await User.findOne({ email: lemail });
+    const user = await User.findOne({ eID });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }

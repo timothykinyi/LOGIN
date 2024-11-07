@@ -1,81 +1,123 @@
-/* Container */
-.shr-container {
-    padding: 20px;
-    background-color: #0161a663;
-    font-family: Arial, sans-serif;
-    height: 80vh;
-    width: 80vw; 
-    overflow-y: auto;
+.fecd-container {
+  user-select: none; /* Prevent text selection */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  position: relative;
+}
+
+.fecd-container::after {
+  content: 'Confidential Data - ID: ' attr(data-id); /* Dynamic watermark */
+  font-size: 2rem;
+  color: rgba(255, 0, 0, 0.2);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  pointer-events: none;
+}
+
+.fecd-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  z-index: 999;
+}
+
+@media print {
+  /* Disable printing by hiding content */
+  body * {
+    display: none !important;
   }
-  
-  .shr-title {
-    font-size: 24px;
-    color: #c6c6c6;
-    margin-bottom: 20px;
-    font-weight: 600;
-  }
-  
-  /* Loading & Error Messages */
-  .shr-loading {
-    color: #e0e0e0;
-    font-size: 16px;
-  }
-  
-  .shr-error {
-    color: red;
-    font-size: 16px;
-  }
-  
-  /* Data Card */
-  .shr-data-card {
-    background-color: #0161a663;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .shr-data-title {
-    font-size: 20px;
-    color: #d2d2d2;
-    margin-bottom: 15px;
-  }
-  
-  .shr-data-section {
-    margin-top: 20px;
-  }
-  
-  .shr-expired-message {
-    color: red;
-    font-weight: bold;
-  }
-  
-  /* Section Titles */
-  .shr-section-title {
-    font-size: 18px;
-    color: #555;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 5px;
-  }
-  
-  /* Lists */
-  .shr-list {
-    list-style: none;
-    padding-left: 0;
-  }
-  
-  .shr-list-item {
-    background-color: #04579363;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    color: #d2d2d2;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .shr-list-item:hover {
-    background-color: #0071c263;
-  }
-  
+}
+
+
+.fecd-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.fecd-header {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.fecd-loading,
+.fecd-error {
+  font-size: 18px;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.fecd-error {
+  color: red;
+}
+
+.fecd-section {
+  font-family: 'Montserrat', sans-serif;
+  background-color: rgba(16, 23, 30, 0.374);
+  color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  margin: 30px auto;
+  max-height: 80vh; /* Limit the height of the container to fit within the viewport */
+  overflow-y: auto;
+}
+
+.fecd-section h3 {
+  font-size: 20px;
+  color: #94d4ff;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+}
+
+.fecd-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.fecd-list li {
+  font-size: 16px;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.fecd-list li strong {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.fecd-medical-history-title,
+.fecd-education-title,
+.fecd-employment-title {
+  font-size: 18px;
+  color: #94d4ff;
+  margin-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.fecd-medical-history-list,
+.fecd-education-list,
+.fecd-employment-list,
+.fecd-finance-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 8px;
+}
+
+.fecd-no-data {
+  color: #ffffff;
+  font-style: italic;
+}

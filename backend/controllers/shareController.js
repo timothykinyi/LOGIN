@@ -154,7 +154,6 @@ const getSelectedData = async (req, res) => {
   }
 };
 
-
 const Contact = async (eID) => {
   try {
     // Find user by eID and return preferences if user exists

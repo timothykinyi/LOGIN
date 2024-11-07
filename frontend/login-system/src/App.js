@@ -147,7 +147,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/house" element={<HomePage />} />
         <Route path="/house/:houseId" element={<HousePage />} />
-        <Route path="/sharedlink/:eID" element={<FetchSharedDataPage />} />
+        <Route path="/sharedlink/:dataID" element={<FetchSharedDataPage />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/house/housereg" element={<Housereg />} />
         <Route path="/house/verification" element={<HouseVerification />} />

@@ -7,6 +7,7 @@ const DataStoreForm = () => {
   const [currentSection, setCurrentSection] = useState(0);
   const [expiryDate, setExpiryDate] = useState('');
   const [viewOnce, setViewOnce] = useState(false);
+  const [dataID, setDataID] = useState(''); // State to store the dataID for the link
   const eID = sessionStorage.getItem('eID');
 
   const sections = [
@@ -126,6 +127,7 @@ const DataStoreForm = () => {
       });
       if (response.status === 200) {
         alert(response.data.message);
+        setDataID(response.data.DataID); // Set the dataID from the backend response
       } else {
         alert('Failed to store data.');
       }
@@ -197,32 +199,44 @@ const DataStoreForm = () => {
           )}
         </div>
 
-          <div className="cnd-expiry-section">
-            <h3 className="cnd-subheading">Data Expiry</h3>
-            <label className="cnd-expiry-label">
-              Expiry Date & Time:
-              <input
-                type="datetime-local"
-                value={expiryDate}
-                onChange={handleExpiryDateChange}
-                disabled={viewOnce}
-                className="cnd-expiry-input"
-              />
-            </label>
-            <label className="cnd-view-once-label">
-              <input
-                type="checkbox"
-                checked={viewOnce}
-                onChange={handleViewOnceChange}
-                className="cnd-view-once-checkbox"
-              />
-              View Once
-            </label>
-          </div>
+        <div className="cnd-expiry-section">
+          <h3 className="cnd-subheading">Data Expiry</h3>
+          <label className="cnd-expiry-label">
+            Expiry Date & Time:
+            <input
+              type="datetime-local"
+              value={expiryDate}
+              onChange={handleExpiryDateChange}
+              disabled={viewOnce}
+              className="cnd-expiry-input"
+            />
+          </label>
+          <label className="cnd-view-once-label">
+            <input
+              type="checkbox"
+              checked={viewOnce}
+              onChange={handleViewOnceChange}
+              className="cnd-view-once-checkbox"
+            />
+            View Once
+          </label>
+        </div>
+        
         <div className="cnd-submit-container">
           <button type="submit" className="cnd-submit-button">Store Selected Data</button>
         </div>
       </form>
+
+      {dataID && (
+        <div className="cnd-sharable-link-section">
+          <h3 className="cnd-sharable-link-heading">Your Sharable Link</h3>
+          <p className="cnd-sharable-link">
+            <a href={`https://own-my-data.web.app/sharedlink/${dataID}`} target="_blank" rel="noopener noreferrer">
+              https://own-my-data.web.app/sharedlink/{dataID}
+            </a>
+          </p>
+        </div>
+      )}
     </div>
   );
 };
